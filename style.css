@@ -9,6 +9,15 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+/* For Google Icons */
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
 #header {
   box-shadow: 0px 0px 5px rgb(100, 100, 100);
   display: flex;
@@ -39,16 +48,63 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  gap: 1rem;
 }
 
 .todo {
   display: grid;
-  grid-template: 1fr / 1fr 9fr;
+  align-items: center;
+  grid-template: 1fr / 1fr 19fr;
   gap: 1rem;
   border: 1px solid var(--light-gray);
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: 3px 3px 3px rgb(150, 150, 150);
+}
+
+.todo:hover {
+  background-color: var(--light-gray);
+}
+
+.todocontent {
+  display: grid;
+  gap: 0.5rem;
+  grid-template: repeat(3, auto) / repeat(2, 1fr);
+}
+
+.todoheader {
+  font-weight: bold;
+  grid-area: 1 / 1 / 1 / span 2;
+}
+
+.todotext {
+  grid-area: 2 / 1 / 2 / span 2;
+  font-size: 0.8rem;
+}
+
+.tododate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.todopriority {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prioritycircle {
+  border-radius: 50%;
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
+.missedtodo {
+  color: red;
+  font-weight: bold;
 }
 
 .checkbox {
