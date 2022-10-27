@@ -3,7 +3,7 @@ import dateConverter from './dateconverter';
 const domManipulator = (() => {
   const content = document.getElementById('content');
   // Subfunctions for helper functions
-  const createToDoDate = (date) => {
+  const createToDoDate = (date: Date) => {
     const toDoDateDiv = document.createElement('div');
     toDoDateDiv.classList.add('tododate');
     const toDoDateIcon = document.createElement('div');
@@ -21,7 +21,7 @@ const domManipulator = (() => {
     return toDoDateDiv;
   };
 
-  const createPriorityDiv = (priority) => {
+  const createPriorityDiv = (priority: string) => {
     const priorityDiv = document.createElement('div');
     priorityDiv.classList.add('todopriority');
     const priorityCircle = document.createElement('div');
@@ -48,7 +48,7 @@ const domManipulator = (() => {
     checkbox.innerHTML = '&#10003'
     return checkbox;
   };
-  const buildToDoConent = (toDoObject) => {
+  const buildToDoConent = (toDoObject: { heading: string; text: string; date: Date; priority: string; }) => {
     const toDoContent = document.createElement('div');
     toDoContent.classList.add('todocontent')
     const toDoHeader = document.createElement('div');
@@ -64,14 +64,14 @@ const domManipulator = (() => {
     return toDoContent;
   }
 
-  const labelCreator = (forElement, labelText) => {
+  const labelCreator = (forElement: string, labelText: string) => {
     const label = document.createElement('label');
     label.setAttribute('for', forElement);
     label.textContent = labelText;
     return label;
   }
   
-  const inputFieldCreator = (fieldType, fieldName) => {
+  const inputFieldCreator = (fieldType: string, fieldName: string) => {
     const field = document.createElement('input');
     field.setAttribute('type', fieldType);
     field.setAttribute('name', fieldName);
@@ -79,7 +79,7 @@ const domManipulator = (() => {
     return field;
   }
 
-  const inputCreator = (fieldType, fieldName, labelText) => {
+  const inputCreator = (fieldType: string, fieldName: string, labelText: string) => {
     const inputDiv = document.createElement('div');
     inputDiv.appendChild(labelCreator(fieldName, labelText));
     inputDiv.appendChild(inputFieldCreator(fieldType, fieldName));
@@ -103,7 +103,7 @@ const domManipulator = (() => {
     content.appendChild(header);
     content.appendChild(toDoDiv);
   }
-  const toDoBuilder = (toDoObject) => {
+  const toDoBuilder = (toDoObject: { heading: string; text: string; date: Date; priority: string; }) => {
     const toDoDiv = document.getElementById('tododiv');
     const toDo = document.createElement('div');
     toDo.classList.add('todo');
