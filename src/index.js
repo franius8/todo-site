@@ -9,3 +9,4 @@ domManipulator.homePageBuilder();
 domManipulator.toDoBuilder(toDoOne);
 domManipulator.toDoBuilder(toDoTwo);
 domManipulator.toDoBuilder(toDoThree);
+domManipulator.formBuilder();

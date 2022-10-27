@@ -4,7 +4,7 @@ const dateConverter = (() => {
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
-  result = day + '-' + month + '-' + year;
+  result = day + '.' + month + '.' + year;
   return result;
   }
   const getDayDifference = (date) => {

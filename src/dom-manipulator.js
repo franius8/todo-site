@@ -2,7 +2,7 @@ import dateConverter from './dateconverter';
 
 const domManipulator = (() => {
   const content = document.getElementById('content');
-  
+  // Subfunctions for helper functions
   const createToDoDate = (date) => {
     const toDoDateDiv = document.createElement('div');
     toDoDateDiv.classList.add('tododate');
@@ -64,6 +64,28 @@ const domManipulator = (() => {
     return toDoContent;
   }
 
+  const labelCreator = (forElement, labelText) => {
+    const label = document.createElement('label');
+    label.setAttribute('for', forElement);
+    label.textContent = labelText;
+    return label;
+  }
+  
+  const inputFieldCreator = (fieldType, fieldName) => {
+    const field = document.createElement('input');
+    field.setAttribute('type', fieldType);
+    field.setAttribute('name', fieldName);
+    field.setAttribute('name', fieldName);
+    return field;
+  }
+
+  const inputCreator = (fieldType, fieldName, labelText) => {
+    const inputDiv = document.createElement('div');
+    inputDiv.appendChild(labelCreator(fieldName, labelText));
+    inputDiv.appendChild(inputFieldCreator(fieldType, fieldName));
+    return inputDiv;
+  }
+
   // Main functions to be returned
   const homePageBuilder = () => {
     const header = document.createElement('div');
@@ -91,7 +113,21 @@ const domManipulator = (() => {
     toDo.appendChild(buildToDoConent(toDoObject));
     toDoDiv.appendChild(toDo);
   }
-  return { homePageBuilder, toDoBuilder };
+  const formBuilder = () => {
+    const formDiv = document.createElement('div');
+    formDiv.setAttribute('id', 'formdiv');
+    const formHeading = document.createElement('h2');
+    formHeading.setAttribute('id', 'formheading');
+    formHeading.textContent = 'Add a new ToDo';
+    const form = document.createElement('form');
+    form.appendChild(inputCreator('text', 'todotitle', 'Title:'));
+    form.appendChild(inputCreator('text', 'todocontent', 'Content:'))
+    form.appendChild(inputCreator('date', 'tododate', 'Due date:'));
+    formDiv.appendChild(formHeading);
+    formDiv.appendChild(form);
+    content.appendChild(formDiv);
+  };
+  return { homePageBuilder, toDoBuilder, formBuilder };
 })();
 
 export default domManipulator;
