@@ -1,5 +1,5 @@
 const dateConverter = (() => {
-  const convertToString = (date) => {
+  const convertToString = (date: Date) => {
     let result = '';
   let day = date.getDate();
   let month = date.getMonth() + 1;
@@ -7,7 +7,7 @@ const dateConverter = (() => {
   result = day + '.' + month + '.' + year;
   return result;
   }
-  const getDayDifference = (date) => {
+  const getDayDifference = (date: Date) => {
     const toDoDate = date;
     const currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     const timeDifference = toDoDate.getTime() - currentDate.getTime();
