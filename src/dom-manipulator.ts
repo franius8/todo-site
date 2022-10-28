@@ -1,10 +1,13 @@
 import dateConverter from './dateconverter';
+import toDo from './todo';
+import toDoManipulator from './todomanipulator';
 
 interface ToDo {
   heading: string;
   text: string;
   date: Date;
   priority: string;
+  iD:number;
   markAsDone: Function;
   getDoneStatus: Function;
 }
@@ -168,6 +171,45 @@ const domManipulator = (() => {
     return submitButton;
   }
 
+  const clearToDoDiv = () => {
+    const toDoDiv:HTMLElement = document.getElementById('tododiv');
+    toDoDiv.textContent = '';
+  }
+
+    const createToDoButtons = () => {
+      const buttonDiv:HTMLDivElement = document.createElement('div');
+      buttonDiv.classList.add('buttondiv');
+      const editButton:HTMLButtonElement = document.createElement('button');
+      editButton.classList.add('editbutton');
+      editButton.innerHTML = '<span class="material-symbols-outlined">edit</span>'
+      const deleteButton:HTMLButtonElement = document.createElement('button');
+      deleteButton.classList.add('deletebutton');
+      deleteButton.innerHTML = '<span class="material-symbols-outlined">delete</span>';
+      deleteButton.addEventListener(('click'), (e) => {
+        const target = (<HTMLElement>e.target);
+        const toDo = (<HTMLElement>(<HTMLElement>(target).parentNode).parentNode);
+        const iD:number = Number(toDo.id);
+        if (confirm('Are you sure you want to delete that?')) {
+          toDoManipulator.deleteToDo(iD);
+          displayToDos(toDoManipulator.getToDoAry());  
+        };
+      });
+      buttonDiv.appendChild(editButton);
+      buttonDiv.appendChild(deleteButton);
+      return buttonDiv;
+    }
+
+    const createCloseButton = (formDiv:HTMLDivElement) => {
+      const closeButtonDiv:HTMLDivElement = document.createElement('div');
+      closeButtonDiv.setAttribute('id', 'closebuttondiv');
+      const closeButton:HTMLButtonElement = document.createElement('button');
+      closeButton.setAttribute('id', 'closebutton');
+      closeButton.innerHTML = '<span class="material-symbols-outlined">close</span>';
+      closeButton.addEventListener(('click'), () => formDiv.style.display = 'none')
+      closeButtonDiv.appendChild(closeButton);
+      return closeButtonDiv;
+    }
+
   // Main functions to be returned
   const homePageBuilder = () => {
     const header:HTMLDivElement = document.createElement('div');
@@ -196,11 +238,14 @@ const domManipulator = (() => {
     const toDoDiv:HTMLElement = (document.getElementById('tododiv') || document.createElement('tododiv'));
     const toDo:HTMLDivElement = document.createElement('div');
     toDo.classList.add('todo');
+    toDo.setAttribute('id', toDoObject.iD.toString());
     toDo.appendChild(addLabelStripe(toDoObject.priority));
     const chechboxDiv:HTMLDivElement = document.createElement('div');
+    chechboxDiv.classList.add('checkboxdiv');
     chechboxDiv.appendChild(addCheckBox());
     toDo.appendChild(chechboxDiv);
     toDo.appendChild(buildToDoConent(toDoObject));
+    toDo.appendChild(createToDoButtons());
     toDoDiv.appendChild(toDo);
   }
   const formBuilder = () => {
@@ -216,11 +261,17 @@ const domManipulator = (() => {
     form.appendChild(inputCreator('date', 'tododate', 'Due date:'));
     form.appendChild(radioCreator('divpriority', priorities));
     form.appendChild(buttonCreator());
+    formDiv.appendChild(createCloseButton(formDiv));
     formDiv.appendChild(formHeading);
     formDiv.appendChild(form);
     return formDiv;
   };
-  return { homePageBuilder, toDoBuilder, formBuilder };
+  const displayToDos = ( toDoAry:ToDo[] ) => {
+    clearToDoDiv();
+    let resultAry:ToDo[] = toDoAry.sort((a,b) => a.date.getTime() - b.date.getTime());
+    resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo));
+  }
+  return { homePageBuilder, toDoBuilder, formBuilder, displayToDos };
 })();
 
 export default domManipulator;

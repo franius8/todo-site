@@ -76,7 +76,7 @@ body {
 .todo {
   display: grid;
   align-items: center;
-  grid-template: 1fr / 1fr 3fr 57fr;
+  grid-template: 1fr / 1fr 3fr 50fr 7fr;
   gap: 1rem;
   border: 1px solid var(--light-gray);
   border-radius: 1rem;
@@ -86,12 +86,16 @@ body {
 .donetodo {
     display: grid;
     align-items: center;
-    grid-template: 1fr / 1fr 3fr 57fr;
+    grid-template: 1fr / 1fr 3fr 50fr 7fr;
     gap: 1rem;
     border: 1px solid var(--light-gray);
     border-radius: 1rem;
     box-shadow: 3px 3px 3px rgb(150, 150, 150);
     filter: grayscale(100%);
+}
+
+.donetodo > :not(.checkboxdiv) {
+  text-decoration: line-through;
 }
 
 .todo:hover {
@@ -135,8 +139,44 @@ body {
 
 .prioritycircle {
   border-radius: 50%;
-  height: 0.5rem;
-  width: 0.5rem;
+  height: 0.6rem;
+  width: 0.6rem;
+}
+
+.buttondiv {
+  display: flex;
+  flex-direction: column;
+  margin-right: 1rem;
+}
+
+.editbutton, .deletebutton {
+  border-radius: 0.5rem;
+  padding: 0.1rem 0.5rem;
+  color: white;
+}
+
+button span {
+  pointer-events: none;
+}
+
+.deletebutton {
+  background-color: red;
+  border: 1px solid red;
+}
+
+.deletebutton:hover {
+  background-color: rgb(210, 0, 0);
+  border: 1px solid rgb(210, 0, 0);
+}
+
+.editbutton {
+  background-color: gray;
+  border: 1px solid gray;
+}
+
+.editbutton:hover {
+  background-color: rgb(90, 90, 90);
+  border: 1px solid rgb(90, 90, 90);
 }
 
 .missedtodo {
@@ -179,7 +219,7 @@ body {
 
 form {
   display: grid;
-  grid-template: repeat(3, 1fr), repeat(2, 1fr);
+  grid-template: repeat(3, auto), repeat(2, auto);
   gap: 1rem;
 }
 
@@ -189,9 +229,20 @@ form input {
   border: 1px solid var(--light-gray);
 }
 
+#closebuttondiv {
+  float: right;
+}
+
+#closebutton {
+  border-radius: 50%;
+  border: 1px solid var(--light-gray);
+  background-color: var(--light-gray);
+}
+
 .inputdiv {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 form button {
@@ -204,9 +255,9 @@ button:hover {
   cursor: pointer;
 }
 
-#radiodiv {
+#radiocontainer {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.8rem;
   align-items: center;
 }
 
