@@ -28,6 +28,10 @@ body {
 }
 
 #header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white;
   box-shadow: 0px 0px 5px rgb(100, 100, 100);
   display: flex;
   align-items: center;
@@ -69,7 +73,7 @@ body {
   border: 5px solid var(--main-color);
 }
 
-#addnewbutton:hover {
+#addnewbutton:hover, form button:hover {
   color: var(--main-color);
   background-color: white;
 }
@@ -224,6 +228,7 @@ button span {
   border-radius: 1rem;
   border: 1px solid var(--light-gray);
   display: none;
+  z-index: 10;
 }
 
 form {
@@ -235,7 +240,7 @@ form {
 form input {
   padding: 0.5rem;
   border-radius: 1rem;
-  border: 1px solid var(--light-gray);
+  border: 3px solid var(--light-gray);
 }
 
 #closebuttondiv {
@@ -246,6 +251,18 @@ form input {
   border-radius: 50%;
   border: 1px solid var(--light-gray);
   background-color: var(--light-gray);
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#closebutton span {
+  line-height: 2rem;
+  height: 2rem;
+  width: 2rem;
 }
 
 .inputdiv {
@@ -257,7 +274,16 @@ form input {
 form button {
   grid-area: 3 / 1 / 3 / span 2;
   border-radius: 1rem;
-  border: 1px solid var(--light-gray);
+  border: 5px solid var(--main-color);
+  background-color: var(--main-color);
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: bold;
+  color: white;
+  width: 10rem;
+  align-self: center;
+  justify-self: center;
 }
 
 button:hover {

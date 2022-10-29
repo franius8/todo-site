@@ -1,6 +1,5 @@
 import dateConverter from './dateconverter';
 import toDoManipulator from './todomanipulator';
-import formGetter from './formgetter';
 import formBuilder from './formbuilder';
 
 interface ToDo {
@@ -65,6 +64,8 @@ const domManipulator = (() => {
       const newField = target.cloneNode(true);
       targetParent.replaceChild(newField, target);
       const toDoDiv = (<HTMLElement>targetParent.parentNode);
+      const toDoDiviD:number = Number(toDoDiv.id);
+      toDoManipulator.moveToDone(toDoDiviD);
       toDoDiv.remove();
       toDoDiv.classList.remove('todo');
       toDoDiv.classList.add('donetodo');
@@ -121,6 +122,11 @@ const domManipulator = (() => {
     toDoDiv.textContent = '';
   }
 
+  const clearDoneDiv = () => {
+    const toDoDiv:HTMLElement = document.getElementById('donediv');
+    toDoDiv.textContent = '';
+  }
+
     const createToDoButtons = () => {
       const buttonDiv:HTMLDivElement = document.createElement('div');
       buttonDiv.classList.add('buttondiv');
@@ -134,7 +140,7 @@ const domManipulator = (() => {
         const target = (<HTMLElement>e.target);
         const toDo = (<HTMLElement>(<HTMLElement>(target).parentNode).parentNode);
         const iD:number = Number(toDo.id);
-        if (confirm('Are you sure you want to delete that?')) {
+        if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
           toDoManipulator.deleteToDo(iD);
           displayToDos(toDoManipulator.getToDoAry());  
         };
@@ -189,7 +195,10 @@ const domManipulator = (() => {
     let resultAry:ToDo[] = toDoAry.sort((a,b) => a.date.getTime() - b.date.getTime());
     resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo));
   }
-  return { homePageBuilder, toDoBuilder, formBuilder, displayToDos };
+  const displayDoneToDos = (doneAry:ToDo[] ) => {
+    clearDoneDiv()
+  }
+  return { homePageBuilder, toDoBuilder, displayToDos, displayDoneToDos };
 })();
 
 export default domManipulator;

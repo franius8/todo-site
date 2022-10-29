@@ -11,9 +11,10 @@ interface ToDo {
   getDoneStatus: Function;
 }
 
-const toDoOne:ToDo = toDoManipulator.createToDo('lorem ipsum', 'lorem ipsum', new Date(2022, 11, 14), 'High');
-const toDoTwo:ToDo = toDoManipulator.createToDo('lorem ipsum', 'lorem ipsum', new Date(2022, 9, 28), 'Standard');
-const toDoThree:ToDo = toDoManipulator.createToDo('lorem ipsum', 'lorem ipsum', new Date(2022, 10, 4), 'Low');
+//toDoManipulator.createToDo('lorem ipsum', 'lorem ipsum', new Date(2022, 11, 14), 'High');
+//toDoManipulator.createToDo('lorem ipsum', 'lorem ipsum', new Date(2022, 9, 28), 'Standard');
+//toDoManipulator.createToDo('lorem ipsum', 'lorem ipsum', new Date(2022, 10, 4), 'Low');
 
 domManipulator.homePageBuilder();
+toDoManipulator.loadArys();
 domManipulator.displayToDos(toDoManipulator.getToDoAry());
