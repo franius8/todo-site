@@ -165,7 +165,10 @@ const domManipulator = (() => {
     content.appendChild(doneDiv);
     content.appendChild(formBuilder.buildForm());
     const formDiv:HTMLElement = document.getElementById('formdiv');
-    addNewButton.addEventListener(('click'), () => formDiv.style.display = 'block');
+    addNewButton.addEventListener(('click'), () => {
+      formDiv.style.display = 'block';
+      content.classList.add('blurred');
+    });
   }
   const toDoBuilder = (toDoObject: ToDo) => {
     const toDoDiv:HTMLElement = (document.getElementById('tododiv') || document.createElement('tododiv'));

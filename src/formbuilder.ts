@@ -8,7 +8,10 @@ const formBuilder = (() => {
     const closeButton:HTMLButtonElement = document.createElement('button');
     closeButton.setAttribute('id', 'closebutton');
     closeButton.innerHTML = '<span class="material-symbols-outlined">close</span>';
-    closeButton.addEventListener(('click'), () => formDiv.style.display = 'none')
+    closeButton.addEventListener(('click'), () => {
+      formDiv.style.display = 'none';
+      content.classList.remove('blurred');
+    });
     closeButtonDiv.appendChild(closeButton);
     return closeButtonDiv;
   }
