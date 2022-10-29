@@ -1,6 +1,7 @@
 import dateConverter from './dateconverter';
-import toDo from './todo';
 import toDoManipulator from './todomanipulator';
+import formGetter from './formgetter';
+import formBuilder from './formbuilder';
 
 interface ToDo {
   heading: string;
@@ -115,62 +116,6 @@ const domManipulator = (() => {
     return logodiv;
   }
 
-  const labelCreator = (forElement: string, labelText: string) => {
-    const label:HTMLLabelElement = document.createElement('label');
-    label.setAttribute('for', forElement);
-    label.textContent = labelText;
-    return label;
-  }
-  
-  const inputFieldCreator = (fieldType: string, fieldName: string, fieldValue:string = 'empty') => {
-    const field:HTMLInputElement = document.createElement('input');
-    field.setAttribute('type', fieldType);
-    field.setAttribute('name', fieldName);
-    field.setAttribute('name', fieldName);
-    if (fieldValue !== 'empty') {
-      field.setAttribute('value', fieldValue);
-    }
-    return field;
-  }
-
-  const inputCreator = (fieldType: string, fieldName: string, labelText: string) => {
-    const inputDiv:HTMLDivElement = document.createElement('div');
-    inputDiv.classList.add('inputdiv');
-    inputDiv.appendChild(labelCreator(fieldName, labelText));
-    inputDiv.appendChild(inputFieldCreator(fieldType, fieldName));
-    return inputDiv;
-  }
-
-  const radioCreator = (radioName: string, radioOptions: string[]) => {
-    const inputDiv:HTMLDivElement = document.createElement('div');
-    inputDiv.classList.add('inputdiv');
-    inputDiv.appendChild(labelCreator('radiocontainer', 'Priority:'));
-    const radioDiv:HTMLDivElement = document.createElement('div');
-    radioDiv.setAttribute('id', 'radiocontainer');
-    radioOptions.forEach((option) => {
-      const radioButton:HTMLInputElement = document.createElement('input');
-      radioButton.setAttribute('type', 'radio');
-      radioButton.setAttribute('name', radioName);
-      radioButton.setAttribute('value', option);
-      radioButton.setAttribute('id', option);
-      const radioLabel:HTMLLabelElement = document.createElement('label');
-      radioLabel.setAttribute('for', option);
-      radioLabel.textContent = option[0].toUpperCase() + option.substring(1);
-      radioDiv.appendChild(radioButton);
-      radioDiv.appendChild(radioLabel);
-    })
-    inputDiv.appendChild(radioDiv);
-    return inputDiv
-  }
-
-  const buttonCreator = () => {
-    const submitButton:HTMLButtonElement = document.createElement('button');
-    submitButton.setAttribute('type', 'submit');
-    submitButton.setAttribute('id', 'todosubmit');
-    submitButton.textContent = 'Add';
-    return submitButton;
-  }
-
   const clearToDoDiv = () => {
     const toDoDiv:HTMLElement = document.getElementById('tododiv');
     toDoDiv.textContent = '';
@@ -198,18 +143,6 @@ const domManipulator = (() => {
       buttonDiv.appendChild(deleteButton);
       return buttonDiv;
     }
-
-    const createCloseButton = (formDiv:HTMLDivElement) => {
-      const closeButtonDiv:HTMLDivElement = document.createElement('div');
-      closeButtonDiv.setAttribute('id', 'closebuttondiv');
-      const closeButton:HTMLButtonElement = document.createElement('button');
-      closeButton.setAttribute('id', 'closebutton');
-      closeButton.innerHTML = '<span class="material-symbols-outlined">close</span>';
-      closeButton.addEventListener(('click'), () => formDiv.style.display = 'none')
-      closeButtonDiv.appendChild(closeButton);
-      return closeButtonDiv;
-    }
-
   // Main functions to be returned
   const homePageBuilder = () => {
     const header:HTMLDivElement = document.createElement('div');
@@ -230,7 +163,7 @@ const domManipulator = (() => {
     content.appendChild(toDoDiv);
     content.appendChild(doneHeader);
     content.appendChild(doneDiv);
-    content.appendChild(formBuilder());
+    content.appendChild(formBuilder.buildForm());
     const formDiv:HTMLElement = document.getElementById('formdiv');
     addNewButton.addEventListener(('click'), () => formDiv.style.display = 'block');
   }
@@ -248,24 +181,6 @@ const domManipulator = (() => {
     toDo.appendChild(createToDoButtons());
     toDoDiv.appendChild(toDo);
   }
-  const formBuilder = () => {
-    const priorities:string[] = ['low', 'standard', 'high'];
-    const formDiv:HTMLDivElement = document.createElement('div');
-    formDiv.setAttribute('id', 'formdiv');
-    const formHeading:HTMLHeadingElement = document.createElement('h2');
-    formHeading.setAttribute('id', 'formheading');
-    formHeading.textContent = 'Add a new ToDo';
-    const form:HTMLFormElement = document.createElement('form');
-    form.appendChild(inputCreator('text', 'todotitle', 'Title:'));
-    form.appendChild(inputCreator('text', 'todocontent', 'Content:'))
-    form.appendChild(inputCreator('date', 'tododate', 'Due date:'));
-    form.appendChild(radioCreator('divpriority', priorities));
-    form.appendChild(buttonCreator());
-    formDiv.appendChild(createCloseButton(formDiv));
-    formDiv.appendChild(formHeading);
-    formDiv.appendChild(form);
-    return formDiv;
-  };
   const displayToDos = ( toDoAry:ToDo[] ) => {
     clearToDoDiv();
     let resultAry:ToDo[] = toDoAry.sort((a,b) => a.date.getTime() - b.date.getTime());
