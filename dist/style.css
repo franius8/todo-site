@@ -304,3 +304,18 @@ button:hover {
   font-size: 1.25rem;
   font-weight: bold;
 }
+
+#actiondiv {
+  margin: 3rem 0;
+  font-size: 1.5rem;
+}
+
+#addnew {
+  font-weight: 900;
+  color: var(--main-color);
+}
+
+#addnew:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

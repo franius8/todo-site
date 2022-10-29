@@ -62,7 +62,13 @@ const toDoManipulator = (() => {
     const index:number = toDoAry.findIndex(x => x.iD === id);
     toDoAry.splice(index, 1);
     localStorage.setItem('todoary', (JSON.stringify(toDoAry)));
+    idGenerator.freeID(id);
   }
+
+  const findTodDo = (id:number) => {
+    return toDoAry.find(x => x.iD === id);
+  }
+
   const moveToDone = (id:number) => {
     const index:number = toDoAry.findIndex(x => x.iD === id);
     const doneToDo = toDoAry.splice(index, 1)[0];
@@ -75,7 +81,7 @@ const toDoManipulator = (() => {
 
   const getToDoAry = () => toDoAry;
   const getDoneAry = () => doneAry;
-  return { createToDo, modifyToDo, deleteToDo, getToDoAry, loadArys, getDoneAry, moveToDone }
+  return { createToDo, modifyToDo, deleteToDo, getToDoAry, loadArys, getDoneAry, moveToDone, findTodDo }
 })();
 
 export default toDoManipulator;

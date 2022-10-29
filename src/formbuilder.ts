@@ -1,7 +1,11 @@
 import toDoManipulator from "./todomanipulator";
 import formHandler from "./formhandler";
+import toDo from "./todo";
+import dateConverter from "./dateconverter";
 
 const formBuilder = (() => {
+  const priorities:string[] = ['Low', 'Standard', 'High'];
+
   const content:HTMLElement = (document.getElementById('content') || document.createElement('content'));
   const createCloseButton = (formDiv:HTMLDivElement) => {
     const closeButtonDiv:HTMLDivElement = document.createElement('div');
@@ -35,7 +39,7 @@ const formBuilder = (() => {
     }
     return field;
   }
-  const radioCreator = (radioName: string, radioOptions: string[]) => {
+  const radioCreator = (radioName: string, radioOptions: string[], checkedValue:string = null) => {
     const inputDiv:HTMLDivElement = document.createElement('div');
     inputDiv.classList.add('inputdiv');
     inputDiv.appendChild(labelCreator('radiocontainer', 'Priority:'));
@@ -47,6 +51,9 @@ const formBuilder = (() => {
       radioButton.setAttribute('name', radioName);
       radioButton.setAttribute('value', option);
       radioButton.setAttribute('id', option);
+      if (option === checkedValue) {
+        radioButton.setAttribute('checked', 'checked');
+      }
       const radioLabel:HTMLLabelElement = document.createElement('label');
       radioLabel.setAttribute('for', option);
       radioLabel.textContent = option[0].toUpperCase() + option.substring(1);
@@ -70,8 +77,13 @@ const formBuilder = (() => {
     inputDiv.appendChild(inputFieldCreator(fieldType, fieldName, 'empty', required));
     return inputDiv;
   }
+  const editInputCreator = (fieldType: string, fieldName: string, labelText: string, required:boolean = true, fieldValue: any) => {
+    const field:HTMLDivElement = inputCreator(fieldType, fieldName, labelText, required);
+    const inputField:HTMLInputElement = field.querySelector(`#${fieldName}`);
+    inputField.value = fieldValue;
+    return field;
+  }
   const buildForm = () => {
-    const priorities:string[] = ['Low', 'Standard', 'High'];
     const formDiv:HTMLDivElement = document.createElement('div');
     formDiv.setAttribute('id', 'formdiv');
     const formHeading:HTMLHeadingElement = document.createElement('h2');
@@ -92,7 +104,23 @@ const formBuilder = (() => {
     });
     return formDiv;
   };
-  return { buildForm };
+  const buildEditForm = (e:MouseEvent) => {
+    const target:HTMLElement = e.target as HTMLElement;
+    const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
+    const toDoDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
+    const toDoContent:HTMLElement = toDoDiv.querySelector('.todocontent');
+    const toDo = toDoManipulator.findTodDo(Number(toDoDiv.id));
+    const headerContent:string = toDo.heading;
+    const textContent:string = toDo.text;
+    const dateContent:Date = toDo.date
+    const priorityContent:string = toDo.priority;
+    toDoContent.innerHTML = '';
+    toDoContent.appendChild(editInputCreator('text', 'todotitleedit', 'Title:', true, headerContent));
+    toDoContent.appendChild(editInputCreator('text', 'todocontentedit', 'Content (optional):', false, textContent));
+    toDoContent.appendChild(editInputCreator('date', 'tododateedit', 'Due date:', true, dateConverter.convertToInputFormat(dateContent)));
+    toDoContent.appendChild(radioCreator('todopriorityedit', priorities, priorityContent));
+  }
+  return { buildForm, buildEditForm };
 })()
 
 export default formBuilder;

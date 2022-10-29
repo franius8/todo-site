@@ -10,7 +10,12 @@ const idGenerator = (() => {
       }
     }
   }
-  return { generateID }
+  const freeID = (id:number) => {
+    const index = iDsAry.indexOf(id);
+    iDsAry.splice(index, 1);
+    localStorage.setItem('idsary', (JSON.stringify(iDsAry)));
+  }
+  return { generateID, freeID }
 })();
 
 export default idGenerator;

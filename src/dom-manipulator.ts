@@ -133,6 +133,9 @@ const domManipulator = (() => {
       const editButton:HTMLButtonElement = document.createElement('button');
       editButton.classList.add('editbutton');
       editButton.innerHTML = '<span class="material-symbols-outlined">edit</span>'
+      editButton.addEventListener(('click'), (e) => {
+        formBuilder.buildEditForm(e);
+      });
       const deleteButton:HTMLButtonElement = document.createElement('button');
       deleteButton.classList.add('deletebutton');
       deleteButton.innerHTML = '<span class="material-symbols-outlined">delete</span>';
@@ -176,10 +179,13 @@ const domManipulator = (() => {
       content.classList.add('blurred');
     });
   }
-  const toDoBuilder = (toDoObject: ToDo) => {
-    const toDoDiv:HTMLElement = (document.getElementById('tododiv') || document.createElement('tododiv'));
+  const toDoBuilder = (toDoObject: ToDo, toDoDiv:HTMLElement, done:boolean = false) => {
     const toDo:HTMLDivElement = document.createElement('div');
-    toDo.classList.add('todo');
+    if (done === false) {
+      toDo.classList.add('todo');
+    } else {
+      toDo.classList.add('donetodo')
+    }
     toDo.setAttribute('id', toDoObject.iD.toString());
     toDo.appendChild(addLabelStripe(toDoObject.priority));
     const chechboxDiv:HTMLDivElement = document.createElement('div');
@@ -191,12 +197,29 @@ const domManipulator = (() => {
     toDoDiv.appendChild(toDo);
   }
   const displayToDos = ( toDoAry:ToDo[] ) => {
+    const toDoDiv:HTMLElement = (document.getElementById('tododiv') || document.createElement('tododiv'));
     clearToDoDiv();
+    if (toDoAry.length === 0) {
+      const actionDiv:HTMLDivElement = document.createElement('div');
+      actionDiv.setAttribute('id', 'actiondiv');
+      actionDiv.innerHTML = 'No ToDos yet. Time to <span id="addnew">add a new one</span>.';
+      const addNewSpan = actionDiv.querySelector('#addnew');
+      addNewSpan.addEventListener(('click'), () => {
+        const formDiv:HTMLElement = document.getElementById('formdiv');
+        formDiv.style.display = 'block';
+        content.classList.add('blurred');
+      })
+      toDoDiv.appendChild(actionDiv);
+      return;
+    }
     let resultAry:ToDo[] = toDoAry.sort((a,b) => a.date.getTime() - b.date.getTime());
-    resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo));
+    resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo, toDoDiv));
   }
-  const displayDoneToDos = (doneAry:ToDo[] ) => {
+  const displayDoneToDos = (doneAry:ToDo[] ) => { //Needs to be finished
     clearDoneDiv()
+    const doneDiv = document.getElementById('donediv');
+    let resultAry:ToDo[] = doneAry.sort((a,b) => a.date.getTime() - b.date.getTime());
+    resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo, doneDiv, true));
   }
   return { homePageBuilder, toDoBuilder, displayToDos, displayDoneToDos };
 })();
