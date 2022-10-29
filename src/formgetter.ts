@@ -1,5 +1,3 @@
-import toDoManipulator from "./todomanipulator";
-
 const formGetter = (() => {
   const getFormData = (e:SubmitEvent) => {
     e.preventDefault();
@@ -9,7 +7,8 @@ const formGetter = (() => {
     const toDoDate:Date = new Date((<HTMLInputElement>(document.getElementById('tododate'))).value);
     const toDoPriority:string = (<HTMLInputElement>(document.querySelector('input[name="todopriority"]:checked'))).value;
     target.reset();
-    return [toDoTitle, toDoContent, toDoDate, toDoPriority];
+    const toDoData:[string, string, Date, string] = [toDoTitle, toDoContent, toDoDate, toDoPriority]
+    return toDoData;
   }
   return { getFormData }
 })();
