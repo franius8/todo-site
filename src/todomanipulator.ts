@@ -43,19 +43,19 @@ const toDoManipulator = (() => {
     localStorage.setItem('todoary', (JSON.stringify(toDoAry)));
     return newToDo;
   }
-  const modifyToDo = (id:number, heading: string = null, text: string = null, date: Date = null, priority: string = null) => {
+  const modifyToDo = (id:number, newHeading: string = null, newText: string = null, newDate: Date = null, newPriority: string = null) => {
     const toDo:ToDo = toDoAry.find(x => x.iD === id);
-    if (heading !== null) {
-      toDo.heading = heading;
+    if (newHeading !== null) {
+      toDo.heading = newHeading;
     }
-    if (text !== null) {
-      toDo.text = text;
+    if (newText !== null) {
+      toDo.text = newText;
     }
-    if (date !== null) {
-      toDo.date = date;
+    if (newDate !== null) {
+      toDo.date = newDate;
     }
-    if (priority !== null) {
-      toDo.priority = priority;
+    if (newPriority !== null) {
+      toDo.priority = newPriority;
     }
   }
   const deleteToDo = ( id:number ) => {
@@ -75,8 +75,8 @@ const toDoManipulator = (() => {
     console.log(doneToDo);
     doneToDo.markAsDone();
     localStorage.setItem('todoary', (JSON.stringify(toDoAry)));
-    toDoAry.push(doneToDo);
-    localStorage.setItem('doneary', (JSON.stringify(toDoAry)));
+    doneAry.push(doneToDo);
+    localStorage.setItem('doneary', (JSON.stringify(doneAry)));
   }
 
   const getToDoAry = () => toDoAry;
