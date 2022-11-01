@@ -17,7 +17,16 @@ const formGetter = (() => {
     const toDoData:[string, string, Date, string] = [toDoTitle, toDoContent, toDoDate, toDoPriority];
     return toDoData;
   }
-  return { getFormData, getEditFormData }
+  const getProjectFormData = (e:SubmitEvent) => {
+    const target = e.target as HTMLFormElement;
+    const projectName:string = (<HTMLInputElement>(document.getElementById('projectname'))).value;
+    const projectDate:Date = new Date((<HTMLInputElement>(document.getElementById('projectdate'))).value);
+    const projectPriority:string = (<HTMLInputElement>(document.querySelector('input[name="projectpriority"]:checked'))).value;
+    target.reset();
+    const projectData:[string, Date, string] = [projectName, projectDate, projectPriority];
+    return projectData;
+  }
+  return { getFormData, getEditFormData, getProjectFormData }
 })();
 
 export default formGetter;

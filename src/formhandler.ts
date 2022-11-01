@@ -16,13 +16,23 @@ const formHandler =(() => {
   const handleEditFormSubmission = (e:SubmitEvent) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
-    const toDoDiv = (<HTMLDivElement>(<HTMLDivElement>(target.parentNode)).parentNode);
+    const toDoDiv = (<HTMLDivElement>(<HTMLDivElement>(<HTMLDivElement>(target.parentNode)).parentNode).parentNode);
     const toDoData = formGetter.getEditFormData(e);
     target.reset();
     toDoManipulator.modifyToDo(Number(toDoDiv.id), toDoData[0], toDoData[1], toDoData[2], toDoData[3]);
     domManipulator.displayToDos(toDoManipulator.getToDoAry());
   }
-  return {handleFormSubmission, handleEditFormSubmission}
+  const handleNewProjectFormSubmission = (e:SubmitEvent) => {
+    e.preventDefault();
+    const target = e.target as HTMLFormElement;
+    const targetParent = (<HTMLDivElement>(target.parentNode));
+    const projectData = formGetter.getProjectFormData(e);
+    target.reset();
+    targetParent.style.display = 'none';
+    toDoManipulator.createProject(projectData[0], null, projectData[1], projectData[2]);
+    domManipulator.displayProjects(toDoManipulator.getProjectAry());
+  }
+  return {handleFormSubmission, handleEditFormSubmission, handleNewProjectFormSubmission}
 })();
 
 export default formHandler

@@ -12,6 +12,6 @@ interface Project {
   name: string;
   date: any;
   toDos:ToDo[]
-  priority: String;
+  priority: string;
   iD: number;
 }

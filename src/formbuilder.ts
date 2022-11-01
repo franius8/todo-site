@@ -2,10 +2,10 @@ import toDoManipulator from "./todomanipulator";
 import formHandler from "./formhandler";
 import dateConverter from "./dateconverter";
 import domManipulator from "./dom-manipulator";
-import formGetter from "./formgetter";
 
 const formBuilder = (() => {
   const priorities:string[] = ['Low', 'Standard', 'High'];
+  const projectPriorities:string[] = ['Normal', 'Urgent'];
 
   const content:HTMLElement = (document.getElementById('content') || document.createElement('content'));
   const createCloseButton = (formDiv:HTMLDivElement) => {
@@ -45,7 +45,7 @@ const formBuilder = (() => {
     inputDiv.classList.add('inputdiv');
     inputDiv.appendChild(labelCreator('radiocontainer', 'Priority:'));
     const radioDiv:HTMLDivElement = document.createElement('div');
-    radioDiv.setAttribute('id', 'radiocontainer');
+    radioDiv.classList.add('radiocontainer');
     radioOptions.forEach((option) => {
       const radioButton:HTMLInputElement = document.createElement('input');
       radioButton.setAttribute('type', 'radio');
@@ -110,7 +110,8 @@ const formBuilder = (() => {
     const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
     const toDoDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
     const toDoContent:HTMLElement = toDoDiv.querySelector('.todocontent');
-    const toDo = toDoManipulator.findTodDo(Number(toDoDiv.id));
+    console.log(toDoContent);
+    const toDo = toDoManipulator.findTodDo(Number(target.getAttribute('objectid')));
     const { heading:headerContent, text:textContent, date:dateContent, priority:priorityContent} = toDo;
     toDoContent.innerHTML = '';
     toDoContent.classList.add('duringedit');
@@ -141,7 +142,28 @@ const formBuilder = (() => {
     targetParent.appendChild(cancelButton);
     targetParent.appendChild(acceptButton);
   }
-  return { buildForm, buildEditForm };
+  const buildNewProjectForm = () => {
+    const formDiv:HTMLDivElement = document.createElement('div');
+    formDiv.setAttribute('id', 'projectformdiv');
+    const formHeading:HTMLHeadingElement = document.createElement('h2');
+    formHeading.setAttribute('id', 'formheading');
+    formHeading.textContent = 'Add a new Project';
+    const form:HTMLFormElement = document.createElement('form');
+    form.appendChild(inputCreator('text', 'projectname', 'Name:'));
+    form.appendChild(inputCreator('date', 'projectdate', 'Due date:'));
+    form.appendChild(radioCreator('projectpriority', projectPriorities));
+    form.appendChild(createSubmitButton());
+    formDiv.appendChild(createCloseButton(formDiv));
+    formDiv.appendChild(formHeading);
+    formDiv.appendChild(form);
+    form.addEventListener(('submit'), (e) => {
+      formHandler.handleNewProjectFormSubmission(e);
+      content.classList.remove('blurred');
+    });
+    return formDiv;
+  }
+
+  return { buildForm, buildEditForm, buildNewProjectForm };
 })()
 
 export default formBuilder;

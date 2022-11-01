@@ -2,16 +2,6 @@ import dateConverter from './dateconverter';
 import toDoManipulator from './todomanipulator';
 import formBuilder from './formbuilder';
 
-interface ToDo {
-  heading: string;
-  text: string;
-  date: Date;
-  priority: string;
-  iD:number;
-  markAsDone: Function;
-  getDoneStatus: Function;
-}
-
 const domManipulator = (() => {
   const content:HTMLElement = (document.getElementById('content') || document.createElement('content'));
   
@@ -50,7 +40,11 @@ const domManipulator = (() => {
       priorityCircle.style.backgroundColor = 'blue';
     } else if (priority === 'High') {
       priorityCircle.style.backgroundColor = 'red';
-    };
+    } else if (priority === 'Normal') {
+      priorityCircle.style.backgroundColor = 'skyblue';
+    } else if (priority === 'Urgent') {
+      priorityCircle.style.backgroundColor = 'crimson';
+    }
     const priorityText:HTMLDivElement = document.createElement('div');
     priorityText.textContent = priority + ' priority';
     
@@ -67,16 +61,10 @@ const domManipulator = (() => {
     checkbox.addEventListener('click', (e) => {
       const target = (<HTMLElement>e.target);
       const targetParent = (<HTMLElement>(target).parentNode);
-      const newField = target.cloneNode(true);
-      targetParent.replaceChild(newField, target);
       const toDoDiv = (<HTMLElement>targetParent.parentNode);
       const toDoDiviD:number = Number(toDoDiv.id);
       toDoManipulator.moveToDone(toDoDiviD);
-      toDoDiv.remove();
-      toDoDiv.classList.remove('todo');
-      toDoDiv.classList.add('donetodo');
-      const doneDiv:HTMLElement = document.getElementById('donediv');
-      doneDiv.appendChild(toDoDiv);
+      displayToDos(toDoManipulator.getToDoAry());
       });
     return checkbox;
   };
@@ -90,6 +78,10 @@ const domManipulator = (() => {
       labelStripe.style.backgroundColor = 'blue';
     } else if (priority === 'High') {
       labelStripe.style.backgroundColor = 'red';
+    } else if (priority === 'Normal') {
+      labelStripe.style.backgroundColor = 'skyblue';
+    } else if (priority === 'Urgent') {
+      labelStripe.style.backgroundColor = 'crimson';
     };
     return labelStripe;
   };
@@ -128,6 +120,18 @@ const domManipulator = (() => {
     toDoContent.appendChild(createToDoDate(toDoObject.date));
     toDoContent.appendChild(createPriorityDiv(toDoObject.priority));
     return toDoContent;
+  }
+
+  const buildProjectContent = (projectObject: Project) => {
+    const projectContent:HTMLDivElement = document.createElement('div');
+    projectContent.classList.add('projectcontent')
+    const projectTitle:HTMLDivElement = document.createElement('div');
+    projectTitle.classList.add('projectname');
+    projectTitle.textContent = projectObject.name;
+    projectContent.appendChild(projectTitle);
+    projectContent.appendChild(createToDoDate(projectObject.date));
+    projectContent.appendChild(createPriorityDiv(projectObject.priority));
+    return projectContent;
   }
 
   const buildLogo = () => {
@@ -179,22 +183,28 @@ const domManipulator = (() => {
     toDoDiv.textContent = '';
   }
 
-    const createToDoButtons = () => {
+  const clearProjectDiv = () => {
+    const toDoDiv:HTMLElement = document.getElementById('projectdiv');
+    toDoDiv.textContent = '';
+  }
+
+    const createToDoButtons = (iD:string) => {
       const buttonDiv:HTMLDivElement = document.createElement('div');
       buttonDiv.classList.add('buttondiv');
       const editButton:HTMLButtonElement = document.createElement('button');
       editButton.classList.add('editbutton');
-      editButton.innerHTML = '<span class="material-symbols-outlined">edit</span>'
+      editButton.setAttribute('objectid', iD);
+      editButton.innerHTML = '<span class="material-symbols-outlined">edit</span>';
       editButton.addEventListener(('click'), (e) => {
         formBuilder.buildEditForm(e);
       });
       const deleteButton:HTMLButtonElement = document.createElement('button');
       deleteButton.classList.add('deletebutton');
+      deleteButton.setAttribute('objectid', iD);
       deleteButton.innerHTML = '<span class="material-symbols-outlined">delete</span>';
       deleteButton.addEventListener(('click'), (e) => {
         const target = (<HTMLElement>e.target);
-        const toDo = (<HTMLElement>(<HTMLElement>(target).parentNode).parentNode);
-        const iD:number = Number(toDo.id);
+        const iD:number = Number(target.getAttribute('objectid'));
         if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
           toDoManipulator.deleteToDo(iD);
           displayToDos(toDoManipulator.getToDoAry());  
@@ -203,6 +213,16 @@ const domManipulator = (() => {
       buttonDiv.appendChild(editButton);
       buttonDiv.appendChild(deleteButton);
       return buttonDiv;
+    }
+
+    const createExpandButton = () => {
+      const expandButton:HTMLDivElement = document.createElement('div');
+      expandButton.classList.add('expandbutton');
+      expandButton.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
+      expandButton.addEventListener(('click'), (e) => {
+        const target = (<HTMLElement>e.target);
+      });
+      return expandButton;
     }
 
     const buildHeader = () => {
@@ -216,6 +236,17 @@ const domManipulator = (() => {
       header.appendChild(addNewButton);
       return header
     }
+
+    const buildNewProjectButtonDiv = () => {
+      const newProjectButtonDiv:HTMLDivElement = document.createElement('div');
+      newProjectButtonDiv.setAttribute('id', 'newprojectbuttondiv');
+      const newProjectButton:HTMLButtonElement = document.createElement('button');
+      newProjectButton.setAttribute('id', 'newprojectbutton');
+      newProjectButton.textContent = 'Add new Project';
+      newProjectButtonDiv.appendChild(newProjectButton);
+      return newProjectButtonDiv;
+    }
+
   // Main functions to be returned
   const homePageBuilder = () => {
     clearContent();
@@ -256,33 +287,63 @@ const domManipulator = (() => {
     const projectDiv:HTMLDivElement = document.createElement('div');
     projectDiv.setAttribute('id', 'projectdiv');
     content.appendChild(buildHeader());
+    content.appendChild(buildNewProjectButtonDiv());
     content.appendChild(projectDiv);
     content.appendChild(formBuilder.buildForm());
+    content.appendChild(formBuilder.buildNewProjectForm());
     const addNewButton = document.getElementById('addnewbutton');
     const formDiv:HTMLElement = document.getElementById('formdiv');
     addNewButton.addEventListener(('click'), () => {
       formDiv.style.display = 'block';
       content.classList.add('blurred');
     });
+    const addNewProjectButton = document.getElementById('newprojectbutton');
+    const projectFormDiv:HTMLElement = document.getElementById('projectformdiv');
+    addNewProjectButton.addEventListener(('click'), () => {
+      projectFormDiv.style.display = 'block';
+      content.classList.add('blurred');
+    });
     document.getElementById('projectlink').classList.add('active');
     addNavListeners();
+    displayProjects(toDoManipulator.getProjectAry());
   }
   const toDoBuilder = (toDoObject: ToDo, toDoDiv:HTMLElement, done:boolean = false) => {
+    const toDoID:string = toDoObject.iD.toString()
     const toDo:HTMLDivElement = document.createElement('div');
     if (done === false) {
       toDo.classList.add('todo');
     } else {
       toDo.classList.add('donetodo')
     }
-    toDo.setAttribute('id', toDoObject.iD.toString());
+    toDo.setAttribute('id', toDoID);
     toDo.appendChild(addLabelStripe(toDoObject.priority));
+    const middleDiv:HTMLDivElement = document.createElement('div');
+    middleDiv.classList.add('middlediv');
     const chechboxDiv:HTMLDivElement = document.createElement('div');
     chechboxDiv.classList.add('checkboxdiv');
     chechboxDiv.appendChild(addCheckBox());
-    toDo.appendChild(chechboxDiv);
-    toDo.appendChild(buildToDoConent(toDoObject));
-    toDo.appendChild(createToDoButtons());
+    middleDiv.appendChild(chechboxDiv);
+    middleDiv.appendChild(buildToDoConent(toDoObject));
+    middleDiv.appendChild(createToDoButtons(toDoID));
+    toDo.appendChild(middleDiv);
     toDoDiv.appendChild(toDo);
+  }
+  const projectBuilder = (projectObject: Project, projectDiv:HTMLElement) => {
+    const project:HTMLDivElement = document.createElement('div');
+    project.classList.add('project');
+    project.setAttribute('id', projectObject.iD.toString());
+    const middleDiv:HTMLDivElement = document.createElement('div');
+    middleDiv.classList.add('middlediv');
+    const chechboxDiv:HTMLDivElement = document.createElement('div');
+    chechboxDiv.classList.add('checkboxdiv');
+    chechboxDiv.appendChild(addCheckBox());
+    project.appendChild(addLabelStripe(projectObject.priority));
+    middleDiv.appendChild(chechboxDiv);
+    middleDiv.appendChild(buildProjectContent(projectObject));
+    middleDiv.appendChild(createToDoButtons(projectObject.iD.toString()));
+    project.appendChild(middleDiv);
+    project.appendChild(createExpandButton());
+    projectDiv.appendChild(project);
   }
   const displayToDos = ( toDoAry:ToDo[] ) => {
     const toDoDiv:HTMLElement = (document.getElementById('tododiv') || document.createElement('tododiv'));
@@ -309,7 +370,13 @@ const domManipulator = (() => {
     let resultAry:ToDo[] = doneAry.sort((a,b) => a.date.getTime() - b.date.getTime());
     resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo, doneDiv, true));
   }
-  return { homePageBuilder, donePageBuilder, projectPageBuilder, displayToDos, displayDoneToDos };
+  const displayProjects = (projectAry:Project[]) => {
+    const projectDiv = document.getElementById('projectdiv');
+    clearProjectDiv();
+    let resultAry:Project[] = projectAry.sort((a,b) => a.date.getTime() - b.date.getTime());
+    resultAry.forEach((project:Project) => projectBuilder(project, projectDiv));
+  }
+  return { homePageBuilder, donePageBuilder, projectPageBuilder, displayToDos, displayDoneToDos, displayProjects };
 })();
 
 export default domManipulator;
