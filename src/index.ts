@@ -12,7 +12,5 @@ interface ToDo {
   getDoneStatus: Function;
 }
 
-domManipulator.homePageBuilder();
 toDoManipulator.loadArys();
-domManipulator.displayToDos(toDoManipulator.getToDoAry());
-domManipulator.displayDoneToDos(toDoManipulator.getDoneAry());
+domManipulator.homePageBuilder();

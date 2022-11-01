@@ -14,6 +14,7 @@ interface ToDo {
 
 const domManipulator = (() => {
   const content:HTMLElement = (document.getElementById('content') || document.createElement('content'));
+  
   // Subfunctions for helper functions
   const createToDoDate = (date: Date) => {
     const toDoDateDiv:HTMLDivElement = document.createElement('div');
@@ -22,8 +23,13 @@ const domManipulator = (() => {
     toDoDateIcon.innerHTML = '<span class="material-symbols-outlined">calendar_month</span>';
     const toDoDate:HTMLDivElement = document.createElement('div');
     const dayDifference:number = dateConverter.getDayDifference(date);
-    if (dayDifference >= 0) {
+    if (dayDifference === 1) {
+      toDoDate.textContent = dateConverter.convertToString(date) + ' (' + dateConverter.getDayDifference(date) + ' day left)';  
+    } else if (dayDifference >= 0) {
       toDoDate.textContent = dateConverter.convertToString(date) + ' (' + dateConverter.getDayDifference(date) + ' days left)';  
+    } else if (dayDifference === -1) {
+      toDoDateDiv.classList.add('missedtodo');
+      toDoDate.textContent = dateConverter.convertToString(date) + ' (' + Math.abs(dateConverter.getDayDifference(date)) + ' day ago)';
     } else {
       toDoDateDiv.classList.add('missedtodo');
       toDoDate.textContent = dateConverter.convertToString(date) + ' (' + Math.abs(dateConverter.getDayDifference(date)) + ' days ago)';
@@ -86,7 +92,28 @@ const domManipulator = (() => {
       labelStripe.style.backgroundColor = 'red';
     };
     return labelStripe;
+  };
+
+  const addNavListeners = () => {
+    const navItems = document.querySelectorAll('.navitem');
+    navItems.forEach((element) => {
+      element.addEventListener(('click'), (e:MouseEvent) => {
+        const iD = (<HTMLElement>(e.target)).id;
+        switch (iD) {
+          case 'homepagelink':
+            domManipulator.homePageBuilder();
+            break;
+          case 'donelink':
+            domManipulator.donePageBuilder();
+            break;
+          case 'projectlink':
+            domManipulator.projectPageBuilder();
+            break;
+        } 
+      });
+    });
   }
+
   const buildToDoConent = (toDoObject: ToDo) => {
     const toDoContent:HTMLDivElement = document.createElement('div');
     toDoContent.classList.add('todocontent')
@@ -117,6 +144,31 @@ const domManipulator = (() => {
     return logodiv;
   }
 
+  const buildNavigationDiv = () => {
+    const navigationDiv:HTMLDivElement = document.createElement('div');
+    navigationDiv.setAttribute('id', 'navigationdiv');
+    const homepageLink:HTMLDivElement = document.createElement('div');
+    homepageLink.classList.add('navitem');
+    homepageLink.setAttribute('id', 'homepagelink');
+    homepageLink.innerHTML = '<span class="material-symbols-outlined">house</span> Homepage';
+    const doneLink:HTMLDivElement = document.createElement('div');
+    doneLink.innerHTML = '<span class="material-symbols-outlined">done</span> Done';
+    doneLink.classList.add('navitem');
+    doneLink.setAttribute('id', 'donelink');
+    const projectLink:HTMLDivElement = document.createElement('div');
+    projectLink.classList.add('navitem');
+    projectLink.setAttribute('id', 'projectlink');
+    projectLink.innerHTML = '<span class="material-symbols-outlined">assignment</span> Projects';
+    navigationDiv.appendChild(homepageLink);
+    navigationDiv.appendChild(doneLink);
+    navigationDiv.appendChild(projectLink);
+    return navigationDiv;
+  }
+
+  const clearContent = () => {
+    content.textContent = '';
+  }
+  
   const clearToDoDiv = () => {
     const toDoDiv:HTMLElement = document.getElementById('tododiv');
     toDoDiv.textContent = '';
@@ -152,32 +204,68 @@ const domManipulator = (() => {
       buttonDiv.appendChild(deleteButton);
       return buttonDiv;
     }
+
+    const buildHeader = () => {
+      const header:HTMLElement = document.createElement('header');
+      header.setAttribute('id', 'header');
+      header.appendChild(buildLogo());
+      header.appendChild(buildNavigationDiv());
+      const addNewButton:HTMLButtonElement = document.createElement('button');
+      addNewButton.setAttribute('id', 'addnewbutton');
+      addNewButton.textContent = 'Add ToDo';
+      header.appendChild(addNewButton);
+      return header
+    }
   // Main functions to be returned
   const homePageBuilder = () => {
-    const header:HTMLDivElement = document.createElement('div');
-    header.setAttribute('id', 'header');
+    clearContent();
     const toDoDiv:HTMLDivElement = document.createElement('div');
     toDoDiv.setAttribute('id', 'tododiv');
-    header.appendChild(buildLogo());
-    const addNewButton:HTMLButtonElement = document.createElement('button');
-    addNewButton.setAttribute('id', 'addnewbutton');
-    addNewButton.textContent = 'Add ToDo';
-    header.appendChild(addNewButton);
-    const doneHeader:HTMLDivElement = document.createElement('div');
-    doneHeader.setAttribute('id', 'doneheader');
-    doneHeader.textContent = 'Done';
-    const doneDiv:HTMLDivElement = document.createElement('div');
-    doneDiv.setAttribute('id', 'donediv');
-    content.appendChild(header);
+    content.appendChild(buildHeader());
     content.appendChild(toDoDiv);
-    content.appendChild(doneHeader);
-    content.appendChild(doneDiv);
     content.appendChild(formBuilder.buildForm());
+    const addNewButton = document.getElementById('addnewbutton');
     const formDiv:HTMLElement = document.getElementById('formdiv');
     addNewButton.addEventListener(('click'), () => {
       formDiv.style.display = 'block';
       content.classList.add('blurred');
     });
+    document.getElementById('homepagelink').classList.add('active');
+    addNavListeners();
+    displayToDos(toDoManipulator.getToDoAry());
+  }
+  const donePageBuilder = () => {
+    clearContent();
+    const doneDiv:HTMLDivElement = document.createElement('div');
+    doneDiv.setAttribute('id', 'donediv');
+    content.appendChild(buildHeader());
+    content.appendChild(doneDiv);
+    content.appendChild(formBuilder.buildForm());
+    const addNewButton = document.getElementById('addnewbutton');
+    const formDiv:HTMLElement = document.getElementById('formdiv');
+    addNewButton.addEventListener(('click'), () => {
+      formDiv.style.display = 'block';
+      content.classList.add('blurred');
+    });
+    document.getElementById('donelink').classList.add('active');
+    addNavListeners();
+    displayDoneToDos(toDoManipulator.getDoneAry());
+  }
+  const projectPageBuilder = () => {
+    clearContent();
+    const projectDiv:HTMLDivElement = document.createElement('div');
+    projectDiv.setAttribute('id', 'projectdiv');
+    content.appendChild(buildHeader());
+    content.appendChild(projectDiv);
+    content.appendChild(formBuilder.buildForm());
+    const addNewButton = document.getElementById('addnewbutton');
+    const formDiv:HTMLElement = document.getElementById('formdiv');
+    addNewButton.addEventListener(('click'), () => {
+      formDiv.style.display = 'block';
+      content.classList.add('blurred');
+    });
+    document.getElementById('projectlink').classList.add('active');
+    addNavListeners();
   }
   const toDoBuilder = (toDoObject: ToDo, toDoDiv:HTMLElement, done:boolean = false) => {
     const toDo:HTMLDivElement = document.createElement('div');
@@ -221,7 +309,7 @@ const domManipulator = (() => {
     let resultAry:ToDo[] = doneAry.sort((a,b) => a.date.getTime() - b.date.getTime());
     resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo, doneDiv, true));
   }
-  return { homePageBuilder, toDoBuilder, displayToDos, displayDoneToDos };
+  return { homePageBuilder, donePageBuilder, projectPageBuilder, displayToDos, displayDoneToDos };
 })();
 
 export default domManipulator;
