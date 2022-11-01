@@ -10,9 +10,8 @@ interface ToDo {
 
 interface Project {
   name: string;
-  toDos: ToDo[];
-  date: Date;
+  date: any;
+  toDos:ToDo[]
   priority: String;
   iD: number;
-  getToDos: Function;
 }
