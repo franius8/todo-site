@@ -27,7 +27,7 @@ const formBuilder = (() => {
     label.textContent = labelText;
     return label;
   }
-  const inputFieldCreator = (fieldType: string, fieldName: string, fieldValue:string = 'empty', required:boolean) => {
+  const inputFieldCreator = (fieldType: string, fieldName: string, fieldValue = 'empty', required:boolean) => {
     const field:HTMLInputElement = document.createElement('input');
     field.setAttribute('type', fieldType);
     field.setAttribute('name', fieldName);
@@ -71,14 +71,14 @@ const formBuilder = (() => {
     submitButton.textContent = 'Add';
     return submitButton;
   }
-  const inputCreator = (fieldType: string, fieldName: string, labelText: string, required:boolean = true) => {
+  const inputCreator = (fieldType: string, fieldName: string, labelText: string, required = true) => {
     const inputDiv:HTMLDivElement = document.createElement('div');
     inputDiv.classList.add('inputdiv');
     inputDiv.appendChild(labelCreator(fieldName, labelText));
     inputDiv.appendChild(inputFieldCreator(fieldType, fieldName, 'empty', required));
     return inputDiv;
   }
-  const editInputCreator = (fieldType: string, fieldName: string, labelText: string, required:boolean = true, fieldValue: any) => {
+  const editInputCreator = (fieldType: string, fieldName: string, labelText: string, required = true, fieldValue: string) => {
     const field:HTMLDivElement = inputCreator(fieldType, fieldName, labelText, required);
     const inputField:HTMLInputElement = field.querySelector(`#${fieldName}`);
     inputField.value = fieldValue;

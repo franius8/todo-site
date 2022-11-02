@@ -5,12 +5,12 @@ import dateFixer from "./datefixer";
 
 const toDoManipulator = (() => {
 
-  let toDoAry:ToDo[] = [];
+  const toDoAry:ToDo[] = [];
   let doneAry:ToDo[] = [];
   let projectAry:Project[] = [];
 
   const loadToDoAry = () => {
-    let rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
+    const rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
     rawToDoAry.forEach((todo: ToDo) => {
     todo.date = dateFixer.fixDates(todo.date);
     toDoAry.push(toDo(todo.heading, todo.text, todo.date, todo.priority, todo.iD, todo.projectiDs));
@@ -68,6 +68,7 @@ const toDoManipulator = (() => {
         project.toDos.splice(index, 1);
       });
     }
+
     const index:number = toDoAry.findIndex(x => x.iD === id);
     toDoAry.splice(index, 1);
     localStorage.setItem('todoary', (JSON.stringify(toDoAry)));

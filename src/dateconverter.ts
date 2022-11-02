@@ -1,17 +1,17 @@
 const dateConverter = (() => {
   const convertToString = (date: Date) => {
     let result = '';
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
   result = day + '.' + month + '.' + year;
   return result;
   }
   const convertToInputFormat = (date: Date) => {
     let result = '';
-    let day = String(date.getDate()).padStart(2, '0');
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
     result = year + '-' + month + '-' + day;
     return result;
   }

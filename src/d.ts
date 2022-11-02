@@ -5,8 +5,8 @@ interface ToDo {
   priority: string;
   iD: number;
   projectiDs: number[];
-  markAsDone: Function;
-  getDoneStatus: Function;
+  markAsDone: () => void;
+  getDoneStatus: () => boolean;
 }
 
 interface Project {
