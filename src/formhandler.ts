@@ -29,10 +29,24 @@ const formHandler =(() => {
     const projectData = formGetter.getProjectFormData(e);
     target.reset();
     targetParent.style.display = 'none';
-    toDoManipulator.createProject(projectData[0], null, projectData[1], projectData[2]);
+    toDoManipulator.createProject(projectData[0], [], projectData[1], projectData[2]);
     domManipulator.displayProjects(toDoManipulator.getProjectAry());
   }
-  return {handleFormSubmission, handleEditFormSubmission, handleNewProjectFormSubmission}
+  const handleAddProjectToDosFormSubmission = (e:SubmitEvent, iD:number) => {
+    e.preventDefault();
+    const target = e.target as HTMLFormElement;
+    const targetParent = (<HTMLDivElement>(target.parentNode));
+    const projectToDoIds = formGetter.getProjectToDoData(target);
+    target.reset()
+    targetParent.style.display = 'none';
+    const project = toDoManipulator.findProject(iD);
+    projectToDoIds.forEach((toDoId) => {
+      project.toDos.push(toDoManipulator.findTodDo(toDoId));
+  });
+  console.log(project);
+  }
+
+  return {handleFormSubmission, handleEditFormSubmission, handleNewProjectFormSubmission, handleAddProjectToDosFormSubmission}
 })();
 
 export default formHandler

@@ -26,7 +26,13 @@ const formGetter = (() => {
     const projectData:[string, Date, string] = [projectName, projectDate, projectPriority];
     return projectData;
   }
-  return { getFormData, getEditFormData, getProjectFormData }
+  const getProjectToDoData = (target:HTMLElement) => {
+    const projectToDoFields = target.querySelectorAll('input[name="projectcheckbox"]:checked');
+    const projectToDoIdsAry:number[] = Array.from(projectToDoFields).map((field:HTMLInputElement) => Number(field.value));
+    console.log(projectToDoIdsAry);
+    return projectToDoIdsAry;
+  }
+  return { getFormData, getEditFormData, getProjectFormData, getProjectToDoData }
 })();
 
 export default formGetter;

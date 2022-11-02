@@ -4,6 +4,7 @@ interface ToDo {
   date: any;
   priority: string;
   iD: number;
+  projectiDs: number[];
   markAsDone: Function;
   getDoneStatus: Function;
 }

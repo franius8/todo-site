@@ -88,7 +88,7 @@ const formBuilder = (() => {
     const formDiv:HTMLDivElement = document.createElement('div');
     formDiv.setAttribute('id', 'formdiv');
     const formHeading:HTMLHeadingElement = document.createElement('h2');
-    formHeading.setAttribute('id', 'formheading');
+    formHeading.classList.add('formheading');
     formHeading.textContent = 'Add a new ToDo';
     const form:HTMLFormElement = document.createElement('form');
     form.appendChild(inputCreator('text', 'todotitle', 'Title:'));
@@ -110,7 +110,6 @@ const formBuilder = (() => {
     const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
     const toDoDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
     const toDoContent:HTMLElement = toDoDiv.querySelector('.todocontent');
-    console.log(toDoContent);
     const toDo = toDoManipulator.findTodDo(Number(target.getAttribute('objectid')));
     const { heading:headerContent, text:textContent, date:dateContent, priority:priorityContent} = toDo;
     toDoContent.innerHTML = '';
@@ -146,7 +145,7 @@ const formBuilder = (() => {
     const formDiv:HTMLDivElement = document.createElement('div');
     formDiv.setAttribute('id', 'projectformdiv');
     const formHeading:HTMLHeadingElement = document.createElement('h2');
-    formHeading.setAttribute('id', 'formheading');
+    formHeading.classList.add('formheading');
     formHeading.textContent = 'Add a new Project';
     const form:HTMLFormElement = document.createElement('form');
     form.appendChild(inputCreator('text', 'projectname', 'Name:'));
@@ -162,8 +161,52 @@ const formBuilder = (() => {
     });
     return formDiv;
   }
+  const buildAddProjectToDoForm = (e:MouseEvent, iD:number) => {
+    const formDiv:HTMLDivElement = document.createElement('div');
+    formDiv.setAttribute('id', 'projecttodosformdiv');
+    formDiv.style.display = 'block';
+    const formHeading:HTMLHeadingElement = document.createElement('h2');
+    formHeading.classList.add('formheading');
+    formHeading.textContent = 'Add new ToDos to Project';
+    const form:HTMLFormElement = document.createElement('form');
+    formDiv.appendChild(createCloseButton(formDiv));
+    formDiv.appendChild(formHeading);
+    const inputDiv = document.createElement('div');
+    inputDiv.classList.add('inputdiv');
+    inputDiv.appendChild(labelCreator('projectcheckboxdiv', 'Select ToDos:'))
+    const toDoAry = toDoManipulator.getToDoAry();
+    const toDoDiv:HTMLDivElement = document.createElement('div');
+    toDoDiv.classList.add('projectcheckboxdiv');
+    toDoAry.forEach((toDo:ToDo) => {
+      const toDoCheckbox:HTMLInputElement = document.createElement('input');
+      toDoCheckbox.setAttribute('type', 'checkbox');
+      toDoCheckbox.setAttribute('id', `todocheckbox${toDo.iD}`);
+      toDoCheckbox.setAttribute('value', `${toDo.iD}`);
+      toDoCheckbox.setAttribute('name', 'projectcheckbox');
+      const toDoLabel:HTMLLabelElement = document.createElement('label');
+      toDoLabel.setAttribute('for', `todocheckbox${toDo.iD}`);
+      const toDoHeading = document.createElement('div');
+      toDoHeading.textContent = toDo.heading;
+      const toDoDate = document.createElement('div');
+      toDoDate.classList.add('formtododate');
+      toDoDate.innerHTML = `<span class="material-symbols-outlined">calendar_month</span> ${dateConverter.convertToString(toDo.date)}`
+      toDoLabel.appendChild(toDoHeading);
+      toDoLabel.appendChild(toDoDate);
+      toDoDiv.appendChild(toDoCheckbox);
+      toDoDiv.appendChild(toDoLabel);
+    });
+    inputDiv.appendChild(toDoDiv);
+    form.appendChild(inputDiv);
+    form.appendChild(createSubmitButton());
+    formDiv.appendChild(form);
+    form.addEventListener(('submit'), (e) => {
+      formHandler.handleAddProjectToDosFormSubmission(e, iD);
+      content.classList.remove('blurred');
+    });
+    return formDiv;
+  }
 
-  return { buildForm, buildEditForm, buildNewProjectForm };
+  return { buildForm, buildEditForm, buildNewProjectForm, buildAddProjectToDoForm };
 })()
 
 export default formBuilder;

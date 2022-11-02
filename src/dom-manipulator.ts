@@ -52,6 +52,31 @@ const domManipulator = (() => {
     priorityDiv.appendChild(priorityText);
     return priorityDiv;
   }
+
+  const createToDosDiv = (iD: number) => { 
+    const toDosDiv:HTMLDivElement = document.createElement('div');
+    toDosDiv.classList.add('projecttodoscontainer');
+    const toDosAry = toDoManipulator.findProject(iD).toDos;
+    if (toDosAry.length === 0) {
+      const noToDosDiv:HTMLDivElement = document.createElement('div');
+      noToDosDiv.classList.add('notodos');
+      noToDosDiv.textContent = 'No ToDos for this project yet';
+      const noToDosButton:HTMLButtonElement = document.createElement('button');
+      noToDosButton.classList.add('addtodobutton');
+      noToDosButton.textContent = 'Add ToDo';
+      noToDosButton.addEventListener('click', (e) => {
+        content.appendChild(formBuilder.buildAddProjectToDoForm(e, iD));
+        content.classList.add('blurred');
+      });
+      toDosDiv.appendChild(noToDosDiv);
+      toDosDiv.appendChild(noToDosButton);
+    } else {
+      toDosAry.forEach((toDo) => {
+        toDoBuilder(toDo, toDosDiv);
+    });
+  }
+    return toDosDiv;
+  }
   
   // Helper functions that are not returned
   const addCheckBox = () => {
@@ -215,12 +240,25 @@ const domManipulator = (() => {
       return buttonDiv;
     }
 
-    const createExpandButton = () => {
+    const createExpandButton = (iD:number) => {
       const expandButton:HTMLDivElement = document.createElement('div');
       expandButton.classList.add('expandbutton');
+      expandButton.setAttribute('objectid', iD.toString());
       expandButton.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
       expandButton.addEventListener(('click'), (e) => {
-        const target = (<HTMLElement>e.target);
+        const projectDiv = document.getElementById(iD.toString());
+        const toDosDiv = (<HTMLElement>(projectDiv.nextSibling));
+        toDosDiv.textContent = '';
+        toDosDiv.appendChild(createToDosDiv(iD));
+        if (toDosDiv.style.display === 'none') {
+          toDosDiv.textContent = '';
+          toDosDiv.appendChild(createToDosDiv(iD));
+          toDosDiv.style.display = 'block'
+        } else {
+          toDosDiv.style.display = 'none';
+        } 
+        projectDiv.classList.toggle('expanded');
+
       });
       return expandButton;
     }
@@ -242,7 +280,7 @@ const domManipulator = (() => {
       newProjectButtonDiv.setAttribute('id', 'newprojectbuttondiv');
       const newProjectButton:HTMLButtonElement = document.createElement('button');
       newProjectButton.setAttribute('id', 'newprojectbutton');
-      newProjectButton.textContent = 'Add new Project';
+      newProjectButton.textContent = 'Add a new project';
       newProjectButtonDiv.appendChild(newProjectButton);
       return newProjectButtonDiv;
     }
@@ -329,6 +367,8 @@ const domManipulator = (() => {
     toDoDiv.appendChild(toDo);
   }
   const projectBuilder = (projectObject: Project, projectDiv:HTMLElement) => {
+    const projectContainer:HTMLDivElement = document.createElement('div');
+    projectContainer.classList.add('projectcontainer');
     const project:HTMLDivElement = document.createElement('div');
     project.classList.add('project');
     project.setAttribute('id', projectObject.iD.toString());
@@ -342,8 +382,14 @@ const domManipulator = (() => {
     middleDiv.appendChild(buildProjectContent(projectObject));
     middleDiv.appendChild(createToDoButtons(projectObject.iD.toString()));
     project.appendChild(middleDiv);
-    project.appendChild(createExpandButton());
-    projectDiv.appendChild(project);
+    project.appendChild(createExpandButton(projectObject.iD));
+    projectContainer.appendChild(project);
+    const projectToDoDiv = document.createElement('div');
+    projectToDoDiv.classList.add('projecttododiv');
+    projectToDoDiv.setAttribute('objectid', projectObject.iD.toString());
+    projectToDoDiv.style.display = 'none';
+    projectContainer.appendChild(projectToDoDiv);
+    projectDiv.appendChild(projectContainer);
   }
   const displayToDos = ( toDoAry:ToDo[] ) => {
     const toDoDiv:HTMLElement = (document.getElementById('tododiv') || document.createElement('tododiv'));

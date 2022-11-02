@@ -13,7 +13,7 @@ const toDoManipulator = (() => {
     let rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
     rawToDoAry.forEach((todo: ToDo) => {
     todo.date = dateFixer.fixDates(todo.date);
-    toDoAry.push(toDo(todo.heading, todo.text, todo.date, todo.priority, todo.iD));
+    toDoAry.push(toDo(todo.heading, todo.text, todo.date, todo.priority, todo.iD, todo.projectiDs));
     });
   }
 
@@ -39,7 +39,7 @@ const toDoManipulator = (() => {
 
   const createToDo = (heading: string, text: string, date: Date, priority: string) => {
     const iD = idGenerator.generateID();
-    const newToDo:ToDo = toDo(heading, text, date, priority, iD);
+    const newToDo:ToDo = toDo(heading, text, date, priority, iD, []);
     toDoAry.push(newToDo);
     localStorage.setItem('todoary', (JSON.stringify(toDoAry)));
     return newToDo;
@@ -60,6 +60,14 @@ const toDoManipulator = (() => {
     }
   }
   const deleteToDo = ( id:number ) => {
+    const toDo:ToDo = toDoAry.find(x => x.iD === id);
+    if (toDo.projectiDs.length > 0) {
+      toDo.projectiDs.forEach((projectiD) => {
+        const project:Project = projectAry.find(x => x.iD === projectiD);
+        const index = project.toDos.indexOf(toDo);
+        project.toDos.splice(index, 1);
+      });
+    }
     const index:number = toDoAry.findIndex(x => x.iD === id);
     toDoAry.splice(index, 1);
     localStorage.setItem('todoary', (JSON.stringify(toDoAry)));
