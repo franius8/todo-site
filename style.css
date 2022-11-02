@@ -27,7 +27,7 @@ h2 {
 }
 
 /* For blurring the site content when form for adding new ToDos is open */
-#content.blurred div:not(#formdiv, #formdiv div, #projectformdiv, #projectformdiv div) {
+#content.blurred div:not(#formdiv, #formdiv div, #projectformdiv, #projectformdiv div, #projecttodosformdiv, #projecttodosformdiv div) {
   -webkit-filter: blur(2px);
   -moz-filter: blur(2px);
   -o-filter: blur(2px);
@@ -229,7 +229,7 @@ button span {
   cursor: pointer;
 }
 
-#formdiv, #projectformdiv {
+#formdiv, #projectformdiv, #projecttodosformdiv {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -238,11 +238,12 @@ button span {
   flex-direction: column;
   align-items: center;
   background-color: white;
-  padding: 2rem;
+  padding: 1rem 2rem;
   border-radius: 1rem;
   border: 1px solid var(--light-gray);
   display: none;
   z-index: 10;
+  min-width: 30rem;;
 }
 
 #projectformdiv {
@@ -276,6 +277,7 @@ button span {
 }
 
 #closebuttondiv {
+  padding: 0.5rem;
   float: right;
 }
 
@@ -396,7 +398,7 @@ button:hover {
   margin: 1rem;
 }
 
-#newprojectbutton {
+#newprojectbutton, .addtodobutton {
   border-radius: 1rem;
   border: 5px solid var(--main-color);
   background-color: var(--main-color);
@@ -409,9 +411,82 @@ button:hover {
   justify-self: center;
 }
 
-#newprojectbutton:hover {
+#newprojectbutton:hover, .addtodobutton:hover {
   cursor: pointer;
   background-color: white;
   color: var(--main-color);
   border: 5px solid var(--main-color);
+}
+
+.projecttododiv {
+  border-radius: 0 0 1rem 1rem;
+  border: 1px solid var(--light-gray);
+  box-shadow: 3px 3px 3px rgb(150, 150, 150);
+  background-color: white;
+  z-index: 1;
+}
+
+.expanded {
+  border-radius: 1rem 1rem 0 0;
+}
+
+.expanded .labelstripe {
+  border-radius: 1rem 0 0 0;
+}
+
+.expanded .expandbutton {
+  border-radius: 0 1rem 0 0;
+}
+
+.projecttodoscontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.projectcheckboxdiv input[type="checkbox"] {
+  opacity: 0;
+  position: fixed;
+  width: 0;
+}
+
+.projectcheckboxdiv label {
+  padding: 0.4rem 20px;
+  border: 1px solid var(--light-gray);
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.projectcheckboxdiv input[type="checkbox"]:checked + label {
+  background-color: var(--light-gray);
+}
+
+.projectcheckboxdiv label:hover {
+  background-color: var(--light-gray);
+  cursor: pointer;
+}
+
+.projectcheckboxdiv label:first-of-type{
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.projectcheckboxdiv label:last-of-type {
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+#projecttodosformdiv form .inputdiv {
+  padding-bottom: 1rem;
+  gap: 1rem;
+}
+
+.formtododate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
