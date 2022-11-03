@@ -1,5 +1,6 @@
 const formGetter = (() => {
-  const getFormData = (target:HTMLElement) => {
+
+  const getFormData = () => {
     const toDoTitle:string = (<HTMLInputElement>(document.getElementById('todotitle'))).value;
     const toDoContent:string = (<HTMLInputElement>(document.getElementById('todocontent'))).value;
     const toDoDate:Date = new Date((<HTMLInputElement>(document.getElementById('tododate'))).value);
@@ -13,16 +14,13 @@ const formGetter = (() => {
     const toDoContent:string = (<HTMLInputElement>(target.querySelector('#todocontentedit'))).value;
     const toDoDate:Date = new Date((<HTMLInputElement>(target.querySelector('#tododateedit'))).value);
     const toDoPriority:string = (<HTMLInputElement>(target.querySelector('input[name="todopriorityedit"]:checked'))).value;
-    target.reset();
     const toDoData:[string, string, Date, string] = [toDoTitle, toDoContent, toDoDate, toDoPriority];
     return toDoData;
   }
-  const getProjectFormData = (e:SubmitEvent) => {
-    const target = e.target as HTMLFormElement;
+  const getProjectFormData = () => {
     const projectName:string = (<HTMLInputElement>(document.getElementById('projectname'))).value;
     const projectDate:Date = new Date((<HTMLInputElement>(document.getElementById('projectdate'))).value);
     const projectPriority:string = (<HTMLInputElement>(document.querySelector('input[name="projectpriority"]:checked'))).value;
-    target.reset();
     const projectData:[string, Date, string] = [projectName, projectDate, projectPriority];
     return projectData;
   }
@@ -32,7 +30,21 @@ const formGetter = (() => {
     console.log(projectToDoIdsAry);
     return projectToDoIdsAry;
   }
-  return { getFormData, getEditFormData, getProjectFormData, getProjectToDoData }
+  const getProjectEditFormData = (e:SubmitEvent) => {
+    const target = e.target as HTMLFormElement;
+    const projectName:string = (<HTMLInputElement>(target.querySelector('#projectnameedit'))).value;
+    const projectDate:Date = new Date((<HTMLInputElement>(target.querySelector('#projectdateedit'))).value);
+    const projectPriority:string = (<HTMLInputElement>(target.querySelector('input[name="projectpriorityedit"]:checked'))).value;
+    const projectData:[string, Date, string] = [projectName, projectDate, projectPriority];
+    return projectData;
+  }
+  return { 
+    getFormData, 
+    getEditFormData, 
+    getProjectFormData, 
+    getProjectToDoData,
+    getProjectEditFormData 
+  }
 })();
 
 export default formGetter;

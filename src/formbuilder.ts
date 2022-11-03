@@ -4,7 +4,7 @@ import dateConverter from "./dateconverter";
 import domManipulator from "./dom-manipulator";
 
 const formBuilder = (() => {
-  const priorities:string[] = ['Low', 'Standard', 'High'];
+  const toDoPriorities:string[] = ['Low', 'Standard', 'High'];
   const projectPriorities:string[] = ['Normal', 'Urgent'];
 
   const content:HTMLElement = (document.getElementById('content') || document.createElement('content'));
@@ -94,7 +94,7 @@ const formBuilder = (() => {
     form.appendChild(inputCreator('text', 'todotitle', 'Title:'));
     form.appendChild(inputCreator('text', 'todocontent', 'Content (optional):', false))
     form.appendChild(inputCreator('date', 'tododate', 'Due date:'));
-    form.appendChild(radioCreator('todopriority', priorities));
+    form.appendChild(radioCreator('todopriority', toDoPriorities));
     form.appendChild(createSubmitButton());
     formDiv.appendChild(createCloseButton(formDiv));
     formDiv.appendChild(formHeading);
@@ -104,13 +104,13 @@ const formBuilder = (() => {
       content.classList.remove('blurred');
     });
     return formDiv;
-  };
-  const buildEditForm = (e:MouseEvent) => {
+  }
+  const buildToDoEditForm = (e:MouseEvent) => {
     const target:HTMLElement = e.target as HTMLElement;
     const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
     const toDoDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
     const toDoContent:HTMLElement = toDoDiv.querySelector('.todocontent');
-    const toDo = toDoManipulator.findTodDo(Number(target.getAttribute('objectid')));
+    const toDo:ToDo = toDoManipulator.findTodDo(Number(target.getAttribute('objectid')));
     const { heading:headerContent, text:textContent, date:dateContent, priority:priorityContent} = toDo;
     toDoContent.innerHTML = '';
     toDoContent.classList.add('duringedit');
@@ -121,7 +121,7 @@ const formBuilder = (() => {
     form.appendChild(editInputCreator('text', 'todotitleedit', 'Title:', true, headerContent));
     form.appendChild(editInputCreator('text', 'todocontentedit', 'Content (optional):', false, textContent));
     form.appendChild(editInputCreator('date', 'tododateedit', 'Due date:', true, dateConverter.convertToInputFormat(dateContent)));
-    form.appendChild(radioCreator('todopriorityedit', priorities, priorityContent));
+    form.appendChild(radioCreator('todopriorityedit', toDoPriorities, priorityContent));
     toDoContent.appendChild(form);
     targetParent.innerHTML = '';
     const cancelButton = document.createElement('button');
@@ -141,6 +141,43 @@ const formBuilder = (() => {
     targetParent.appendChild(cancelButton);
     targetParent.appendChild(acceptButton);
   }
+  const buildProjectEditForm = (e:MouseEvent) => {
+    const target:HTMLElement = e.target as HTMLElement;
+    const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
+    const projectDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
+    const projectContent:HTMLElement = projectDiv.querySelector('.projectcontent');
+    console.log(projectContent);
+    const project:Project = toDoManipulator.findProject(Number(target.getAttribute('objectid')));
+    const { name:nameContent, date:dateContent, priority:priorityContent } = project;
+    projectContent.innerHTML = '';
+    projectContent.classList.add('duringedit');
+    projectContent.classList.remove('projectcontent');
+    const form = document.createElement('form');
+    form.classList.add('projectcontent');
+    form.setAttribute('id', 'editform');
+    form.appendChild(editInputCreator('text', 'projectnameedit', 'Name:', true, nameContent));
+    form.appendChild(editInputCreator('date', 'projectdateedit', 'Due date:', true, dateConverter.convertToInputFormat(dateContent)));
+    form.appendChild(radioCreator('projectpriorityedit', projectPriorities, priorityContent));
+    projectContent.appendChild(form);
+    targetParent.innerHTML = '';
+    const cancelButton = document.createElement('button');
+    cancelButton.classList.add('cancelbutton');
+    cancelButton.innerHTML = '<span class="material-symbols-outlined">undo</span>';
+    cancelButton.addEventListener(('click'), () => {
+      domManipulator.displayProjects(toDoManipulator.getProjectAry());
+    });
+    const acceptButton = document.createElement('button');
+    acceptButton.classList.add('acceptbutton');
+    acceptButton.setAttribute('type', 'submit')
+    acceptButton.setAttribute('form', 'editform');
+    acceptButton.innerHTML = '<span class="material-symbols-outlined">check</span>';
+    form.addEventListener(('submit'), (e) => {
+      formHandler.handleProjectEditFormSubmission(e);
+    })
+    targetParent.appendChild(cancelButton);
+    targetParent.appendChild(acceptButton);
+  }
+
   const buildNewProjectForm = () => {
     const formDiv:HTMLDivElement = document.createElement('div');
     formDiv.setAttribute('id', 'projectformdiv');
@@ -226,7 +263,13 @@ const formBuilder = (() => {
     return formDiv;
   }
 
-  return { buildForm, buildEditForm, buildNewProjectForm, buildAddProjectToDoForm };
+  return { 
+    buildForm, 
+    buildToDoEditForm,
+    buildProjectEditForm,
+    buildNewProjectForm, 
+    buildAddProjectToDoForm 
+  };
 })()
 
 export default formBuilder;

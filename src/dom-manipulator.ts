@@ -6,7 +6,7 @@ const domManipulator = (() => {
   const content:HTMLElement = (document.getElementById('content') || document.createElement('content'));
   
   // Subfunctions for helper functions
-const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
+  const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
   const toDoDate:HTMLDivElement = document.createElement('div');
     const dayDifference:number = dateConverter.getDayDifference(date);
     if (dayDifference === 1) {
@@ -80,7 +80,6 @@ const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
     return div
   }
 
-
   const createToDosDiv = (iD: number) => { 
     const toDosDiv:HTMLDivElement = document.createElement('div');
     toDosDiv.classList.add('projecttodoscontainer');
@@ -92,18 +91,22 @@ const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
     return toDosDiv;
   }
 
-  const createEditButton = (iD: string) => {
+  const createEditButton = (iD: string, type: string) => {
     const editButton:HTMLButtonElement = document.createElement('button');
       editButton.classList.add('editbutton');
       editButton.setAttribute('objectid', iD);
       editButton.innerHTML = '<span class="material-symbols-outlined">edit</span>';
       editButton.addEventListener(('click'), (e) => {
-        formBuilder.buildEditForm(e);
+        if (type === 'project') {
+          formBuilder.buildProjectEditForm(e);
+        } else if (type === 'todo') {
+          formBuilder.buildToDoEditForm(e);
+        }
       });
       return editButton;
   }
 
-  const createDeleteButton = (iD: string) => {
+  const createDeleteButton = (iD: string, type: string) => {
     const deleteButton:HTMLButtonElement = document.createElement('button');
       deleteButton.classList.add('deletebutton');
       deleteButton.setAttribute('objectid', iD);
@@ -112,10 +115,14 @@ const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
         const target = (<HTMLElement>e.target);
         const iD = Number(target.getAttribute('objectid'));
         if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
+          if (type === 'project') {
+           toDoManipulator.deleteProject(iD);
+           displayProjects(toDoManipulator.getProjectAry());
+          } else if (type === 'todo') {
           toDoManipulator.deleteToDo(iD);
           displayToDos(toDoManipulator.getToDoAry());  
         }
-      });
+      }});
       return deleteButton;
   };
   
@@ -263,12 +270,12 @@ const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
   const createToDoButtons = (iD:string) => {
     const buttonDiv:HTMLDivElement = document.createElement('div');
     buttonDiv.classList.add('buttondiv');
-    buttonDiv.appendChild(createEditButton(iD));
-    buttonDiv.appendChild(createDeleteButton(iD));
+    buttonDiv.appendChild(createEditButton(iD, 'todo'));
+    buttonDiv.appendChild(createDeleteButton(iD, 'todo'));
     return buttonDiv;
   }
 
-    const createExpandButton = (iD:number) => {
+  const createExpandButton = (iD:number) => {
       const expandButton:HTMLDivElement = document.createElement('div');
       expandButton.classList.add('expandbutton');
       expandButton.setAttribute('objectid', iD.toString());
@@ -289,26 +296,25 @@ const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
 
       });
       return expandButton;
-    }
+  }
 
-    const buildAddNewButton = () => {
+  const buildAddNewButton = () => {
       const addNewButton:HTMLButtonElement = document.createElement('button');
       addNewButton.setAttribute('id', 'addnewbutton');
       addNewButton.textContent = 'Add ToDo';
       return addNewButton;
-    }
+  }
 
-
-    const buildHeader = () => {
+  const buildHeader = () => {
       const header:HTMLElement = document.createElement('header');
       header.setAttribute('id', 'header');
       header.appendChild(buildLogo());
       header.appendChild(buildNavigationDiv());
       header.appendChild(buildAddNewButton());
       return header
-    }
+  }
 
-    const buildNewProjectButtonDiv = () => {
+  const buildNewProjectButtonDiv = () => {
       const newProjectButtonDiv:HTMLDivElement = document.createElement('div');
       newProjectButtonDiv.setAttribute('id', 'newprojectbuttondiv');
       const newProjectButton:HTMLButtonElement = document.createElement('button');
@@ -316,9 +322,17 @@ const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
       newProjectButton.textContent = 'Add a new project';
       newProjectButtonDiv.appendChild(newProjectButton);
       return newProjectButtonDiv;
-    }
+  }
 
-    const buildProjectMiddleDiv = (projectObject: Project) => {
+  const createProjectButtons = (iD:string) => {
+      const buttonDiv:HTMLDivElement = document.createElement('div');
+      buttonDiv.classList.add('buttondiv');
+      buttonDiv.appendChild(createEditButton(iD, 'project'));
+      buttonDiv.appendChild(createDeleteButton(iD, 'project'));
+      return buttonDiv;
+  }
+
+  const buildProjectMiddleDiv = (projectObject: Project) => {
       const middleDiv:HTMLDivElement = document.createElement('div');
       middleDiv.classList.add('middlediv');
       const chechboxDiv:HTMLDivElement = document.createElement('div');
@@ -326,19 +340,19 @@ const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
       chechboxDiv.appendChild(addCheckBox());
       middleDiv.appendChild(chechboxDiv);
       middleDiv.appendChild(buildContent('project', projectObject as unknown as generalObject, ['name', 'date', 'priority']));
-      middleDiv.appendChild(createToDoButtons(projectObject.iD.toString()));
+      middleDiv.appendChild(createProjectButtons(projectObject.iD.toString()));
       return middleDiv;
-    }
+  }
 
-    const buildProjectToDoDiv = (projectObject: Project) => {
+  const buildProjectToDoDiv = (projectObject: Project) => {
       const projectToDoDiv = document.createElement('div');
       projectToDoDiv.classList.add('projecttododiv');
       projectToDoDiv.setAttribute('objectid', projectObject.iD.toString());
       projectToDoDiv.style.display = 'none';
       return projectToDoDiv;
-    }
+  }
 
-    const pageBuilder = (contentType: string, linkName:string) => {
+  const pageBuilder = (contentType: string, linkName:string) => {
       clearContent();
       content.appendChild(buildHeader());
       const div:HTMLDivElement = document.createElement('div');
@@ -348,7 +362,7 @@ const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
       addNewButtonEventListener();
       document.getElementById(`${linkName}link`).classList.add('active');
       addNavListeners();
-    }
+  }
 
   // Main functions to be returned
   const homePageBuilder = () => {

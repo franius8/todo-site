@@ -8,6 +8,7 @@ Header CSS in separate file
 :root {
   --main-color: #16a34a;
   --light-gray: #e5e7eb;
+  --lighter-gray: #f7f7f7;
 }
 
 body {
@@ -20,6 +21,14 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+input {
+  font-size: 80%;
+}
+
+label {
+  font-size: 70%;
 }
 
 h2 {
@@ -95,7 +104,7 @@ h2 {
 }
 
 .todo:hover, .project:hover {
-  background-color: var(--light-gray);
+  background-color: var(--lighter-gray);
   border-collapse: collapse;
 }
 
@@ -131,10 +140,6 @@ h2 {
   display: grid;
   gap: 0.5rem;
   grid-template: repeat(2, auto) / repeat(2, 1fr);
-}
-
-.todocontent label {
-  font-size: 0.8rem;
 }
 
 .todoheading {
@@ -285,6 +290,14 @@ button span {
 }
 
 .duringedit .inputdiv {
+  gap: 0.2rem;
+}
+
+.duringedit form {
+  gap: 0.2rem;
+}
+
+.duringedit form .inputdiv {
   gap: 0.2rem;
 }
 
