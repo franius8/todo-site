@@ -175,6 +175,7 @@ h2 {
 .buttondiv {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
 }
 
 .editbutton, .deletebutton, .cancelbutton, .acceptbutton {
