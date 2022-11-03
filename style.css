@@ -99,10 +99,6 @@ h2 {
   padding: 0.75rem 0;
 }
 
-.donetodo {
-    filter: grayscale(100%);
-}
-
 .todo:hover, .project:hover {
   background-color: var(--lighter-gray);
   border-collapse: collapse;
