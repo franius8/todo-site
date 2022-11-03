@@ -6,12 +6,8 @@ const domManipulator = (() => {
   const content:HTMLElement = (document.getElementById('content') || document.createElement('content'));
   
   // Subfunctions for helper functions
-  const createToDoDate = (date: Date) => {
-    const toDoDateDiv:HTMLDivElement = document.createElement('div');
-    toDoDateDiv.classList.add('tododate');
-    const toDoDateIcon:HTMLDivElement = document.createElement('div');
-    toDoDateIcon.innerHTML = '<span class="material-symbols-outlined">calendar_month</span>';
-    const toDoDate:HTMLDivElement = document.createElement('div');
+const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
+  const toDoDate:HTMLDivElement = document.createElement('div');
     const dayDifference:number = dateConverter.getDayDifference(date);
     if (dayDifference === 1) {
       toDoDate.textContent = dateConverter.convertToString(date) + ' (' + dateConverter.getDayDifference(date) + ' day left)';  
@@ -24,14 +20,20 @@ const domManipulator = (() => {
       toDoDateDiv.classList.add('missedtodo');
       toDoDate.textContent = dateConverter.convertToString(date) + ' (' + Math.abs(dateConverter.getDayDifference(date)) + ' days ago)';
     }
+    return toDoDate;
+  }
+
+  const buildElementDate = (date: Date) => {
+    const toDoDateDiv:HTMLDivElement = document.createElement('div');
+    toDoDateDiv.classList.add('tododate');
+    const toDoDateIcon:HTMLDivElement = document.createElement('div');
+    toDoDateIcon.innerHTML = '<span class="material-symbols-outlined">calendar_month</span>';
     toDoDateDiv.appendChild(toDoDateIcon);
-    toDoDateDiv.appendChild(toDoDate);
+    toDoDateDiv.appendChild(createDateString(date, toDoDateDiv));
     return toDoDateDiv;
   };
 
-  const createPriorityDiv = (priority: string) => {
-    const priorityDiv:HTMLDivElement = document.createElement('div');
-    priorityDiv.classList.add('todopriority');
+  const createPriorityCircle = (priority: string) => {
     const priorityCircle:HTMLDivElement = document.createElement('div');
     priorityCircle.classList.add('prioritycircle');
     if (priority === 'Standard') {
@@ -45,38 +47,77 @@ const domManipulator = (() => {
     } else if (priority === 'Urgent') {
       priorityCircle.style.backgroundColor = 'crimson';
     }
+    return priorityCircle;
+  };
+  
+  const createPriorityDiv = (priority: string) => {
+    const priorityDiv:HTMLDivElement = document.createElement('div');
+    priorityDiv.classList.add('todopriority');
+    priorityDiv.appendChild(createPriorityCircle(priority));
     const priorityText:HTMLDivElement = document.createElement('div');
     priorityText.textContent = priority + ' priority';
-    
-    priorityDiv.appendChild(priorityCircle);
     priorityDiv.appendChild(priorityText);
     return priorityDiv;
   }
 
-  const createToDosDiv = (iD: number) => { 
-    const toDosDiv:HTMLDivElement = document.createElement('div');
-    toDosDiv.classList.add('projecttodoscontainer');
-    const toDosAry = toDoManipulator.findProject(iD).toDos;
-    if (toDosAry.length === 0) {
+  const createNoToDosButton = (iD: number, toDosDiv: HTMLDivElement, length: number) => {
+    const div = document.createElement('div');
+    div.classList.add('notodosdiv');
+    if (length === 0) {
       const noToDosDiv:HTMLDivElement = document.createElement('div');
       noToDosDiv.classList.add('notodos');
       noToDosDiv.textContent = 'No ToDos for this project yet';
-      const noToDosButton:HTMLButtonElement = document.createElement('button');
-      noToDosButton.classList.add('addtodobutton');
-      noToDosButton.textContent = 'Add ToDo';
-      noToDosButton.addEventListener('click', (e) => {
-        content.appendChild(formBuilder.buildAddProjectToDoForm(e, iD));
-        content.classList.add('blurred');
-      });
-      toDosDiv.appendChild(noToDosDiv);
-      toDosDiv.appendChild(noToDosButton);
-    } else {
-      toDosAry.forEach((toDo) => {
-        toDoBuilder(toDo, toDosDiv);
+      div.appendChild(noToDosDiv);
+    }
+    const noToDosButton:HTMLButtonElement = document.createElement('button');
+    noToDosButton.classList.add('addtodobutton');
+    noToDosButton.textContent = 'Add ToDo';
+    noToDosButton.addEventListener('click', (e) => {
+      content.appendChild(formBuilder.buildAddProjectToDoForm(e, iD, toDosDiv));
+      content.classList.add('blurred');
     });
+    div.appendChild(noToDosButton);
+    return div
   }
+
+
+  const createToDosDiv = (iD: number) => { 
+    const toDosDiv:HTMLDivElement = document.createElement('div');
+    toDosDiv.classList.add('projecttodoscontainer');
+    const toDosAry = toDoManipulator.findProject(iD).getToDos();
+      toDosDiv.appendChild(createNoToDosButton(iD, toDosDiv, toDosAry.length));
+      toDosAry.forEach((toDo) => {
+        projectToDoBuilder(toDo, toDosDiv);
+    });
     return toDosDiv;
   }
+
+  const createEditButton = (iD: string) => {
+    const editButton:HTMLButtonElement = document.createElement('button');
+      editButton.classList.add('editbutton');
+      editButton.setAttribute('objectid', iD);
+      editButton.innerHTML = '<span class="material-symbols-outlined">edit</span>';
+      editButton.addEventListener(('click'), (e) => {
+        formBuilder.buildEditForm(e);
+      });
+      return editButton;
+  }
+
+  const createDeleteButton = (iD: string) => {
+    const deleteButton:HTMLButtonElement = document.createElement('button');
+      deleteButton.classList.add('deletebutton');
+      deleteButton.setAttribute('objectid', iD);
+      deleteButton.innerHTML = '<span class="material-symbols-outlined">delete</span>';
+      deleteButton.addEventListener(('click'), (e) => {
+        const target = (<HTMLElement>e.target);
+        const iD = Number(target.getAttribute('objectid'));
+        if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
+          toDoManipulator.deleteToDo(iD);
+          displayToDos(toDoManipulator.getToDoAry());  
+        }
+      });
+      return deleteButton;
+  };
   
   // Helper functions that are not returned
   const addCheckBox = () => {
@@ -94,19 +135,34 @@ const domManipulator = (() => {
     return checkbox;
   };
 
+  const addNewButtonEventListener = () => {
+    const addNewButton = document.getElementById('addnewbutton');
+    const formDiv:HTMLElement = document.getElementById('formdiv');
+    addNewButton.addEventListener(('click'), () => {
+      formDiv.style.display = 'block';
+      content.classList.add('blurred');
+    });
+  }
+
   const addLabelStripe = (priority: string) => {
     const labelStripe:HTMLDivElement = document.createElement('div');
     labelStripe.classList.add('labelstripe');
-    if (priority === 'Standard') {
-      labelStripe.style.backgroundColor = 'orange';
-    } else if (priority === 'Low') {
-      labelStripe.style.backgroundColor = 'blue';
-    } else if (priority === 'High') {
-      labelStripe.style.backgroundColor = 'red';
-    } else if (priority === 'Normal') {
-      labelStripe.style.backgroundColor = 'skyblue';
-    } else if (priority === 'Urgent') {
-      labelStripe.style.backgroundColor = 'crimson';
+    switch (priority) {
+      case 'Standard':
+        labelStripe.style.backgroundColor = 'orange';
+        break;
+      case 'Low':
+        labelStripe.style.backgroundColor = 'blue';
+        break;
+      case 'High':
+        labelStripe.style.backgroundColor = 'red';
+        break;
+      case 'Normal':
+        labelStripe.style.backgroundColor = 'skyblue';
+        break;
+      case 'Urgent':
+        labelStripe.style.backgroundColor = 'crimson';
+        break;
     }
     return labelStripe;
   };
@@ -117,47 +173,41 @@ const domManipulator = (() => {
       element.addEventListener(('click'), (e:MouseEvent) => {
         const iD = (<HTMLElement>(e.target)).id;
         switch (iD) {
-          case 'homepagelink':
+          case 'homelink':
             domManipulator.homePageBuilder();
             break;
           case 'donelink':
             domManipulator.donePageBuilder();
             break;
-          case 'projectlink':
+          case 'projectslink':
             domManipulator.projectPageBuilder();
             break;
         } 
       });
     });
-  }
+  };
 
-  const buildToDoConent = (toDoObject: ToDo) => {
-    const toDoContent:HTMLDivElement = document.createElement('div');
-    toDoContent.classList.add('todocontent')
-    const toDoHeader:HTMLDivElement = document.createElement('div');
-    toDoHeader.classList.add('todoheader');
-    toDoHeader.textContent = toDoObject.heading;
-    const toDoText:HTMLDivElement = document.createElement('div');
-    toDoText.classList.add('todotext');
-    toDoText.textContent = toDoObject.text;
-    toDoContent.appendChild(toDoHeader);
-    toDoContent.appendChild(toDoText);
-    toDoContent.appendChild(createToDoDate(toDoObject.date));
-    toDoContent.appendChild(createPriorityDiv(toDoObject.priority));
-    return toDoContent;
-  }
+  const buildElement = (type: string, object: object, propName: string) => {
+    const toDoElement:HTMLDivElement = document.createElement('div');
+    toDoElement.classList.add(`${type}${propName}`);
+    toDoElement.textContent = object[propName as keyof object];
+    return toDoElement;
+  };
 
-  const buildProjectContent = (projectObject: Project) => {
-    const projectContent:HTMLDivElement = document.createElement('div');
-    projectContent.classList.add('projectcontent')
-    const projectTitle:HTMLDivElement = document.createElement('div');
-    projectTitle.classList.add('projectname');
-    projectTitle.textContent = projectObject.name;
-    projectContent.appendChild(projectTitle);
-    projectContent.appendChild(createToDoDate(projectObject.date));
-    projectContent.appendChild(createPriorityDiv(projectObject.priority));
-    return projectContent;
-  }
+  const buildContent = (type: string, object: generalObject, propAry: string[]) => {
+    const content:HTMLDivElement = document.createElement('div');
+    content.classList.add(`${type}content`);
+    propAry.forEach((prop) => {
+      if (prop === 'date') {
+        content.appendChild(buildElementDate(object.date as Date))
+      } else if (prop === 'priority') {
+        content.appendChild(createPriorityDiv(object.priority as string))
+      } else {
+        content.appendChild(buildElement(type, object, prop));
+      }
+    });
+    return content;
+  } 
 
   const buildLogo = () => {
     const logodiv:HTMLDivElement = document.createElement('div');
@@ -173,24 +223,21 @@ const domManipulator = (() => {
     return logodiv;
   }
 
+  const buildLink = (linkName: string, linkIcon: string) => {
+    const link:HTMLDivElement = document.createElement('div');
+    link.classList.add('navitem');
+    link.setAttribute('id', `${linkName}link`);
+    const capitalizedLinkName = linkName.charAt(0).toUpperCase() + linkName.slice(1); 
+    link.innerHTML = `<span class="material-symbols-outlined">${linkIcon}</span> ${capitalizedLinkName}`;
+    return link
+  }
+  
   const buildNavigationDiv = () => {
     const navigationDiv:HTMLDivElement = document.createElement('div');
     navigationDiv.setAttribute('id', 'navigationdiv');
-    const homepageLink:HTMLDivElement = document.createElement('div');
-    homepageLink.classList.add('navitem');
-    homepageLink.setAttribute('id', 'homepagelink');
-    homepageLink.innerHTML = '<span class="material-symbols-outlined">house</span> Homepage';
-    const doneLink:HTMLDivElement = document.createElement('div');
-    doneLink.innerHTML = '<span class="material-symbols-outlined">done</span> Done';
-    doneLink.classList.add('navitem');
-    doneLink.setAttribute('id', 'donelink');
-    const projectLink:HTMLDivElement = document.createElement('div');
-    projectLink.classList.add('navitem');
-    projectLink.setAttribute('id', 'projectlink');
-    projectLink.innerHTML = '<span class="material-symbols-outlined">assignment</span> Projects';
-    navigationDiv.appendChild(homepageLink);
-    navigationDiv.appendChild(doneLink);
-    navigationDiv.appendChild(projectLink);
+    navigationDiv.appendChild(buildLink('home', 'house'));
+    navigationDiv.appendChild(buildLink('done', 'done'));
+    navigationDiv.appendChild(buildLink('projects', 'assignment'));
     return navigationDiv;
   }
 
@@ -213,32 +260,13 @@ const domManipulator = (() => {
     toDoDiv.textContent = '';
   }
 
-    const createToDoButtons = (iD:string) => {
-      const buttonDiv:HTMLDivElement = document.createElement('div');
-      buttonDiv.classList.add('buttondiv');
-      const editButton:HTMLButtonElement = document.createElement('button');
-      editButton.classList.add('editbutton');
-      editButton.setAttribute('objectid', iD);
-      editButton.innerHTML = '<span class="material-symbols-outlined">edit</span>';
-      editButton.addEventListener(('click'), (e) => {
-        formBuilder.buildEditForm(e);
-      });
-      const deleteButton:HTMLButtonElement = document.createElement('button');
-      deleteButton.classList.add('deletebutton');
-      deleteButton.setAttribute('objectid', iD);
-      deleteButton.innerHTML = '<span class="material-symbols-outlined">delete</span>';
-      deleteButton.addEventListener(('click'), (e) => {
-        const target = (<HTMLElement>e.target);
-        const iD = Number(target.getAttribute('objectid'));
-        if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
-          toDoManipulator.deleteToDo(iD);
-          displayToDos(toDoManipulator.getToDoAry());  
-        }
-      });
-      buttonDiv.appendChild(editButton);
-      buttonDiv.appendChild(deleteButton);
-      return buttonDiv;
-    }
+  const createToDoButtons = (iD:string) => {
+    const buttonDiv:HTMLDivElement = document.createElement('div');
+    buttonDiv.classList.add('buttondiv');
+    buttonDiv.appendChild(createEditButton(iD));
+    buttonDiv.appendChild(createDeleteButton(iD));
+    return buttonDiv;
+  }
 
     const createExpandButton = (iD:number) => {
       const expandButton:HTMLDivElement = document.createElement('div');
@@ -263,15 +291,20 @@ const domManipulator = (() => {
       return expandButton;
     }
 
+    const buildAddNewButton = () => {
+      const addNewButton:HTMLButtonElement = document.createElement('button');
+      addNewButton.setAttribute('id', 'addnewbutton');
+      addNewButton.textContent = 'Add ToDo';
+      return addNewButton;
+    }
+
+
     const buildHeader = () => {
       const header:HTMLElement = document.createElement('header');
       header.setAttribute('id', 'header');
       header.appendChild(buildLogo());
       header.appendChild(buildNavigationDiv());
-      const addNewButton:HTMLButtonElement = document.createElement('button');
-      addNewButton.setAttribute('id', 'addnewbutton');
-      addNewButton.textContent = 'Add ToDo';
-      header.appendChild(addNewButton);
+      header.appendChild(buildAddNewButton());
       return header
     }
 
@@ -285,74 +318,78 @@ const domManipulator = (() => {
       return newProjectButtonDiv;
     }
 
+    const buildProjectMiddleDiv = (projectObject: Project) => {
+      const middleDiv:HTMLDivElement = document.createElement('div');
+      middleDiv.classList.add('middlediv');
+      const chechboxDiv:HTMLDivElement = document.createElement('div');
+      chechboxDiv.classList.add('checkboxdiv');
+      chechboxDiv.appendChild(addCheckBox());
+      middleDiv.appendChild(chechboxDiv);
+      middleDiv.appendChild(buildContent('project', projectObject as unknown as generalObject, ['name', 'date', 'priority']));
+      middleDiv.appendChild(createToDoButtons(projectObject.iD.toString()));
+      return middleDiv;
+    }
+
+    const buildProjectToDoDiv = (projectObject: Project) => {
+      const projectToDoDiv = document.createElement('div');
+      projectToDoDiv.classList.add('projecttododiv');
+      projectToDoDiv.setAttribute('objectid', projectObject.iD.toString());
+      projectToDoDiv.style.display = 'none';
+      return projectToDoDiv;
+    }
+
+    const pageBuilder = (contentType: string, linkName:string) => {
+      clearContent();
+      content.appendChild(buildHeader());
+      const div:HTMLDivElement = document.createElement('div');
+      div.setAttribute('id', `${contentType}div`);
+      content.appendChild(div);
+      content.appendChild(formBuilder.buildForm());
+      addNewButtonEventListener();
+      document.getElementById(`${linkName}link`).classList.add('active');
+      addNavListeners();
+    }
+
   // Main functions to be returned
   const homePageBuilder = () => {
-    clearContent();
-    const toDoDiv:HTMLDivElement = document.createElement('div');
-    toDoDiv.setAttribute('id', 'tododiv');
-    content.appendChild(buildHeader());
-    content.appendChild(toDoDiv);
-    content.appendChild(formBuilder.buildForm());
-    const addNewButton = document.getElementById('addnewbutton');
-    const formDiv:HTMLElement = document.getElementById('formdiv');
-    addNewButton.addEventListener(('click'), () => {
-      formDiv.style.display = 'block';
-      content.classList.add('blurred');
-    });
-    document.getElementById('homepagelink').classList.add('active');
-    addNavListeners();
+    pageBuilder('todo', 'home');
     displayToDos(toDoManipulator.getToDoAry());
   }
+
   const donePageBuilder = () => {
-    clearContent();
-    const doneDiv:HTMLDivElement = document.createElement('div');
-    doneDiv.setAttribute('id', 'donediv');
-    content.appendChild(buildHeader());
-    content.appendChild(doneDiv);
-    content.appendChild(formBuilder.buildForm());
-    const addNewButton = document.getElementById('addnewbutton');
-    const formDiv:HTMLElement = document.getElementById('formdiv');
-    addNewButton.addEventListener(('click'), () => {
-      formDiv.style.display = 'block';
-      content.classList.add('blurred');
-    });
-    document.getElementById('donelink').classList.add('active');
-    addNavListeners();
+    pageBuilder('done', 'done');
     displayDoneToDos(toDoManipulator.getDoneAry());
   }
+
   const projectPageBuilder = () => {
     clearContent();
     const projectDiv:HTMLDivElement = document.createElement('div');
     projectDiv.setAttribute('id', 'projectdiv');
     content.appendChild(buildHeader());
-    content.appendChild(buildNewProjectButtonDiv());
+    if (toDoManipulator.getProjectAry().length > 0) {
+      content.appendChild(buildNewProjectButtonDiv());
+    }
     content.appendChild(projectDiv);
     content.appendChild(formBuilder.buildForm());
     content.appendChild(formBuilder.buildNewProjectForm());
-    const addNewButton = document.getElementById('addnewbutton');
-    const formDiv:HTMLElement = document.getElementById('formdiv');
-    addNewButton.addEventListener(('click'), () => {
-      formDiv.style.display = 'block';
-      content.classList.add('blurred');
+    addNewButtonEventListener();
+    if (toDoManipulator.getProjectAry().length > 0) {
+      const addNewProjectButton = document.getElementById('newprojectbutton');
+      const projectFormDiv:HTMLElement = document.getElementById('projectformdiv');
+      addNewProjectButton.addEventListener(('click'), () => {
+        projectFormDiv.style.display = 'block';
+        content.classList.add('blurred');
     });
-    const addNewProjectButton = document.getElementById('newprojectbutton');
-    const projectFormDiv:HTMLElement = document.getElementById('projectformdiv');
-    addNewProjectButton.addEventListener(('click'), () => {
-      projectFormDiv.style.display = 'block';
-      content.classList.add('blurred');
-    });
-    document.getElementById('projectlink').classList.add('active');
+  }
+    document.getElementById('projectslink').classList.add('active');
     addNavListeners();
     displayProjects(toDoManipulator.getProjectAry());
   }
+
   const toDoBuilder = (toDoObject: ToDo, toDoDiv:HTMLElement, done = false) => {
     const toDoID:string = toDoObject.iD.toString()
     const toDo:HTMLDivElement = document.createElement('div');
-    if (done === false) {
-      toDo.classList.add('todo');
-    } else {
-      toDo.classList.add('donetodo')
-    }
+    done ? toDo.classList.add('donetodo') : toDo.classList.add('todo');
     toDo.setAttribute('id', toDoID);
     toDo.appendChild(addLabelStripe(toDoObject.priority));
     const middleDiv:HTMLDivElement = document.createElement('div');
@@ -361,36 +398,36 @@ const domManipulator = (() => {
     chechboxDiv.classList.add('checkboxdiv');
     chechboxDiv.appendChild(addCheckBox());
     middleDiv.appendChild(chechboxDiv);
-    middleDiv.appendChild(buildToDoConent(toDoObject));
+    middleDiv.appendChild(buildContent('todo', toDoObject as unknown as generalObject, ['heading', 'text', 'date', 'priority']));
     middleDiv.appendChild(createToDoButtons(toDoID));
     toDo.appendChild(middleDiv);
     toDoDiv.appendChild(toDo);
   }
+
+  const projectToDoBuilder = (toDoObject: ToDo, toDoDiv:HTMLElement) => {
+    const toDoID:string = toDoObject.iD.toString()
+    const toDo:HTMLDivElement = document.createElement('div');
+    toDo.classList.add('projecttodo');
+    toDo.setAttribute('id', toDoID);
+    toDo.appendChild(addLabelStripe(toDoObject.priority));
+    toDo.appendChild(buildContent('todo', toDoObject as unknown as generalObject, ['heading', 'text', 'date', 'priority']));
+    toDoDiv.appendChild(toDo);
+  }
+
   const projectBuilder = (projectObject: Project, projectDiv:HTMLElement) => {
     const projectContainer:HTMLDivElement = document.createElement('div');
     projectContainer.classList.add('projectcontainer');
     const project:HTMLDivElement = document.createElement('div');
     project.classList.add('project');
     project.setAttribute('id', projectObject.iD.toString());
-    const middleDiv:HTMLDivElement = document.createElement('div');
-    middleDiv.classList.add('middlediv');
-    const chechboxDiv:HTMLDivElement = document.createElement('div');
-    chechboxDiv.classList.add('checkboxdiv');
-    chechboxDiv.appendChild(addCheckBox());
     project.appendChild(addLabelStripe(projectObject.priority));
-    middleDiv.appendChild(chechboxDiv);
-    middleDiv.appendChild(buildProjectContent(projectObject));
-    middleDiv.appendChild(createToDoButtons(projectObject.iD.toString()));
-    project.appendChild(middleDiv);
+    project.appendChild(buildProjectMiddleDiv(projectObject));
     project.appendChild(createExpandButton(projectObject.iD));
     projectContainer.appendChild(project);
-    const projectToDoDiv = document.createElement('div');
-    projectToDoDiv.classList.add('projecttododiv');
-    projectToDoDiv.setAttribute('objectid', projectObject.iD.toString());
-    projectToDoDiv.style.display = 'none';
-    projectContainer.appendChild(projectToDoDiv);
+    projectContainer.appendChild(buildProjectToDoDiv(projectObject));
     projectDiv.appendChild(projectContainer);
   }
+
   const displayToDos = ( toDoAry:ToDo[] ) => {
     const toDoDiv:HTMLElement = (document.getElementById('tododiv') || document.createElement('tododiv'));
     clearToDoDiv();
@@ -410,19 +447,42 @@ const domManipulator = (() => {
     const resultAry:ToDo[] = toDoAry.sort((a,b) => a.date.getTime() - b.date.getTime());
     resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo, toDoDiv));
   }
-  const displayDoneToDos = (doneAry:ToDo[] ) => { //Needs to be finished
+
+  const displayDoneToDos = (doneAry:ToDo[] ) => {
     clearDoneDiv()
     const doneDiv = document.getElementById('donediv');
+    if (doneAry.length === 0) {
+      const actionDiv:HTMLDivElement = document.createElement('div');
+      actionDiv.setAttribute('id', 'actiondiv');
+      actionDiv.innerHTML = 'No ToDos marked as done.';
+      doneDiv.appendChild(actionDiv);
+      return;
+    }
     const resultAry:ToDo[] = doneAry.sort((a,b) => a.date.getTime() - b.date.getTime());
     resultAry.forEach((toDo:ToDo) => toDoBuilder(toDo, doneDiv, true));
   }
+
   const displayProjects = (projectAry:Project[]) => {
-    const projectDiv = document.getElementById('projectdiv');
     clearProjectDiv();
+    const projectDiv = document.getElementById('projectdiv');
+    if (projectAry.length === 0) {
+      const actionDiv:HTMLDivElement = document.createElement('div');
+      actionDiv.setAttribute('id', 'actiondiv');
+      actionDiv.innerHTML = 'No Projects yet. Time to <span id="addnew">add a new one</span>.';
+      const addNewSpan = actionDiv.querySelector('#addnew');
+      addNewSpan.addEventListener(('click'), () => {
+        const formDiv:HTMLElement = document.getElementById('projectformdiv');
+        formDiv.style.display = 'block';
+        content.classList.add('blurred');
+      });
+      projectDiv.appendChild(actionDiv);
+      return;
+    }
     const resultAry:Project[] = projectAry.sort((a,b) => a.date.getTime() - b.date.getTime());
     resultAry.forEach((project:Project) => projectBuilder(project, projectDiv));
   }
-  return { homePageBuilder, donePageBuilder, projectPageBuilder, displayToDos, displayDoneToDos, displayProjects };
+
+  return { homePageBuilder, donePageBuilder, projectPageBuilder, displayToDos, displayDoneToDos, displayProjects, createToDosDiv };
 })();
 
 export default domManipulator;

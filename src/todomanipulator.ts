@@ -6,8 +6,8 @@ import dateFixer from "./datefixer";
 const toDoManipulator = (() => {
 
   const toDoAry:ToDo[] = [];
-  let doneAry:ToDo[] = [];
-  let projectAry:Project[] = [];
+  const doneAry:ToDo[] = [];
+  const projectAry:Project[] = [];
 
   const loadToDoAry = () => {
     const rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
@@ -18,16 +18,22 @@ const toDoManipulator = (() => {
   }
 
   const loadDoneAry = () => {
-    doneAry = JSON.parse(localStorage.getItem("doneary") || "[]");
-    doneAry.forEach((todo: ToDo) => {
+    const rawDoneAry = JSON.parse(localStorage.getItem("doneary") || "[]");
+    rawDoneAry.forEach((todo: ToDo) => {
       todo.date = dateFixer.fixDates(todo.date);
+      doneAry.push(toDo(todo.heading, todo.text, todo.date, todo.priority, todo.iD, todo.projectiDs, true));
       });
   }
 
   const loadProjectAry = () => {
-    projectAry = JSON.parse(localStorage.getItem("projectary") || "[]");
-    projectAry.forEach((project: Project) => {
+    const rawProjectAry = JSON.parse(localStorage.getItem("projectary") || "[]");
+    rawProjectAry.forEach((project: RawProject) => {
       project.date = dateFixer.fixDates(project.date);
+      project.toDos.forEach((todo: ToDo) => {
+        todo.date = dateFixer.fixDates(todo.date);
+        return todo;
+        });
+      projectAry.push(Project(project.iD, project.name, project.toDos, project.date, project.priority));
       });
   }
 
@@ -64,7 +70,7 @@ const toDoManipulator = (() => {
     if (toDo.projectiDs.length > 0) {
       toDo.projectiDs.forEach((projectiD) => {
         const project:Project = projectAry.find(x => x.iD === projectiD);
-        const index = project.toDos.indexOf(toDo);
+        const index = project.getToDos().indexOf(toDo);
         project.toDos.splice(index, 1);
       });
     }
@@ -102,7 +108,7 @@ const toDoManipulator = (() => {
       project.name = newName;
     }
     if (newToDos !== null) {
-      project.toDos = newToDos;
+      project.setToDos(newToDos);
     }
     if (newDate !== null) {
       project.date = newDate;
@@ -126,6 +132,9 @@ const toDoManipulator = (() => {
   const getToDoAry = () => toDoAry;
   const getDoneAry = () => doneAry;
   const getProjectAry = () => projectAry;
+  const updateProjectAry = () => {
+    localStorage.setItem('projectary', (JSON.stringify(projectAry)));
+  }
   return { 
     createToDo, 
     modifyToDo, 
@@ -139,7 +148,8 @@ const toDoManipulator = (() => {
     modifyProject, 
     getProjectAry,
     deleteProject,
-    findProject }
+    findProject,
+    updateProjectAry }
 })();
 
 export default toDoManipulator;

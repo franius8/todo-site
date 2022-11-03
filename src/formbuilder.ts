@@ -161,48 +161,68 @@ const formBuilder = (() => {
     });
     return formDiv;
   }
-  const buildAddProjectToDoForm = (e:MouseEvent, iD:number) => {
+  const buildAddProjectToDoForm = (e:MouseEvent, iD:number, toDoDiv:HTMLDivElement) => {
     const formDiv:HTMLDivElement = document.createElement('div');
     formDiv.setAttribute('id', 'projecttodosformdiv');
     formDiv.style.display = 'block';
     const formHeading:HTMLHeadingElement = document.createElement('h2');
     formHeading.classList.add('formheading');
     formHeading.textContent = 'Add new ToDos to Project';
-    const form:HTMLFormElement = document.createElement('form');
     formDiv.appendChild(createCloseButton(formDiv));
     formDiv.appendChild(formHeading);
+    if (toDoManipulator.getToDoAry().length > 0) {
+    const form:HTMLFormElement = document.createElement('form');
+    const project = toDoManipulator.findProject(iD);
     const inputDiv = document.createElement('div');
     inputDiv.classList.add('inputdiv');
     inputDiv.appendChild(labelCreator('projectcheckboxdiv', 'Select ToDos:'))
-    const toDoAry = toDoManipulator.getToDoAry();
-    const toDoDiv:HTMLDivElement = document.createElement('div');
-    toDoDiv.classList.add('projectcheckboxdiv');
-    toDoAry.forEach((toDo:ToDo) => {
+    const toDoIdAry = toDoManipulator.getToDoAry().map(a => a.iD);
+    const toDoFormDiv:HTMLDivElement = document.createElement('div');
+    toDoFormDiv.classList.add('projectcheckboxdiv');
+    toDoIdAry.forEach((iD:number) => {
       const toDoCheckbox:HTMLInputElement = document.createElement('input');
       toDoCheckbox.setAttribute('type', 'checkbox');
-      toDoCheckbox.setAttribute('id', `todocheckbox${toDo.iD}`);
-      toDoCheckbox.setAttribute('value', `${toDo.iD}`);
+      toDoCheckbox.setAttribute('id', `todocheckbox${iD}`);
+      toDoCheckbox.setAttribute('value', `${iD}`);
       toDoCheckbox.setAttribute('name', 'projectcheckbox');
+      if (project.getToDos().filter(toDo => toDo.iD === iD).length > 0) {
+        toDoCheckbox.setAttribute('checked', 'true');
+      }
       const toDoLabel:HTMLLabelElement = document.createElement('label');
-      toDoLabel.setAttribute('for', `todocheckbox${toDo.iD}`);
+      toDoLabel.setAttribute('for', `todocheckbox${iD}`);
       const toDoHeading = document.createElement('div');
-      toDoHeading.textContent = toDo.heading;
+      toDoHeading.textContent = toDoManipulator.findTodDo(iD).heading;
       const toDoDate = document.createElement('div');
       toDoDate.classList.add('formtododate');
-      toDoDate.innerHTML = `<span class="material-symbols-outlined">calendar_month</span> ${dateConverter.convertToString(toDo.date)}`
+      toDoDate.innerHTML = `<span class="material-symbols-outlined">calendar_month</span> 
+          ${dateConverter.convertToString(toDoManipulator.findTodDo(iD).date)}`
       toDoLabel.appendChild(toDoHeading);
       toDoLabel.appendChild(toDoDate);
-      toDoDiv.appendChild(toDoCheckbox);
-      toDoDiv.appendChild(toDoLabel);
+      toDoFormDiv.appendChild(toDoCheckbox);
+      toDoFormDiv.appendChild(toDoLabel);
     });
-    inputDiv.appendChild(toDoDiv);
+    inputDiv.appendChild(toDoFormDiv);
     form.appendChild(inputDiv);
     form.appendChild(createSubmitButton());
     formDiv.appendChild(form);
     form.addEventListener(('submit'), (e) => {
       formHandler.handleAddProjectToDosFormSubmission(e, iD);
       content.classList.remove('blurred');
+      toDoDiv.remove();
+      const projectContainer = document.getElementById(iD.toString()).parentNode;
+      const projectToDoDiv = document.createElement('div');
+      projectToDoDiv.style.display = 'block';
+      projectToDoDiv.classList.add('projecttododiv');
+      projectToDoDiv.setAttribute('id', `projecttododiv${iD}`);
+      const newToDosDiv = domManipulator.createToDosDiv(iD);
+      projectToDoDiv.appendChild(newToDosDiv);
+      projectContainer.appendChild(projectToDoDiv);
     });
+  } else {
+    const noToDos:HTMLDivElement = document.createElement('div');
+    noToDos.textContent = 'There are no ToDos to add to this Project.';
+    formDiv.appendChild(noToDos);
+  }
     return formDiv;
   }
 

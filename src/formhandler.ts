@@ -39,11 +39,11 @@ const formHandler =(() => {
     const projectToDoIds = formGetter.getProjectToDoData(target);
     target.reset()
     targetParent.style.display = 'none';
-    const project = toDoManipulator.findProject(iD);
+    const project:Project = toDoManipulator.findProject(iD);
+    project.clearToDos();
     projectToDoIds.forEach((toDoId) => {
-      project.toDos.push(toDoManipulator.findTodDo(toDoId));
+      project.addToDo(toDoManipulator.findTodDo(toDoId));
   });
-  console.log(project);
   }
 
   return {handleFormSubmission, handleEditFormSubmission, handleNewProjectFormSubmission, handleAddProjectToDosFormSubmission}

@@ -54,7 +54,7 @@ h2 {
   gap: 1rem;
 }
 
-.todo, .project, .donetodo {
+.todo, .project, .donetodo, .projecttodo {
   display: grid;
   gap: 0.5rem;
   border: 1px solid var(--light-gray);
@@ -62,9 +62,20 @@ h2 {
   box-shadow: 3px 3px 3px rgb(150, 150, 150);
 }
 
+.projecttodo .todocontent {
+  grid-template: repeat(3, auto) / repeat(2, 1fr);
+  padding: 0.75rem;
+  gap: 0.25rem;
+}
+
 .todo, .donetodo {
   grid-template: 1fr / 1fr 60fr;
   padding-right: 1rem;
+}
+
+.projecttodo {
+  grid-template: 1fr / 1fr 60fr;
+  width: 90%;
 }
 
 .project {
@@ -126,7 +137,7 @@ h2 {
   font-size: 0.8rem;
 }
 
-.todoheader {
+.todoheading {
   font-weight: bold;
   grid-area: 1 / 1 / 1 / span 2;
 }
@@ -444,6 +455,13 @@ button:hover {
   align-items: center;
   gap: 1rem;
   padding: 1rem;
+}
+
+.notodosdiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 .projectcheckboxdiv input[type="checkbox"] {
