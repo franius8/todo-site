@@ -14,7 +14,7 @@ interface Project {
   date: any;
   priority: string;
   iD: number;
-  toDos: ToDo[];
+  toDosAry: ToDo[];
   addToDo: (toDo:ToDo) => void;
   clearToDos: () => void;
   getToDos: () => ToDo[];
@@ -26,7 +26,7 @@ interface RawProject {
   date: any;
   priority: string;
   iD: number;
-  toDos: ToDo[];
+  toDosAry: ToDo[];
 }
 
 interface generalObject {

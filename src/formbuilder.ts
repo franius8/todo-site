@@ -21,12 +21,14 @@ const formBuilder = (() => {
     closeButtonDiv.appendChild(closeButton);
     return closeButtonDiv;
   }
+
   const labelCreator = (forElement: string, labelText: string) => {
     const label:HTMLLabelElement = document.createElement('label');
     label.setAttribute('for', forElement);
     label.textContent = labelText;
     return label;
   }
+
   const inputFieldCreator = (fieldType: string, fieldName: string, fieldValue = 'empty', required:boolean) => {
     const field:HTMLInputElement = document.createElement('input');
     field.setAttribute('type', fieldType);
@@ -40,6 +42,7 @@ const formBuilder = (() => {
     }
     return field;
   }
+
   const radioCreator = (radioName: string, radioOptions: string[], checkedValue:string = null) => {
     const inputDiv:HTMLDivElement = document.createElement('div');
     inputDiv.classList.add('inputdiv');
@@ -64,6 +67,44 @@ const formBuilder = (() => {
     inputDiv.appendChild(radioDiv);
     return inputDiv
   }
+
+  const prepareContent = (contentDiv: HTMLElement) => {
+    contentDiv.innerHTML = '';
+    contentDiv.classList.add('duringedit');
+    contentDiv.classList.remove('todocontent');
+  }
+
+  const sideButtonCreator = (targetParent: HTMLElement, form: HTMLFormElement, type: string) => {
+    const cancelButton = document.createElement('button');
+    cancelButton.classList.add('cancelbutton');
+    cancelButton.innerHTML = '<span class="material-symbols-outlined">undo</span>';
+    cancelButton.addEventListener(('click'), () => {
+      if (type === 'project') {
+        domManipulator.displayProjects(toDoManipulator.getProjectAry());
+      } else if (type === 'todo') {
+      domManipulator.displayToDos(toDoManipulator.getToDoAry());
+      } else if (type === 'done') {
+        domManipulator.displayDoneToDos(toDoManipulator.getDoneAry());
+      }
+    });
+    const acceptButton = document.createElement('button');
+    acceptButton.classList.add('acceptbutton');
+    acceptButton.setAttribute('type', 'submit')
+    acceptButton.setAttribute('form', 'editform');
+    acceptButton.innerHTML = '<span class="material-symbols-outlined">check</span>';
+    form.addEventListener(('submit'), (e) => {
+      if (type === 'todo') {
+        formHandler.handleToDoEditFormSubmission(e, 'todo');
+      } else if (type === 'project') {
+        formHandler.handleProjectEditFormSubmission(e);
+      } else if (type === 'done') {
+        formHandler.handleToDoEditFormSubmission(e, 'done');
+      }
+    })
+    targetParent.appendChild(cancelButton);
+    targetParent.appendChild(acceptButton);
+  }
+
   const createSubmitButton = () => {
     const submitButton:HTMLButtonElement = document.createElement('button');
     submitButton.setAttribute('type', 'submit');
@@ -71,6 +112,7 @@ const formBuilder = (() => {
     submitButton.textContent = 'Add';
     return submitButton;
   }
+
   const inputCreator = (fieldType: string, fieldName: string, labelText: string, required = true) => {
     const inputDiv:HTMLDivElement = document.createElement('div');
     inputDiv.classList.add('inputdiv');
@@ -78,12 +120,14 @@ const formBuilder = (() => {
     inputDiv.appendChild(inputFieldCreator(fieldType, fieldName, 'empty', required));
     return inputDiv;
   }
+
   const editInputCreator = (fieldType: string, fieldName: string, labelText: string, required = true, fieldValue: string) => {
     const field:HTMLDivElement = inputCreator(fieldType, fieldName, labelText, required);
     const inputField:HTMLInputElement = field.querySelector(`#${fieldName}`);
     inputField.value = fieldValue;
     return field;
   }
+
   const buildForm = () => {
     const formDiv:HTMLDivElement = document.createElement('div');
     formDiv.setAttribute('id', 'formdiv');
@@ -105,16 +149,18 @@ const formBuilder = (() => {
     });
     return formDiv;
   }
-  const buildToDoEditForm = (e:MouseEvent) => {
+
+  const buildToDoEditForm = (e:MouseEvent, type: string) => {
     const target:HTMLElement = e.target as HTMLElement;
     const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
     const toDoDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
     const toDoContent:HTMLElement = toDoDiv.querySelector('.todocontent');
-    const toDo:ToDo = toDoManipulator.findTodDo(Number(target.getAttribute('objectid')));
+    const toDo:ToDo = (
+      toDoManipulator.findTodDo(Number(target.getAttribute('objectid'))) ||
+      toDoManipulator.findDoneToDo(Number(target.getAttribute('objectid')))
+      );
     const { heading:headerContent, text:textContent, date:dateContent, priority:priorityContent} = toDo;
-    toDoContent.innerHTML = '';
-    toDoContent.classList.add('duringedit');
-    toDoContent.classList.remove('todocontent');
+    prepareContent(toDoContent);
     const form = document.createElement('form');
     form.classList.add('todocontent');
     form.setAttribute('id', 'editform');
@@ -124,34 +170,17 @@ const formBuilder = (() => {
     form.appendChild(radioCreator('todopriorityedit', toDoPriorities, priorityContent));
     toDoContent.appendChild(form);
     targetParent.innerHTML = '';
-    const cancelButton = document.createElement('button');
-    cancelButton.classList.add('cancelbutton');
-    cancelButton.innerHTML = '<span class="material-symbols-outlined">undo</span>';
-    cancelButton.addEventListener(('click'), () => {
-      domManipulator.displayToDos(toDoManipulator.getToDoAry());
-    });
-    const acceptButton = document.createElement('button');
-    acceptButton.classList.add('acceptbutton');
-    acceptButton.setAttribute('type', 'submit')
-    acceptButton.setAttribute('form', 'editform');
-    acceptButton.innerHTML = '<span class="material-symbols-outlined">check</span>';
-    form.addEventListener(('submit'), (e) => {
-      formHandler.handleEditFormSubmission(e);
-    })
-    targetParent.appendChild(cancelButton);
-    targetParent.appendChild(acceptButton);
+    type === 'done' ? sideButtonCreator(targetParent, form, 'done') : sideButtonCreator(targetParent, form, 'todo');
   }
+
   const buildProjectEditForm = (e:MouseEvent) => {
     const target:HTMLElement = e.target as HTMLElement;
     const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
     const projectDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
     const projectContent:HTMLElement = projectDiv.querySelector('.projectcontent');
-    console.log(projectContent);
     const project:Project = toDoManipulator.findProject(Number(target.getAttribute('objectid')));
     const { name:nameContent, date:dateContent, priority:priorityContent } = project;
-    projectContent.innerHTML = '';
-    projectContent.classList.add('duringedit');
-    projectContent.classList.remove('projectcontent');
+    prepareContent(projectContent);
     const form = document.createElement('form');
     form.classList.add('projectcontent');
     form.setAttribute('id', 'editform');
@@ -160,22 +189,7 @@ const formBuilder = (() => {
     form.appendChild(radioCreator('projectpriorityedit', projectPriorities, priorityContent));
     projectContent.appendChild(form);
     targetParent.innerHTML = '';
-    const cancelButton = document.createElement('button');
-    cancelButton.classList.add('cancelbutton');
-    cancelButton.innerHTML = '<span class="material-symbols-outlined">undo</span>';
-    cancelButton.addEventListener(('click'), () => {
-      domManipulator.displayProjects(toDoManipulator.getProjectAry());
-    });
-    const acceptButton = document.createElement('button');
-    acceptButton.classList.add('acceptbutton');
-    acceptButton.setAttribute('type', 'submit')
-    acceptButton.setAttribute('form', 'editform');
-    acceptButton.innerHTML = '<span class="material-symbols-outlined">check</span>';
-    form.addEventListener(('submit'), (e) => {
-      formHandler.handleProjectEditFormSubmission(e);
-    })
-    targetParent.appendChild(cancelButton);
-    targetParent.appendChild(acceptButton);
+    sideButtonCreator(targetParent, form, 'project');
   }
 
   const buildNewProjectForm = () => {
@@ -198,6 +212,7 @@ const formBuilder = (() => {
     });
     return formDiv;
   }
+
   const buildAddProjectToDoForm = (e:MouseEvent, iD:number, toDoDiv:HTMLDivElement) => {
     const formDiv:HTMLDivElement = document.createElement('div');
     formDiv.setAttribute('id', 'projecttodosformdiv');
@@ -245,15 +260,13 @@ const formBuilder = (() => {
     form.addEventListener(('submit'), (e) => {
       formHandler.handleAddProjectToDosFormSubmission(e, iD);
       content.classList.remove('blurred');
-      toDoDiv.remove();
-      const projectContainer = document.getElementById(iD.toString()).parentNode;
       const projectToDoDiv = document.createElement('div');
       projectToDoDiv.style.display = 'block';
       projectToDoDiv.classList.add('projecttododiv');
-      projectToDoDiv.setAttribute('id', `projecttododiv${iD}`);
+      projectToDoDiv.setAttribute('objectid', iD.toString());
       const newToDosDiv = domManipulator.createToDosDiv(iD);
       projectToDoDiv.appendChild(newToDosDiv);
-      projectContainer.appendChild(projectToDoDiv);
+      toDoDiv.parentElement.replaceChild(projectToDoDiv, toDoDiv);
     });
   } else {
     const noToDos:HTMLDivElement = document.createElement('div');

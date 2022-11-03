@@ -6,6 +6,23 @@ const domManipulator = (() => {
   const content:HTMLElement = (document.getElementById('content') || document.createElement('content'));
   
   // Subfunctions for helper functions
+  const getPriorityColor = (priority:string) => {
+    switch (priority) {
+      case 'High':
+        return 'red';
+      case 'Standard':
+        return 'orange';
+      case 'Low':
+        return 'green';
+      case 'Normal':
+        return 'skyblue';
+      case 'Urgent':
+        return 'crimson';
+     default:
+        return 'gray';
+    }
+  }
+  
   const createDateString = (date:Date, toDoDateDiv: HTMLElement) => {
   const toDoDate:HTMLDivElement = document.createElement('div');
     const dayDifference:number = dateConverter.getDayDifference(date);
@@ -36,17 +53,7 @@ const domManipulator = (() => {
   const createPriorityCircle = (priority: string) => {
     const priorityCircle:HTMLDivElement = document.createElement('div');
     priorityCircle.classList.add('prioritycircle');
-    if (priority === 'Standard') {
-      priorityCircle.style.backgroundColor = 'orange';
-    } else if (priority === 'Low') {
-      priorityCircle.style.backgroundColor = 'blue';
-    } else if (priority === 'High') {
-      priorityCircle.style.backgroundColor = 'red';
-    } else if (priority === 'Normal') {
-      priorityCircle.style.backgroundColor = 'skyblue';
-    } else if (priority === 'Urgent') {
-      priorityCircle.style.backgroundColor = 'crimson';
-    }
+    priorityCircle.style.backgroundColor = getPriorityColor(priority);
     return priorityCircle;
   };
   
@@ -71,7 +78,7 @@ const domManipulator = (() => {
     }
     const noToDosButton:HTMLButtonElement = document.createElement('button');
     noToDosButton.classList.add('addtodobutton');
-    noToDosButton.textContent = 'Add ToDo';
+    noToDosButton.textContent = 'Add/Remove ToDos';
     noToDosButton.addEventListener('click', (e) => {
       content.appendChild(formBuilder.buildAddProjectToDoForm(e, iD, toDosDiv));
       content.classList.add('blurred');
@@ -100,7 +107,9 @@ const domManipulator = (() => {
         if (type === 'project') {
           formBuilder.buildProjectEditForm(e);
         } else if (type === 'todo') {
-          formBuilder.buildToDoEditForm(e);
+          formBuilder.buildToDoEditForm(e, 'todo');
+        } else {
+          formBuilder.buildToDoEditForm(e, 'done');
         }
       });
       return editButton;
@@ -115,18 +124,34 @@ const domManipulator = (() => {
         const target = (<HTMLElement>e.target);
         const iD = Number(target.getAttribute('objectid'));
         if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
+          toDoManipulator.deleteItem(iD)
           if (type === 'project') {
-           toDoManipulator.deleteProject(iD);
            displayProjects(toDoManipulator.getProjectAry());
           } else if (type === 'todo') {
-          toDoManipulator.deleteToDo(iD);
           displayToDos(toDoManipulator.getToDoAry());  
+        } else {
+          displayDoneToDos(toDoManipulator.getDoneAry());
         }
       }});
       return deleteButton;
   };
   
   // Helper functions that are not returned
+  const addRevert = () => {
+    const revert:HTMLDivElement = document.createElement('div');
+    revert.classList.add('checkbox');
+    revert.innerHTML = '&#8617';
+    revert.addEventListener('click', (e) => {
+      const target = (<HTMLElement>e.target);
+      const targetParent = (<HTMLElement>(target).parentNode);
+      const doneDiv = (<HTMLElement>targetParent.parentNode);
+      const doneDiviD = Number(doneDiv.id);
+      toDoManipulator.revertDone(doneDiviD);
+      displayDoneToDos(toDoManipulator.getDoneAry());
+    });
+    return revert;
+  }
+  
   const addCheckBox = () => {
     const checkbox:HTMLDivElement = document.createElement('div');
     checkbox.classList.add('checkbox');
@@ -154,23 +179,7 @@ const domManipulator = (() => {
   const addLabelStripe = (priority: string) => {
     const labelStripe:HTMLDivElement = document.createElement('div');
     labelStripe.classList.add('labelstripe');
-    switch (priority) {
-      case 'Standard':
-        labelStripe.style.backgroundColor = 'orange';
-        break;
-      case 'Low':
-        labelStripe.style.backgroundColor = 'blue';
-        break;
-      case 'High':
-        labelStripe.style.backgroundColor = 'red';
-        break;
-      case 'Normal':
-        labelStripe.style.backgroundColor = 'skyblue';
-        break;
-      case 'Urgent':
-        labelStripe.style.backgroundColor = 'crimson';
-        break;
-    }
+    labelStripe.style.backgroundColor = getPriorityColor(priority);
     return labelStripe;
   };
 
@@ -267,12 +276,12 @@ const domManipulator = (() => {
     toDoDiv.textContent = '';
   }
 
-  const createToDoButtons = (iD:string) => {
-    const buttonDiv:HTMLDivElement = document.createElement('div');
-    buttonDiv.classList.add('buttondiv');
-    buttonDiv.appendChild(createEditButton(iD, 'todo'));
-    buttonDiv.appendChild(createDeleteButton(iD, 'todo'));
-    return buttonDiv;
+  const createButtons = (iD: string, type: string) => {
+    const buttons:HTMLDivElement = document.createElement('div');
+    buttons.classList.add('buttondiv');
+    buttons.appendChild(createEditButton(iD, type));
+    buttons.appendChild(createDeleteButton(iD, type));
+    return buttons;
   }
 
   const createExpandButton = (iD:number) => {
@@ -324,14 +333,6 @@ const domManipulator = (() => {
       return newProjectButtonDiv;
   }
 
-  const createProjectButtons = (iD:string) => {
-      const buttonDiv:HTMLDivElement = document.createElement('div');
-      buttonDiv.classList.add('buttondiv');
-      buttonDiv.appendChild(createEditButton(iD, 'project'));
-      buttonDiv.appendChild(createDeleteButton(iD, 'project'));
-      return buttonDiv;
-  }
-
   const buildProjectMiddleDiv = (projectObject: Project) => {
       const middleDiv:HTMLDivElement = document.createElement('div');
       middleDiv.classList.add('middlediv');
@@ -340,7 +341,7 @@ const domManipulator = (() => {
       chechboxDiv.appendChild(addCheckBox());
       middleDiv.appendChild(chechboxDiv);
       middleDiv.appendChild(buildContent('project', projectObject as unknown as generalObject, ['name', 'date', 'priority']));
-      middleDiv.appendChild(createProjectButtons(projectObject.iD.toString()));
+      middleDiv.appendChild(createButtons(projectObject.iD.toString(), 'project'));
       return middleDiv;
   }
 
@@ -410,10 +411,10 @@ const domManipulator = (() => {
     middleDiv.classList.add('middlediv');
     const chechboxDiv:HTMLDivElement = document.createElement('div');
     chechboxDiv.classList.add('checkboxdiv');
-    chechboxDiv.appendChild(addCheckBox());
+    done ? chechboxDiv.appendChild(addRevert()) : chechboxDiv.appendChild(addCheckBox());
     middleDiv.appendChild(chechboxDiv);
     middleDiv.appendChild(buildContent('todo', toDoObject as unknown as generalObject, ['heading', 'text', 'date', 'priority']));
-    middleDiv.appendChild(createToDoButtons(toDoID));
+    done ? middleDiv.appendChild(createButtons(toDoID, 'done')) : middleDiv.appendChild(createButtons(toDoID, 'todo'));
     toDo.appendChild(middleDiv);
     toDoDiv.appendChild(toDo);
   }

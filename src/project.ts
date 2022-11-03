@@ -1,18 +1,20 @@
 import toDoManipulator from "./todomanipulator";
 
 const Project = (iD: number, name:string, toDos:ToDo[], date: Date, priority: string) => {
-  let toDosAry = toDos;
   const addToDo = (toDo:ToDo) => {
-    toDosAry.push(toDo)
+    toDos.push(toDo);
     toDoManipulator.updateProjectAry();
   };
   const clearToDos = () => {
-    toDosAry = [];
+    toDos = [];
     toDoManipulator.updateProjectAry();
   };
-  const getToDos = () => toDosAry;
-  const setToDos = (toDos:ToDo[]) => toDosAry = toDos;
-  return { iD, name, date, priority, toDos, addToDo, clearToDos, getToDos, setToDos };
+  const getToDos = () => toDos;
+  const setToDos = (newToDos:ToDo[]) => {
+    toDos = newToDos;
+    toDoManipulator.updateProjectAry();
+  };
+  return { iD:iD, name:name, date:date, priority:priority, toDosAry:toDos, addToDo, clearToDos, getToDos, setToDos };
 }
 
 export default Project;

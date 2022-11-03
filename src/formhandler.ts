@@ -13,14 +13,19 @@ const formHandler =(() => {
     toDoManipulator.createToDo(toDoData[0], toDoData[1], toDoData[2], toDoData[3]);
     domManipulator.displayToDos(toDoManipulator.getToDoAry());
   }
-  const handleEditFormSubmission = (e:SubmitEvent) => {
+  const handleToDoEditFormSubmission = (e:SubmitEvent, type: string) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const toDoDiv = (<HTMLDivElement>(<HTMLDivElement>(<HTMLDivElement>(target.parentNode)).parentNode).parentNode);
     const toDoData = formGetter.getEditFormData(e);
     target.reset();
-    toDoManipulator.modifyToDo(Number(toDoDiv.id), toDoData[0], toDoData[1], toDoData[2], toDoData[3]);
-    domManipulator.displayToDos(toDoManipulator.getToDoAry());
+    if (type === 'todo') {
+      toDoManipulator.modifyToDo(Number(toDoDiv.id), toDoData[0], toDoData[1], toDoData[2], toDoData[3]);
+      domManipulator.displayToDos(toDoManipulator.getToDoAry());
+    } else {
+      toDoManipulator.modifyDone(Number(toDoDiv.id), toDoData[0], toDoData[1], toDoData[2], toDoData[3]);
+      domManipulator.displayDoneToDos(toDoManipulator.getDoneAry());
+    }  
   }
   const handleNewProjectFormSubmission = (e:SubmitEvent) => {
     e.preventDefault();
@@ -38,13 +43,15 @@ const formHandler =(() => {
     const targetParent = (<HTMLDivElement>(target.parentNode));
     const projectToDoIds = formGetter.getProjectToDoData(target);
     target.reset()
-    targetParent.style.display = 'none';
+    targetParent.remove();
     const project:Project = toDoManipulator.findProject(iD);
-    project.clearToDos();
+    project.toDosAry = [];
     projectToDoIds.forEach((toDoId) => {
       project.addToDo(toDoManipulator.findTodDo(toDoId));
   });
+  toDoManipulator.updateProjectAry();
   }
+  
   const handleProjectEditFormSubmission = (e:SubmitEvent) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
@@ -57,7 +64,7 @@ const formHandler =(() => {
 
   return {
     handleFormSubmission, 
-    handleEditFormSubmission, 
+    handleToDoEditFormSubmission, 
     handleNewProjectFormSubmission, 
     handleAddProjectToDosFormSubmission,
     handleProjectEditFormSubmission
