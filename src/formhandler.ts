@@ -1,4 +1,3 @@
-import formGetter from "./formgetter";
 import domManipulator from "./dom-manipulator";
 import toDoManipulator from "./todomanipulator";
 
@@ -7,41 +6,68 @@ const formHandler =(() => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const targetParent = (<HTMLDivElement>(target.parentNode));
-    const toDoData = formGetter.getFormData();
+    const formData = new FormData(target);
+    const data = Object.fromEntries(formData);
     target.reset();
     targetParent.style.display = 'none';
-    toDoManipulator.createToDo(toDoData[0], toDoData[1], toDoData[2], toDoData[3]);
+    console.log(data);
+    toDoManipulator.createToDo(
+      data.todotitle as string, 
+      data.todocontent as string, 
+      new Date(data.tododate as string), 
+      data.todopriority as string);
     domManipulator.displayToDos(toDoManipulator.getToDoAry());
   }
+
   const handleToDoEditFormSubmission = (e:SubmitEvent, type: string) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const toDoDiv = (<HTMLDivElement>(<HTMLDivElement>(<HTMLDivElement>(target.parentNode)).parentNode).parentNode);
-    const toDoData = formGetter.getEditFormData(e);
+    const formData = new FormData(target);
+    const data = Object.fromEntries(formData);
     target.reset();
     if (type === 'todo') {
-      toDoManipulator.modifyToDo(Number(toDoDiv.id), toDoData[0], toDoData[1], toDoData[2], toDoData[3]);
+      toDoManipulator.modifyToDo(
+      Number(toDoDiv.id), 
+      data.todotitleedit as string, 
+      data.todocontentedit as string, 
+      new Date(data.tododateedit as string), 
+      data.todopriorityedit as string);
       domManipulator.displayToDos(toDoManipulator.getToDoAry());
     } else {
-      toDoManipulator.modifyDone(Number(toDoDiv.id), toDoData[0], toDoData[1], toDoData[2], toDoData[3]);
+      toDoManipulator.modifyDone(
+        Number(toDoDiv.id), 
+        data.todotitleedit as string, 
+        data.todocontentedit as string, 
+        new Date(data.tododateedit as string), 
+        data.todopriorityedit as string
+      );
       domManipulator.displayDoneToDos(toDoManipulator.getDoneAry());
     }  
   }
+
   const handleNewProjectFormSubmission = (e:SubmitEvent) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const targetParent = (<HTMLDivElement>(target.parentNode));
-    const projectData = formGetter.getProjectFormData();
+    const formData = new FormData(target);
+    const data = Object.fromEntries(formData);
     target.reset();
     targetParent.style.display = 'none';
-    toDoManipulator.createProject(projectData[0], [], projectData[1], projectData[2]);
+    toDoManipulator.createProject(
+      data.projectname as string, 
+      [], 
+      new Date(data.projectdate as string), 
+      data.projectpriority as string);
     domManipulator.displayProjects(toDoManipulator.getProjectAry());
   }
+
   const handleAddProjectToDosFormSubmission = (e:SubmitEvent, iD:number) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const targetParent = (<HTMLDivElement>(target.parentNode));
-    const projectToDoIds = formGetter.getProjectToDoData(target);
+    const formData = new FormData(target);
+    const projectToDoIds = formData.getAll('projectcheckbox').map((value) => Number(value));
     target.reset()
     targetParent.remove();
     const project:Project = toDoManipulator.findProject(iD);
@@ -56,9 +82,14 @@ const formHandler =(() => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const projectDiv = (<HTMLDivElement>(<HTMLDivElement>(<HTMLDivElement>(target.parentNode)).parentNode).parentNode);
-    const projectData = formGetter.getProjectEditFormData(e);
+    const formData = new FormData(target);
+    const data = Object.fromEntries(formData);
     target.reset();
-    toDoManipulator.modifyProject(Number(projectDiv.id), projectData[0], null, projectData[1], projectData[2]);
+    toDoManipulator.modifyProject(
+      Number(projectDiv.id), 
+      data.projectnameedit as string,
+      null, new Date(data.projectdateedit as string), 
+      data.projectpriorityedit as string);
     domManipulator.displayProjects(toDoManipulator.getProjectAry());
   }
 
