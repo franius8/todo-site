@@ -43,7 +43,7 @@ const formBuilder = (() => {
     return field;
   }
 
-  const radioCreator = (radioName: string, radioOptions: string[], checkedValue:string = null) => {
+  const radioCreator = (radioName: string, radioOptions: string[], checkedValue:string | null = null) => {
     const inputDiv:HTMLDivElement = document.createElement('div');
     inputDiv.classList.add('inputdiv');
     inputDiv.appendChild(labelCreator('radiocontainer', 'Priority:'));
@@ -123,7 +123,7 @@ const formBuilder = (() => {
 
   const editInputCreator = (fieldType: string, fieldName: string, labelText: string, required = true, fieldValue: string) => {
     const field:HTMLDivElement = inputCreator(fieldType, fieldName, labelText, required);
-    const inputField:HTMLInputElement = field.querySelector(`#${fieldName}`);
+    const inputField:HTMLInputElement = field.querySelector(`#${fieldName}`) as HTMLInputElement;
     inputField.value = fieldValue;
     return field;
   }
@@ -154,11 +154,11 @@ const formBuilder = (() => {
     const target:HTMLElement = e.target as HTMLElement;
     const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
     const toDoDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
-    const toDoContent:HTMLElement = toDoDiv.querySelector('.todocontent');
+    const toDoContent:HTMLDivElement = toDoDiv.querySelector('.todocontent') as HTMLDivElement;
     const toDo:ToDo = (
       toDoManipulator.findTodDo(Number(target.getAttribute('objectid'))) ||
       toDoManipulator.findDoneToDo(Number(target.getAttribute('objectid')))
-      );
+      ) as ToDo;
     const { heading:headerContent, text:textContent, date:dateContent, priority:priorityContent} = toDo;
     prepareContent(toDoContent);
     const form = document.createElement('form');
@@ -177,8 +177,8 @@ const formBuilder = (() => {
     const target:HTMLElement = e.target as HTMLElement;
     const targetParent:HTMLElement = (<HTMLElement>(target.parentNode));
     const projectDiv:HTMLElement = (<HTMLElement>(targetParent.parentNode));
-    const projectContent:HTMLElement = projectDiv.querySelector('.projectcontent');
-    const project:Project = toDoManipulator.findProject(Number(target.getAttribute('objectid')));
+    const projectContent:HTMLDivElement = projectDiv.querySelector('.projectcontent') as HTMLDivElement;
+    const project:Project = toDoManipulator.findProject(Number(target.getAttribute('objectid'))) as Project;
     const { name:nameContent, date:dateContent, priority:priorityContent } = project;
     prepareContent(projectContent);
     const form = document.createElement('form');
@@ -213,7 +213,7 @@ const formBuilder = (() => {
     return formDiv;
   }
 
-  const buildAddProjectToDoForm = (e:MouseEvent, iD:number, toDoDiv:HTMLDivElement) => {
+  const buildAddProjectToDoForm = (_e:MouseEvent, iD:number, toDoDiv:HTMLDivElement) => {
     const formDiv:HTMLDivElement = document.createElement('div');
     formDiv.setAttribute('id', 'projecttodosformdiv');
     formDiv.style.display = 'block';
@@ -224,7 +224,7 @@ const formBuilder = (() => {
     formDiv.appendChild(formHeading);
     if (toDoManipulator.getToDoAry().length > 0) {
     const form:HTMLFormElement = document.createElement('form');
-    const project = toDoManipulator.findProject(iD);
+    const project: Project = toDoManipulator.findProject(iD) as Project;
     const inputDiv = document.createElement('div');
     inputDiv.classList.add('inputdiv');
     inputDiv.appendChild(labelCreator('projectcheckboxdiv', 'Select ToDos:'))
@@ -237,17 +237,17 @@ const formBuilder = (() => {
       toDoCheckbox.setAttribute('id', `todocheckbox${iD}`);
       toDoCheckbox.setAttribute('value', `${iD}`);
       toDoCheckbox.setAttribute('name', 'projectcheckbox');
-      if (project.getToDos().filter(toDo => toDo.iD === iD).length > 0) {
+      if ((project.getToDos() as ToDo[]).filter(toDo => toDo.iD === iD).length > 0) {
         toDoCheckbox.setAttribute('checked', 'true');
       }
       const toDoLabel:HTMLLabelElement = document.createElement('label');
       toDoLabel.setAttribute('for', `todocheckbox${iD}`);
       const toDoHeading = document.createElement('div');
-      toDoHeading.textContent = toDoManipulator.findTodDo(iD).heading;
+      toDoHeading.textContent = (toDoManipulator.findTodDo(iD) as ToDo).heading;
       const toDoDate = document.createElement('div');
       toDoDate.classList.add('formtododate');
       toDoDate.innerHTML = `<span class="material-symbols-outlined">calendar_month</span> 
-          ${dateConverter.convertToString(toDoManipulator.findTodDo(iD).date)}`
+          ${dateConverter.convertToString((toDoManipulator.findTodDo(iD) as ToDo).date)}`
       toDoLabel.appendChild(toDoHeading);
       toDoLabel.appendChild(toDoDate);
       toDoFormDiv.appendChild(toDoCheckbox);
@@ -266,7 +266,7 @@ const formBuilder = (() => {
       projectToDoDiv.setAttribute('objectid', iD.toString());
       const newToDosDiv = domManipulator.createToDosDiv(iD);
       projectToDoDiv.appendChild(newToDosDiv);
-      toDoDiv.parentElement.replaceChild(projectToDoDiv, toDoDiv);
+      (toDoDiv.parentElement as HTMLDivElement).replaceChild(projectToDoDiv, toDoDiv);
     });
   } else {
     const noToDos:HTMLDivElement = document.createElement('div');

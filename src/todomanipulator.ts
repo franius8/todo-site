@@ -51,8 +51,8 @@ const toDoManipulator = (() => {
     return newToDo;
   }
 
-  const modifyToDo = (id:number, newHeading: string = null, newText: string = null, newDate: Date = null, newPriority: string = null) => {
-    const toDo:ToDo = toDoAry.find(x => x.iD === id);
+  const modifyToDo = (id:number, newHeading: string | null = null, newText: string | null = null, newDate: Date | null = null, newPriority: string | null = null) => {
+    const toDo:ToDo = toDoAry.find(x => x.iD === id) as ToDo;
     if (newHeading !== null) {
       toDo.heading = newHeading;
     }
@@ -68,8 +68,8 @@ const toDoManipulator = (() => {
     localStorage.setItem('todoary', (JSON.stringify(toDoAry)));
   }
 
-  const modifyDone = (id:number, newHeading: string = null, newText: string = null, newDate: Date = null, newPriority: string = null) => {
-    const toDo:ToDo = doneAry.find(x => x.iD === id);
+  const modifyDone = (id:number, newHeading: string | null = null, newText: string | null = null, newDate: Date | null = null, newPriority: string | null = null) => {
+    const toDo:ToDo = doneAry.find(x => x.iD === id) as ToDo;
     if (newHeading !== null) {
       toDo.heading = newHeading;
     }
@@ -86,10 +86,10 @@ const toDoManipulator = (() => {
   }
 
   const deleteToDo = ( id:number ) => {
-    const toDo:ToDo = toDoAry.find(x => x.iD === id);
+    const toDo:ToDo = toDoAry.find(x => x.iD === id) as ToDo;
     if (toDo.projectiDs.length > 0) {
       toDo.projectiDs.forEach((projectiD) => {
-        const project:Project = projectAry.find(x => x.iD === projectiD);
+        const project:Project = projectAry.find(x => x.iD === projectiD) as Project;
         const index = project.getToDos().indexOf(toDo);
         project.getToDos().splice(index, 1);
       });
@@ -143,8 +143,8 @@ const toDoManipulator = (() => {
     return newProject;
   }
 
-  const modifyProject = (id:number, newName: string = null, newToDos:ToDo[] = null, newDate: Date = null, newPriority: string = null) => {
-    const project:Project = projectAry.find(x => x.iD === id);
+  const modifyProject = (id:number, newName: string | null = null, newToDos:ToDo[] | null = null, newDate: Date | null = null, newPriority: string | null = null) => {
+    const project:Project = projectAry.find(x => x.iD === id) as Project;
     if (newName !== null) {
       project.name = newName;
     }

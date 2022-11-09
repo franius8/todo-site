@@ -90,7 +90,7 @@ const domManipulator = (() => {
   const createToDosDiv = (iD: number) => { 
     const toDosDiv:HTMLDivElement = document.createElement('div');
     toDosDiv.classList.add('projecttodoscontainer');
-    const toDosAry = toDoManipulator.findProject(iD).getToDos();
+    const toDosAry = (toDoManipulator.findProject(iD) as Project).getToDos() as ToDo[];
       toDosDiv.appendChild(createNoToDosButton(iD, toDosDiv, toDosAry.length));
       toDosAry.forEach((toDo) => {
         projectToDoBuilder(toDo, toDosDiv);
@@ -168,8 +168,8 @@ const domManipulator = (() => {
   };
 
   const addNewButtonEventListener = () => {
-    const addNewButton = document.getElementById('addnewbutton');
-    const formDiv:HTMLElement = document.getElementById('formdiv');
+    const addNewButton:HTMLButtonElement = document.getElementById('addnewbutton') as HTMLButtonElement;
+    const formDiv:HTMLDivElement = document.getElementById('formdiv') as HTMLDivElement;
     addNewButton.addEventListener(('click'), () => {
       formDiv.style.display = 'block';
       content.classList.add('blurred');
@@ -184,8 +184,8 @@ const domManipulator = (() => {
   };
 
   const addNavListeners = () => {
-    const navItems = document.querySelectorAll('.navitem');
-    navItems.forEach((element) => {
+    const navItems = document.querySelectorAll('.navitem') as NodeListOf<HTMLDivElement>;
+    navItems.forEach((element: HTMLDivElement) => {
       element.addEventListener(('click'), (e:MouseEvent) => {
         const iD = (<HTMLElement>(e.target)).id;
         switch (iD) {
@@ -262,17 +262,17 @@ const domManipulator = (() => {
   }
   
   const clearToDoDiv = () => {
-    const toDoDiv:HTMLElement = document.getElementById('tododiv');
+    const toDoDiv:HTMLDivElement = document.getElementById('tododiv') as HTMLDivElement;
     toDoDiv.textContent = '';
   }
 
   const clearDoneDiv = () => {
-    const toDoDiv:HTMLElement = document.getElementById('donediv');
+    const toDoDiv:HTMLDivElement = document.getElementById('donediv') as HTMLDivElement;
     toDoDiv.textContent = '';
   }
 
   const clearProjectDiv = () => {
-    const toDoDiv:HTMLElement = document.getElementById('projectdiv');
+    const toDoDiv:HTMLDivElement = document.getElementById('projectdiv') as HTMLDivElement;
     toDoDiv.textContent = '';
   }
 
@@ -290,7 +290,7 @@ const domManipulator = (() => {
       expandButton.setAttribute('objectid', iD.toString());
       expandButton.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
       expandButton.addEventListener(('click'), () => {
-        const projectDiv = document.getElementById(iD.toString());
+        const projectDiv:HTMLDivElement = document.getElementById(iD.toString()) as HTMLDivElement;
         const toDosDiv = (<HTMLElement>(projectDiv.nextSibling));
         toDosDiv.textContent = '';
         toDosDiv.appendChild(createToDosDiv(iD));
@@ -361,7 +361,7 @@ const domManipulator = (() => {
       content.appendChild(div);
       content.appendChild(formBuilder.buildForm());
       addNewButtonEventListener();
-      document.getElementById(`${linkName}link`).classList.add('active');
+      (document.getElementById(`${linkName}link`) as HTMLDivElement).classList.add('active');
       addNavListeners();
   }
 
@@ -389,14 +389,14 @@ const domManipulator = (() => {
     content.appendChild(formBuilder.buildNewProjectForm());
     addNewButtonEventListener();
     if (toDoManipulator.getProjectAry().length > 0) {
-      const addNewProjectButton = document.getElementById('newprojectbutton');
-      const projectFormDiv:HTMLElement = document.getElementById('projectformdiv');
+      const addNewProjectButton:HTMLButtonElement = document.getElementById('newprojectbutton') as HTMLButtonElement;
+      const projectFormDiv:HTMLElement = document.getElementById('projectformdiv') as HTMLDivElement;
       addNewProjectButton.addEventListener(('click'), () => {
         projectFormDiv.style.display = 'block';
         content.classList.add('blurred');
     });
   }
-    document.getElementById('projectslink').classList.add('active');
+    (document.getElementById('projectslink') as HTMLDivElement).classList.add('active');
     addNavListeners();
     displayProjects(toDoManipulator.getProjectAry());
   }
@@ -450,9 +450,9 @@ const domManipulator = (() => {
       const actionDiv:HTMLDivElement = document.createElement('div');
       actionDiv.setAttribute('id', 'actiondiv');
       actionDiv.innerHTML = 'No ToDos yet. Time to <span id="addnew">add a new one</span>.';
-      const addNewSpan = actionDiv.querySelector('#addnew');
+      const addNewSpan = actionDiv.querySelector('#addnew') as HTMLSpanElement;
       addNewSpan.addEventListener(('click'), () => {
-        const formDiv:HTMLElement = document.getElementById('formdiv');
+        const formDiv:HTMLDivElement = document.getElementById('formdiv') as HTMLDivElement;
         formDiv.style.display = 'block';
         content.classList.add('blurred');
       })
@@ -465,7 +465,7 @@ const domManipulator = (() => {
 
   const displayDoneToDos = (doneAry:ToDo[] ) => {
     clearDoneDiv()
-    const doneDiv = document.getElementById('donediv');
+    const doneDiv:HTMLDivElement = document.getElementById('donediv') as HTMLDivElement;
     if (doneAry.length === 0) {
       const actionDiv:HTMLDivElement = document.createElement('div');
       actionDiv.setAttribute('id', 'actiondiv');
@@ -479,14 +479,14 @@ const domManipulator = (() => {
 
   const displayProjects = (projectAry:Project[]) => {
     clearProjectDiv();
-    const projectDiv = document.getElementById('projectdiv');
+    const projectDiv = document.getElementById('projectdiv') as HTMLDivElement;
     if (projectAry.length === 0) {
       const actionDiv:HTMLDivElement = document.createElement('div');
       actionDiv.setAttribute('id', 'actiondiv');
       actionDiv.innerHTML = 'No Projects yet. Time to <span id="addnew">add a new one</span>.';
-      const addNewSpan = actionDiv.querySelector('#addnew');
+      const addNewSpan: HTMLSpanElement = actionDiv.querySelector('#addnew') as HTMLSpanElement;
       addNewSpan.addEventListener(('click'), () => {
-        const formDiv:HTMLElement = document.getElementById('projectformdiv');
+        const formDiv:HTMLDivElement = document.getElementById('projectformdiv') as HTMLDivElement;
         formDiv.style.display = 'block';
         content.classList.add('blurred');
       });
