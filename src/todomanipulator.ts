@@ -139,7 +139,7 @@ const toDoManipulator = (() => {
     const iD = idGenerator.generateID();
     const newProject:Project = Project(iD, name, toDos, date, priority);
     projectAry.push(newProject);
-    localStorage.setItem('projectary', (JSON.stringify(projectAry)));
+    updateProjectAry();
     return newProject;
   }
 
@@ -157,7 +157,7 @@ const toDoManipulator = (() => {
     if (newPriority !== null) {
       project.priority = newPriority;
     }
-    localStorage.setItem('projectary', (JSON.stringify(projectAry)));
+    updateProjectAry();
   }
 
   const deleteProject = (id:number) => {
@@ -169,6 +169,13 @@ const toDoManipulator = (() => {
 
   const findProject = (id:number) => {
     return projectAry.find(x => x.iD === id);
+  }
+
+  const addProjectToDo = (projectiD:number, toDoiD:number) => {
+    const project:Project = projectAry.find(x => x.iD === projectiD) as Project;
+    const toDo:ToDo = toDoAry.find(x => x.iD === toDoiD) as ToDo;
+    project.addToDo(toDo);
+    updateProjectAry();
   }
 
   const deleteItem = (id:number) => {
@@ -186,6 +193,10 @@ const toDoManipulator = (() => {
   const getProjectAry = () => projectAry;
   const updateProjectAry = () => {
     localStorage.setItem('projectary', (JSON.stringify(projectAry)));
+  }
+  const clearProjectTodos = (projectiD:number) => {
+    const project:Project = projectAry.find(x => x.iD === projectiD) as Project;
+    project.setToDos([]);
   }
 
   return { 
@@ -206,7 +217,9 @@ const toDoManipulator = (() => {
     deleteProject,
     findProject,
     updateProjectAry,
-    deleteItem
+    deleteItem,
+    clearProjectTodos,
+    addProjectToDo
   }
 })();
 

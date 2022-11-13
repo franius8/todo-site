@@ -70,10 +70,9 @@ const formHandler =(() => {
     const projectToDoIds = formData.getAll('projectcheckbox').map((value) => Number(value));
     target.reset()
     targetParent.remove();
-    const project:Project = toDoManipulator.findProject(iD) as Project;
-    project.toDosAry = [];
+    toDoManipulator.clearProjectTodos(iD);
     projectToDoIds.forEach((toDoId) => {
-      project.addToDo(toDoManipulator.findTodDo(toDoId) as ToDo);
+      toDoManipulator.addProjectToDo(iD, toDoId);
   });
   toDoManipulator.updateProjectAry();
   }
