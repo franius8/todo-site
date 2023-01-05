@@ -1,0 +1,518 @@
+/*
+CSS for main site components
+Header CSS in separate file
+*/
+
+:root {
+    --main-color: #16a34a;
+    --light-gray: #e5e7eb;
+    --lighter-gray: #f7f7f7;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    font-size: 80%;
+}
+
+label {
+    font-size: 70%;
+}
+
+h2 {
+    white-space: nowrap;
+}
+
+/* For blurring the site content when form for adding new ToDos is open */
+#content.blurred div:not(#formdiv, #formdiv div, #projectformdiv, #projectformdiv div, #projecttodosformdiv, #projecttodosformdiv div) {
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+/* For Google Icons */
+.material-symbols-outlined {
+    font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 48
+}
+
+#tododiv, #donediv, #projectdiv {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.todo, .project, .donetodo, .projecttodo {
+    display: grid;
+    gap: 0.5rem;
+    border: 1px solid var(--light-gray);
+    border-radius: 1rem;
+    box-shadow: 3px 3px 3px rgb(150, 150, 150);
+}
+
+.projecttodo .todocontent {
+    grid-template: repeat(3, auto) / repeat(2, 1fr);
+    padding: 0.75rem;
+    gap: 0.25rem;
+}
+
+.todo, .donetodo {
+    grid-template: 1fr / 1fr 60fr;
+    padding-right: 1rem;
+}
+
+.projecttodo {
+    grid-template: 1fr / 1fr 60fr;
+    width: 90%;
+}
+
+.project {
+    grid-template: 1fr / 1fr 60fr 3fr;
+}
+
+.middlediv {
+    display: grid;
+    align-items: center;
+    gap: 1rem;
+    grid-template: 1fr / 3fr 50fr 6fr;
+    padding: 0.75rem 0;
+}
+
+.todo:hover, .project:hover {
+    background-color: var(--lighter-gray);
+    border-collapse: collapse;
+}
+
+.labelstripe {
+    border-radius: 1rem 0 0 1rem;
+}
+
+.todocontent {
+    display: grid;
+    gap: 0.5rem;
+    grid-template: repeat(3, auto) / repeat(2, 1fr);
+}
+
+.expandbutton {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: initial;
+    border-left: 1px solid var(--light-gray);
+}
+
+.expandbutton:hover {
+    cursor: pointer;
+    background-color: rgb(160, 160, 160);
+    border: 1px solid rgb(160, 160, 160);
+    border-radius: 0 1rem 1rem 0;
+    margin: -1px;
+    z-index: 1;
+}
+
+.projectcontent {
+    display: grid;
+    gap: 0.5rem;
+    grid-template: repeat(2, auto) / repeat(2, 1fr);
+}
+
+.todoheading {
+    font-weight: bold;
+    grid-area: 1 / 1 / 1 / span 2;
+}
+
+.projectname {
+    font-weight: bold;
+    grid-area: 1 / 1 / 1 / span 2;
+}
+
+.todotext {
+    grid-area: 2 / 1 / 2 / span 2;
+    font-size: 0.8rem;
+}
+
+.tododate {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.todopriority {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.prioritycircle {
+    border-radius: 50%;
+    height: 0.6rem;
+    width: 0.6rem;
+}
+
+.buttondiv {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.editbutton, .deletebutton, .cancelbutton, .acceptbutton {
+    border-radius: 0.5rem;
+    padding: 0.1rem 0.5rem;
+    color: white;
+}
+
+button span {
+    pointer-events: none;
+}
+
+.deletebutton {
+    background-color: red;
+    border: 1px solid red;
+}
+
+.deletebutton:hover {
+    background-color: rgb(210, 0, 0);
+    border: 1px solid rgb(210, 0, 0);
+}
+
+.editbutton, .cancelbutton {
+    background-color: gray;
+    border: 1px solid gray;
+}
+
+.acceptbutton {
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+}
+
+.acceptbutton:hover {
+    background-color: rgb(15, 119, 53);
+    border: 1px solid rgb(15, 119, 53);
+}
+
+.editbutton:hover, .cancelbutton:hover {
+    background-color: rgb(90, 90, 90);
+    border: 1px solid rgb(90, 90, 90);
+}
+
+.missedtodo {
+    color: red;
+    font-weight: bold;
+}
+
+.checkbox {
+    border: 3px solid var(--main-color);
+    color: var(--main-color);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1.5rem;
+    text-align: center;
+    font-family: 'Sansita Swashed', cursive;
+}
+
+.checkbox:hover {
+    background-color: var(--main-color);
+    color: white;
+    cursor: pointer;
+}
+
+#formdiv, #projectformdiv, #projecttodosformdiv {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--light-gray);
+    display: none;
+    z-index: 10;
+    min-width: 30rem;;
+}
+
+#projectformdiv {
+    width: 30rem;
+}
+
+#formdiv form {
+    display: grid;
+    grid-template: repeat(3, auto) / repeat(2, auto);
+    gap: 1rem;
+}
+
+#projectformdiv form {
+    display: grid;
+    grid-template: repeat(4, auto) / repeat(2, auto);
+    gap: 1rem;
+}
+
+#formdiv form input, #projectformdiv form input {
+    padding: 0.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--light-gray);
+}
+
+.duringedit {
+    gap: 0.2rem;
+}
+
+.duringedit .inputdiv {
+    gap: 0.2rem;
+}
+
+.duringedit form {
+    gap: 0.2rem;
+}
+
+.duringedit form .inputdiv {
+    gap: 0.2rem;
+}
+
+#closebuttondiv {
+    padding: 0.5rem;
+    float: right;
+}
+
+#closebutton {
+    border-radius: 50%;
+    border: 1px solid var(--light-gray);
+    background-color: var(--light-gray);
+    height: 2rem;
+    width: 2rem;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#closebutton span {
+    line-height: 2rem;
+    height: 2rem;
+    width: 2rem;
+}
+
+.inputdiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+form button {
+    border-radius: 1rem;
+    border: 5px solid var(--main-color);
+    background-color: var(--main-color);
+    padding: 0.5rem 1rem;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    color: white;
+    width: 10rem;
+    align-self: center;
+    justify-self: center;
+}
+
+form button {
+    grid-area: 3 / 1 / 3 / span 2;
+}
+
+#projectformdiv form div.inputdiv:nth-child(3) {
+    grid-area: 2 / 1 / 2 / span 2;
+    justify-self: center;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.radiocontainer {
+    display: flex;
+    align-items: center;
+}
+
+.radiocontainer input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+.radiocontainer label {
+    padding: 0.4rem 20px;
+    border: 1px solid var(--light-gray);
+    color: black;
+}
+
+.radiocontainer label:first-of-type {
+    border-radius: 1rem 0 0 1rem;
+}
+
+.radiocontainer label:last-of-type {
+    border-radius: 0 1rem 1rem 0;
+}
+
+.radiocontainer input[type="radio"]:checked + label {
+    background-color: var(--light-gray);
+}
+
+.radiocontainer label:hover {
+    background-color: var(--light-gray);
+    cursor: pointer;
+}
+
+#doneheader {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+#actiondiv {
+    margin: auto;
+    justify-self: center;
+    font-size: 1.5rem;
+}
+
+#addnew {
+    font-weight: 900;
+    color: var(--main-color);
+}
+
+#addnew:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#newprojectbuttondiv {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+}
+
+#newprojectbutton, .addtodobutton {
+    border-radius: 1rem;
+    border: 5px solid var(--main-color);
+    background-color: var(--main-color);
+    padding: 0.5rem 1rem;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    color: white;
+    align-self: center;
+    justify-self: center;
+}
+
+#newprojectbutton:hover, .addtodobutton:hover {
+    cursor: pointer;
+    background-color: white;
+    color: var(--main-color);
+    border: 5px solid var(--main-color);
+}
+
+.projecttododiv {
+    border-radius: 0 0 1rem 1rem;
+    border: 1px solid var(--light-gray);
+    box-shadow: 3px 3px 3px rgb(150, 150, 150);
+    background-color: white;
+    z-index: 1;
+}
+
+.expanded {
+    border-radius: 1rem 1rem 0 0;
+}
+
+.expanded .labelstripe {
+    border-radius: 1rem 0 0 0;
+}
+
+.expanded .expandbutton {
+    border-radius: 0 1rem 0 0;
+}
+
+.projecttodoscontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.notodosdiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.projectcheckboxdiv input[type="checkbox"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+.projectcheckboxdiv label {
+    padding: 0.4rem 20px;
+    border: 1px solid var(--light-gray);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.projectcheckboxdiv input[type="checkbox"]:checked + label {
+    background-color: var(--light-gray);
+}
+
+.projectcheckboxdiv label:hover {
+    background-color: var(--light-gray);
+    cursor: pointer;
+}
+
+.projectcheckboxdiv label:first-of-type{
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.projectcheckboxdiv label:last-of-type {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+#projecttodosformdiv form .inputdiv {
+    padding-bottom: 1rem;
+    gap: 1rem;
+}
+
+.formtododate {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
