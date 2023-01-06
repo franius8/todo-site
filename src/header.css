@@ -18,6 +18,10 @@
     align-items: center;
 }
 
+#logodiv:hover {
+    cursor: pointer;
+}
+
 #logo {
     color: var(--main-color);
     font-weight: 900;
