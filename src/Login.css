@@ -1,0 +1,43 @@
+#login {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    border: 3px solid var(--light-gray);
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+#loginform {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#loginformbody {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#registerbutton {
+    border-radius: 1rem;
+    border: 5px solid var(--main-color);
+    background-color: white;
+    padding: 0.5rem 1rem;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    color: var(--main-color);
+    width: 10rem;
+    align-self: center;
+    justify-self: center;
+}
+
+#registerbutton:hover {
+    background-color: var(--main-color);
+    color: white;
+    cursor: pointer;
+}

@@ -1,9 +1,19 @@
 import React from "react";
 import {ToDoInterface} from "./d";
+import DateConverter from "./DateConverter";
+import dateConverter from "./DateConverter";
 
-export default function ToDo(props: { toDo: ToDoInterface }) {
+export default function ToDo(props: { toDo: ToDoInterface,
+    modifyToDo: (iD: number, heading: string, text: string, date: Date, priority: string) => void, deleteToDo: (iD: number) => void }) {
+    const [duringEdit, setDuringEdit] = React.useState(false);
+
+    const [title, setTitle] = React.useState(props.toDo.heading);
+    const [content, setContent] = React.useState(props.toDo.text);
+    const [dueDate, setDueDate] = React.useState(DateConverter.convertToInputFormat(props.toDo.date));
+    const [priority, setPriority] = React.useState(props.toDo.priority);
+
         let priorityColor;
-            switch (props.toDo.priority) {
+            switch (priority) {
             case 'High':
                 priorityColor = 'red';
                 break;
@@ -23,32 +33,103 @@ export default function ToDo(props: { toDo: ToDoInterface }) {
                 priorityColor = 'gray';
                 break
         }
-    return (
-        <div className="todo">
-            <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
-            <div className="middlediv">
-                <div className="checkboxdiv">
-                    <div className="checkbox">✓</div>
-                </div>
-                <div className="todocontent">
-                    <div className="todoheading">{props.toDo.heading}</div>
-                    <div className="todotext">{props.toDo.text}</div>
-                    <div className="tododate">
-                        <div><span className="material-symbols-outlined">calendar_month</span></div>
-                        <div>12.1.2023 (6 days left)</div>
+        const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setTitle(e.target.value);
+        }
+        const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setContent(e.target.value);
+        }
+        const handleDueDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setDueDate(DateConverter.convertToInputFormat(new Date(e.target.value)));
+        }
+        const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setPriority(e.target.value);
+            console.log(e.target.value);
+        }
+        const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            props.modifyToDo(props.toDo.iD, title, content, new Date(dueDate), priority);
+            setDuringEdit(false);
+            console.log("submit");
+        }
+        const toggleEdit = () => {
+            setDuringEdit(!duringEdit);
+        }
+        const deleteToDo = () => {
+            props.deleteToDo(props.toDo.iD);
+        }
+    if (!duringEdit) {
+        return (
+            <div className="todo">
+                <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
+                <div className="middlediv">
+                    <div className="checkboxdiv">
+                        <div className="checkbox">✓</div>
                     </div>
-                    <div className="todopriority">
-                        <div className="prioritycircle" style={{backgroundColor: priorityColor}}></div>
-                        <div>{props.toDo.priority} priority</div>
+                    <div className="todocontent">
+                        <div className="todoheading">{title}</div>
+                        <div className="todotext">{content}</div>
+                        <div className="tododate">
+                            <div><span className="material-symbols-outlined">calendar_month</span></div>
+                            <div>{dueDate} ({dateConverter.getDayDifference(new Date(dueDate))} days left)
+                            </div>
+                        </div>
+                        <div className="todopriority">
+                            <div className="prioritycircle" style={{backgroundColor: priorityColor}}></div>
+                            <div>{priority} priority</div>
+                        </div>
                     </div>
-                </div>
-                <div className="buttondiv">
-                    <button className="editbutton"><span
-                        className="material-symbols-outlined">edit</span></button>
-                    <button className="deletebutton"><span
-                        className="material-symbols-outlined">delete</span></button>
+                    <div className="buttondiv">
+                        <button className="editbutton" onClick={toggleEdit}>
+                            <span className="material-symbols-outlined">edit</span></button>
+                        <button className="deletebutton" onClick={deleteToDo}>
+                            <span className="material-symbols-outlined">delete</span></button>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    } else {
+        return (
+            <div className="todo">
+                <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
+                <div className="middlediv">
+                    <div className="checkboxdiv">
+                        <div className="checkbox">✓</div>
+                    </div>
+                    <div className="duringedit">
+                        <form className="todocontent" id="editform" onSubmit={handleSubmit}>
+                            <div className="inputdiv"><label htmlFor="todotitleedit">Title:</label>
+                                <input type="text" name="todotitleedit" id="todotitleedit" required={true} value={title} onChange={handleTitleChange}/>
+                            </div>
+                            <div className="inputdiv"><label htmlFor="todocontentedit">Content (optional):</label>
+                                <input type="text" name="todocontentedit" id="todocontentedit" value={content} onChange={handleContentChange}/>
+                            </div>
+                            <div className="inputdiv"><label htmlFor="tododateedit">Due date:</label>
+                                <input type="date" name="tododateedit" id="tododateedit" required={true} value={dueDate} onChange={handleDueDateChange}/>
+                            </div>
+                            <div className="inputdiv"><label htmlFor="radiocontainer">Priority:</label>
+                                <div className="radiocontainer">
+                                    <input type="radio" name="todopriorityedit" value="Low" id="Low" onChange={handlePriorityChange}
+                                           checked={priority === "Low"}/>
+                                    <label htmlFor="Low">Low</label>
+                                    <input type="radio" name="todopriorityedit" value="Standard" id="Standard" onChange={handlePriorityChange}
+                                           checked={priority === "Standard"}/>
+                                    <label htmlFor="Standard">Standard</label>
+                                    <input type="radio" name="todopriorityedit" value="High" id="High" onChange={handlePriorityChange}
+                                           checked={priority === "High"}/>
+                                    <label htmlFor="High">High</label></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="buttondiv">
+                        <button className="cancelbutton" onClick={toggleEdit}>
+                            <span className="material-symbols-outlined">undo</span>
+                        </button>
+                        <button className="acceptbutton" type="submit" form="editform">
+                            <span className="material-symbols-outlined">check</span></button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }

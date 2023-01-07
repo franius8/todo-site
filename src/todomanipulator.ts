@@ -5,7 +5,6 @@ import idGenerator from "./idGenerator";
 import { ToDoInterface, ProjectInterface, RawProject, generalObject } from "./d";
 
 const toDoManipulator = (() => {
-
     const toDoAry:ToDoInterface[] = [];
     const doneAry:ToDoInterface[] = [];
     const projectAry:ProjectInterface[] = [];
