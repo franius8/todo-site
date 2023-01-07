@@ -1,9 +1,11 @@
 import React, {useState} from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { db, auth } from "./firebase";
 import {doc, setDoc} from "firebase/firestore";
+import {useNavigate} from "react-router-dom";
 
 export default function Register() {
+    const navigate = useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -16,11 +18,18 @@ export default function Register() {
                 const user = userCredential.user;
                 await setDoc(doc(db, "users", user.uid), {
                     user: user.uid,
-                    name: name,
                     email: email,
                     todos: "[]",
                     done: "[]",
                     projects: "[]"
+                });
+                updateProfile(user, {
+                    displayName: name
+                }).then(() => {
+                   alert("User registered successfully");
+                }).catch((error) => {
+                    // An error occurred
+                    // ...
                 });
                 // ...
             })

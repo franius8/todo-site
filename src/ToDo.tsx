@@ -4,7 +4,8 @@ import DateConverter from "./DateConverter";
 import dateConverter from "./DateConverter";
 
 export default function ToDo(props: { toDo: ToDoInterface,
-    modifyToDo: (iD: number, heading: string, text: string, date: Date, priority: string) => void, deleteToDo: (iD: number) => void }) {
+    modifyToDo: (iD: number, heading: string, text: string, date: Date, priority: string) => void, deleteToDo: (iD: number) => void
+moveToDone: (iD: number) => void}) {
     const [duringEdit, setDuringEdit] = React.useState(false);
 
     const [title, setTitle] = React.useState(props.toDo.heading);
@@ -58,13 +59,16 @@ export default function ToDo(props: { toDo: ToDoInterface,
         const deleteToDo = () => {
             props.deleteToDo(props.toDo.iD);
         }
+        const moveToDone = () => {
+            props.moveToDone(props.toDo.iD);
+        }
     if (!duringEdit) {
         return (
             <div className="todo">
                 <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
                 <div className="middlediv">
                     <div className="checkboxdiv">
-                        <div className="checkbox">✓</div>
+                        <div className="checkbox" onClick={moveToDone}>✓</div>
                     </div>
                     <div className="todocontent">
                         <div className="todoheading">{title}</div>

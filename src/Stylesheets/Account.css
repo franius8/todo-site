@@ -1,0 +1,18 @@
+#accountdiv {
+    margin: auto;
+    border: 3px solid var(--light-gray);
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 0;
+}
+
+#accountitemcontentdiv {
+    display: grid;
+    grid-template: 1fr / 1fr 1fr;
+    gap: 1rem;
+}

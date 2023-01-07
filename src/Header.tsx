@@ -7,6 +7,22 @@ import {auth} from "./firebase";
 export default function Header(props: { active: string, newTodo: () => void}) {
     const navitems = [["home", "house"], ["done", "done"], ["projects", "assignment"]];
     const navigate = useNavigate();
+    const [user, setUser] = React.useState(false);
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            setUser(true);
+        } else {
+            setUser(false);
+        }
+    });
+
+    let buttonText;
+    if (user) {
+        buttonText = "Account";
+    } else {
+        buttonText = "Log In";
+    }
     const backToHome = () => {
         navigate("/home");
     }
@@ -37,7 +53,7 @@ export default function Header(props: { active: string, newTodo: () => void}) {
                     Add ToDo
                 </button>
                 <div id={"loginbutton"} onClick={toLogin}>
-                    <span className="material-symbols-outlined md-36">account_circle</span>
+                    {buttonText}
                 </div>
             </div>
         </header>

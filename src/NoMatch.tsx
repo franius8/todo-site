@@ -1,6 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import "./NoMatch.css";
+import "./Stylesheets/NoMatch.css";
 
 export default function NoMatch() {
     const navigate = useNavigate();

@@ -6,7 +6,9 @@ import NewToDoForm from "./NewToDoForm";
 import NewProjectForm from "./NewProjectForm";
 
 export default function Projects(props: { projects: ProjectInterface[], newToDo: () => void, closeToDo: () => void,
-    formVisible: boolean, setContentClass: Dispatch<SetStateAction<string>> }) {
+    formVisible: boolean, setContentClass: Dispatch<SetStateAction<string>>,
+    createToDo: (heading: string, text: string, date: Date, priority: string) => void }) {
+
     const [projectFormVisible, setProjectFormVisible] = React.useState(false);
     const openProjectForm = () => {
         setProjectFormVisible(true);
@@ -23,7 +25,7 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
                 <div id={"projectdiv"}>
                     {props.projects.map((project) => <Project project={project}/>)}
                 </div>
-                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo}/>
+                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
                 <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm}/>
             </>
         );
@@ -36,7 +38,7 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
                         No Projects yet. Time to <span id="addnew" onClick={openProjectForm}>add a new one</span>.
                     </div>
                 </div>
-                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo}/>
+                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
                 <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm}/>
             </>
         );
