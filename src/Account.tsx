@@ -17,36 +17,53 @@ export default function Account() {
     const toHome = () => {
         navigate("/home");
     }
+
     return (
         <div id={"accountdiv"}>
-            <h1>My Account</h1>
-            <div id={"accountcontentdiv"}>
-                <div id={"accountitemdiv"}>
-                    <div id={"accountitemtitlediv"}>
+            <div id={"logodiv"} onClick={toHome}>
+                <div id={"checkmark"}>
+                    &#10003;
+                </div>
+                <div id={"logo"}>
+                    To Do
+                </div>
+            </div>
+            <div className={"accountcontentdiv"}>
+                <div className={"accountitemdiv"}>
+                    <div className={"accountitemtitlediv"}>
                         <h2>Account info</h2>
                     </div>
-                    <div id={"accountitemcontentdiv"}>
-                        <div id={"accountitemcontentitemdiv"}>
-                            <div id={"accountitemcontentitemtitlediv"}>
+                    <div className={"accountitemcontentdiv"}>
+                        <div className={"accountitemcontentitemdiv"}>
+                            <div className={"accountitemcontentitemtitlediv"}>
                                 <h3>Name</h3>
                             </div>
-                            <div id={"accountitemcontentitemcontentdiv"}>
-                                <p>{user?.displayName}</p>
+                            <div className={"accountitemcontentitemcontentdiv"}>
+                                <p>{user?.displayName === null ? "No username in database" : user?.displayName}</p>
                             </div>
                         </div>
-                        <div id={"accountitemcontentitemdiv"}>
-                            <div id={"accountitemcontentitemtitlediv"}>
+                        <div className={"accountitemcontentitemdiv"}>
+                            <div className={"accountitemcontentitemtitlediv"}>
                                 <h3>Email</h3>
                             </div>
-                            <div id={"accountitemcontentitemcontentdiv"}>
+                            <div className={"accountitemcontentitemcontentdiv"}>
                                 <p>{user?.email}</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div className={"accountitemdiv"}>
+                    <div className={"accountitemtitlediv"}>
+                        <h2>Actions</h2>
+                    </div>
+                    <div  className={"accountbuttondiv"}>
+                        <button className={"accountButton"}>Change password</button>
+                        <button className={"accountButton"} id={"delete-account"}>Delete account</button>
+                        <button className={"accountButton"} onClick={toHome}>Back to home</button>
+                        <button className={"accountButton"} id={"logout"} onClick={signOutUser}>Log Out</button>
+                    </div>
+                </div>
             </div>
-            <button onClick={toHome}>Back to home</button>
-            <button id={"logoutbutton"} onClick={signOutUser}>Log Out</button>
         </div>
     );
 }

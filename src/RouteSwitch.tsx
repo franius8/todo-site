@@ -8,7 +8,6 @@ import Register from "./Register";
 import NoMatch from "./NoMatch";
 import Account from "./Account";
 import {useEffect} from "react";
-import toDoManipulator from "./todomanipulator"
 import {ProjectInterface, ToDoInterface} from "./d";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "./firebase";
@@ -16,6 +15,7 @@ import {collection, doc, onSnapshot, updateDoc} from "firebase/firestore";
 import dateFixer from "./datefixer";
 import todoObject from "./todoObject";
 import idGenerator from "./idGenerator";
+import Projectobject from "./projectobject";
 
 export default function RouteSwitch() {
     const [formVisible, setFormVisible] = React.useState(false);
@@ -26,12 +26,18 @@ export default function RouteSwitch() {
 
     useEffect(() => {
         let rawToDoAry: any[] = [];
+        let rawDoneToDoAry: any[] = [];
+        let rawProjectAry: any[] = [];
         let unsubscribe = () => {};
         onAuthStateChanged(auth,  async (user) => {
             if (user) {
                 unsubscribe = onSnapshot(doc(db, "users", user.uid), (doc) => {
                     rawToDoAry = JSON.parse(doc.data()?.todos || "[]");
                     setToDos(convertRawToDos(rawToDoAry));
+                    rawDoneToDoAry = JSON.parse(doc.data()?.donetodos || "[]");
+                    setDoneToDos(convertRawToDos(rawDoneToDoAry));
+                    rawProjectAry = JSON.parse(doc.data()?.projects || "[]");
+                    setProjects(convertRawProjects(rawProjectAry));
                 });
             } else {
                 console.log("No user is currently signed in. ToDos are saved in local storage.");
@@ -51,6 +57,15 @@ export default function RouteSwitch() {
         return toDoAry;
     }
 
+    const convertRawProjects = (rawProjectAry: any[]) => {
+        const projectAry: ProjectInterface[] = [];
+        rawProjectAry.forEach((project: ProjectInterface) => {
+            project.date = dateFixer.fixDates(project.date);
+            projectAry.push(Projectobject(project.iD, project.name, project.toDosAry, project.date, project.priority));
+        });
+        return projectAry;
+    }
+
     const openToDoForm = () => {
         setFormVisible(true);
         setContentClass("blurred");
@@ -59,19 +74,33 @@ export default function RouteSwitch() {
         setFormVisible(false);
         setContentClass("");
     }
-    const updateDatabase = async (toDosCopy: ToDoInterface[]) => {
+    const updateDatabase = async (toDosCopy: ToDoInterface[] | ProjectInterface[], type: string) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const uid = user.uid;
                 try {
                     const docRef = await updateDoc(doc(collection(db, "users"), uid), {
-                        todos: JSON.stringify(toDosCopy)
+                        [type]: JSON.stringify(toDosCopy)
                     });
                 } catch (e) {
                 }
             } else {
+                let itemName;
+                switch (type) {
+                    case "todos":
+                        itemName = "todoary";
+                        break;
+                    case "donetodos":
+                        itemName = "donetodoary";
+                        break;
+                    case "projects":
+                        itemName = "projectary";
+                        break;
+                    default:
+                        itemName = "todoary";
+                }
                 alert("No user is currently signed in. ToDos are saved in local storage.");
-                localStorage.setItem('todoary', (JSON.stringify(toDosCopy)));
+                localStorage.setItem(itemName, (JSON.stringify(toDosCopy)));
             }
         });
     }
@@ -81,7 +110,7 @@ export default function RouteSwitch() {
         const newToDo:ToDoInterface = todoObject(heading, text, date, priority, iD, []);
         toDosCopy.push(newToDo);
         setToDos(toDosCopy);
-        updateDatabase(toDosCopy);
+        updateDatabase(toDosCopy, "todos");
     }
     const modifyToDo = (iD: number, heading: string, text: string, date: Date, priority: string) => {
         let toDosCopy = [...toDos];
@@ -89,15 +118,22 @@ export default function RouteSwitch() {
         const newToDo:ToDoInterface = todoObject(heading, text, date, priority, iD, []);
         toDosCopy.push(newToDo);
         setToDos(toDosCopy);
-        updateDatabase(toDosCopy);
+        updateDatabase(toDosCopy, "todos");
     }
     const deleteToDo = (iD: number) => {
         if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
             const toDosCopy = [...toDos].filter(x => x.iD !== iD);
             idGenerator.freeID(iD);
-            updateDatabase(toDosCopy);
+            updateDatabase(toDosCopy, "todos");
             setToDos(toDosCopy);
         }
+    }
+    const createProject = (name: string, date: Date, priority: string) => {
+        const projectsCopy = [...projects];
+        const iD = idGenerator.generateID();
+        projectsCopy.push(Projectobject(iD, name, [], date, priority));
+        updateDatabase(projectsCopy, "projects");
+        setProjects(projectsCopy);
     }
   return (
       <div id={"content"} className={contentClass}>
@@ -109,13 +145,11 @@ export default function RouteSwitch() {
                   <Route path="/home" element={<Home key={0}
                       formVisible={formVisible} newToDo={openToDoForm} modifyToDo={modifyToDo} deleteToDo={deleteToDo}
                       closeToDo={closeToDoForm} toDos={toDos} createToDo={createToDo}/>} />
-                  {/*
                   <Route path="/done" element={<Done createToDo={createToDo}
                       formVisible={formVisible} newToDo={openToDoForm} closeToDo={closeToDoForm}/>} />
                   <Route path="/projects" element={<Projects createToDo={createToDo}
-                      projects={projects} newToDo={openToDoForm}
+                      projects={projects} newToDo={openToDoForm} createProject={createProject}
                       closeToDo={closeToDoForm} formVisible={formVisible} setContentClass={setContentClass}/>} />
-                      */}
                   <Route path={"/login"} element={<Login />} />
                   <Route path={"/register"} element={<Register />} />
                   <Route path={"/account"} element={<Account />} />

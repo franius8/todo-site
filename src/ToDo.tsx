@@ -75,7 +75,7 @@ moveToDone: (iD: number) => void}) {
                         <div className="todotext">{content}</div>
                         <div className="tododate">
                             <div><span className="material-symbols-outlined">calendar_month</span></div>
-                            <div>{dueDate} ({dateConverter.getDayDifference(new Date(dueDate))} days left)
+                            <div>{dateConverter.convertToString(new Date(dueDate))} ({dateConverter.getDayDifference(new Date(dueDate))} days left)
                             </div>
                         </div>
                         <div className="todopriority">

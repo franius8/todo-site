@@ -4,10 +4,12 @@ import Project from "./Project";
 import {ProjectInterface} from "./d";
 import NewToDoForm from "./NewToDoForm";
 import NewProjectForm from "./NewProjectForm";
+import ProjectToDoForm from "./ProjectToDoForm";
 
 export default function Projects(props: { projects: ProjectInterface[], newToDo: () => void, closeToDo: () => void,
     formVisible: boolean, setContentClass: Dispatch<SetStateAction<string>>,
-    createToDo: (heading: string, text: string, date: Date, priority: string) => void }) {
+    createToDo: (heading: string, text: string, date: Date, priority: string) => void,
+    createProject: (name: string, date: Date, priority: string) => void}) {
 
     const [projectFormVisible, setProjectFormVisible] = React.useState(false);
     const openProjectForm = () => {
@@ -22,11 +24,15 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
         return (
             <>
                 <Header active={"projects"} newTodo={props.newToDo}/>
+                <div id="newprojectbuttondiv">
+                    <button id="newprojectbutton" onClick={openProjectForm}>Add a new project</button>
+                </div>
                 <div id={"projectdiv"}>
                     {props.projects.map((project) => <Project project={project}/>)}
                 </div>
                 <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
-                <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm}/>
+                <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm} createProject={props.createProject}/>
+                <ProjectToDoForm visible={false} close={() => {}}/>
             </>
         );
     } else {
@@ -39,7 +45,8 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
                     </div>
                 </div>
                 <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
-                <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm}/>
+                <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm} createProject={props.createProject}/>
+                <ProjectToDoForm visible={false} close={() => {}}/>
             </>
         );
     }

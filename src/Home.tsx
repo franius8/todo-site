@@ -43,9 +43,6 @@ export default function Home(props: {
         updateDatabase(toDosCopy);
         setToDos(toDosCopy);
     }
-    const createToDo = (heading: string, text: string, date: Date, priority: string) => {
-
-    }
 
     if (props.toDos.length > 0) {
         return (
@@ -55,7 +52,7 @@ export default function Home(props: {
                     {props.toDos.map((toDo) => <ToDo toDo={toDo} key={toDo.iD} modifyToDo={props.modifyToDo}
                     deleteToDo={props.deleteToDo} moveToDone={moveToDone}/>)}
                 </div>
-                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={createToDo}/>
+                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
             </>
         );
     } else {
@@ -67,7 +64,7 @@ export default function Home(props: {
                         No ToDos yet. Time to <span id="addnew" onClick={props.newToDo}>add a new one</span>.
                     </div>
                 </div>
-                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={createToDo}/>
+                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
             </>
         );
     }

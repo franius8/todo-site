@@ -1,7 +1,12 @@
 import React from "react";
 import {ProjectInterface} from "./d";
+import dateConverter from "./DateConverter";
+import ProjectToDoContainer from "./ProjectToDoContainer";
 
 export default function Project(props: { project: ProjectInterface }) {
+    const [projectToDoVisible, setProjectToDoVisible] = React.useState(false);
+    const [projectClass, setProjectClass] = React.useState("project");
+
     let priorityColor;
     switch (props.project.priority) {
         case 'High':
@@ -23,9 +28,16 @@ export default function Project(props: { project: ProjectInterface }) {
             priorityColor = 'gray';
             break
     }
+
+    const toggleToDos = () => {
+        setProjectToDoVisible(!projectToDoVisible);
+        const newProjectClass = projectClass == "project" ? "project expanded" : "project";
+        setProjectClass(newProjectClass);
+    }
+
         return (
             <div className="projectcontainer">
-                <div className="project" id="9480">
+                <div className={projectClass}>
                     <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
                     <div className="middlediv">
                         <div className="checkboxdiv">
@@ -35,7 +47,7 @@ export default function Project(props: { project: ProjectInterface }) {
                             <div className="projectname">{props.project.name}</div>
                             <div className="tododate">
                                 <div><span className="material-symbols-outlined">calendar_month</span></div>
-                                <div>19.1.2023 (13 days left)</div>
+                                <div>{dateConverter.convertToString(props.project.date)} ({dateConverter.getDayDifference(props.project.date)} days left)</div>
                             </div>
                             <div className="todopriority">
                                 <div className="prioritycircle" style={{backgroundColor: priorityColor}}></div>
@@ -51,17 +63,11 @@ export default function Project(props: { project: ProjectInterface }) {
                             </button>
                         </div>
                     </div>
-                    <div className="expandbutton"><span
-                        className="material-symbols-outlined">expand_more</span></div>
-                </div>
-                <div className="projecttododiv" style={{display: "none"}}>
-                    <div className="projecttodoscontainer">
-                        <div className="notodosdiv">
-                            <div className="notodos">No ToDos for this project yet</div>
-                            <button className="addtodobutton">Add/Remove ToDos</button>
-                        </div>
+                    <div className="expandbutton" onClick={toggleToDos}>
+                        <span className="material-symbols-outlined">expand_more</span>
                     </div>
                 </div>
+                <ProjectToDoContainer visible={projectToDoVisible}/>
             </div>
         );
 }

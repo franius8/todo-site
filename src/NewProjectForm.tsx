@@ -2,7 +2,8 @@ import React from "react";
 import DateConverter from "./DateConverter";
 import Todomanipulator from "./todomanipulator";
 
-export default function NewProjectForm(props: { formVisible: boolean, close: () => void }) {
+export default function NewProjectForm(props: { formVisible: boolean, close: () => void,
+    createProject: (name: string, date: Date, priority: string) => void }) {
     const [projectName, setProjectName] = React.useState("");
     const [projectDate, setProjectDate] = React.useState(DateConverter.convertToInputFormat(new Date()));
     const [priority, setPriority] = React.useState("");
@@ -18,7 +19,7 @@ export default function NewProjectForm(props: { formVisible: boolean, close: () 
     }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        Todomanipulator.createProject(projectName, [], new Date(projectDate), priority);
+        props.createProject(projectName, new Date(projectDate), priority);
         props.close();
     }
 

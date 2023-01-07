@@ -9,20 +9,6 @@ export default function Header(props: { active: string, newTodo: () => void}) {
     const navigate = useNavigate();
     const [user, setUser] = React.useState(false);
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            setUser(true);
-        } else {
-            setUser(false);
-        }
-    });
-
-    let buttonText;
-    if (user) {
-        buttonText = "Account";
-    } else {
-        buttonText = "Log In";
-    }
     const backToHome = () => {
         navigate("/home");
     }
@@ -53,7 +39,7 @@ export default function Header(props: { active: string, newTodo: () => void}) {
                     Add ToDo
                 </button>
                 <div id={"loginbutton"} onClick={toLogin}>
-                    {buttonText}
+                    Account
                 </div>
             </div>
         </header>
