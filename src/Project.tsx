@@ -3,7 +3,7 @@ import {ProjectInterface} from "./d";
 import dateConverter from "./DateConverter";
 import ProjectToDoContainer from "./ProjectToDoContainer";
 
-export default function Project(props: { project: ProjectInterface }) {
+export default function Project(props: { project: ProjectInterface, openToDoForm: (project: ProjectInterface) => void }) {
     const [projectToDoVisible, setProjectToDoVisible] = React.useState(false);
     const [projectClass, setProjectClass] = React.useState("project");
 
@@ -67,7 +67,7 @@ export default function Project(props: { project: ProjectInterface }) {
                         <span className="material-symbols-outlined">expand_more</span>
                     </div>
                 </div>
-                <ProjectToDoContainer visible={projectToDoVisible}/>
+                <ProjectToDoContainer visible={projectToDoVisible} project={props.project} openToDoForm={props.openToDoForm}/>
             </div>
         );
 }

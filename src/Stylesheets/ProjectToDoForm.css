@@ -1,0 +1,44 @@
+.projectcheckboxdiv input[type="checkbox"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+.projectcheckboxdiv label {
+    padding: 0.4rem 20px;
+    border: 1px solid var(--light-gray);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.projectcheckboxdiv input[type="checkbox"]:checked + label {
+    background-color: var(--light-gray);
+}
+
+.projectcheckboxdiv label:hover {
+    background-color: var(--light-gray);
+    cursor: pointer;
+}
+
+.projectcheckboxdiv .projectcheckbox:first-child label {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.projectcheckboxdiv .projectcheckbox:last-child label {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+#projecttodosformdiv form .inputdiv {
+    padding-bottom: 1rem;
+    gap: 1rem;
+}
+
+.formtododate {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

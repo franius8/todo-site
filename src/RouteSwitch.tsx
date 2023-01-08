@@ -61,6 +61,7 @@ export default function RouteSwitch() {
         const projectAry: ProjectInterface[] = [];
         rawProjectAry.forEach((project: ProjectInterface) => {
             project.date = dateFixer.fixDates(project.date);
+            project.toDosAry = convertRawToDos(project.toDosAry);
             projectAry.push(Projectobject(project.iD, project.name, project.toDosAry, project.date, project.priority));
         });
         return projectAry;
@@ -147,7 +148,7 @@ export default function RouteSwitch() {
                       closeToDo={closeToDoForm} toDos={toDos} createToDo={createToDo}/>} />
                   <Route path="/done" element={<Done createToDo={createToDo}
                       formVisible={formVisible} newToDo={openToDoForm} closeToDo={closeToDoForm}/>} />
-                  <Route path="/projects" element={<Projects createToDo={createToDo}
+                  <Route path="/projects" element={<Projects createToDo={createToDo} toDos={toDos}
                       projects={projects} newToDo={openToDoForm} createProject={createProject}
                       closeToDo={closeToDoForm} formVisible={formVisible} setContentClass={setContentClass}/>} />
                   <Route path={"/login"} element={<Login />} />
