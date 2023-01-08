@@ -65,6 +65,29 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
         updateDatabase(projectsCopy, toDosCopy);
     }
 
+    const modifyProject = (iD: number, name: string, date: Date, priority: string) => {
+        const projectsCopy = [...props.projects];
+        projectsCopy.forEach((project) => {
+            if (project.iD === iD) {
+                project.name = name;
+                project.date = date;
+                project.priority = priority;
+            }
+        });
+        const toDosCopy = [...props.toDos];
+        updateDatabase(projectsCopy, toDosCopy);
+    }
+
+    const deleteProject = (project: ProjectInterface) => {
+        if (confirm('Are you sure you want to delete that?\nThis is an irreversible operation\nProject ToDos will be deleted as well.')) {
+            const projectsCopy = [...props.projects];
+            const toDosCopy = [...props.toDos];
+            const projectToDos = project.toDosAry;
+            const newProjectsCopy = projectsCopy.filter(x => x.iD !== project.iD);
+            const newToDosCopy = toDosCopy.filter(x => !x.projectiDs.includes(project.iD));
+            updateDatabase(newProjectsCopy, newToDosCopy);
+        }
+    }
 
     if (props.projects.length > 0) {
         return (
@@ -74,7 +97,8 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
                     <button id="newprojectbutton" onClick={openProjectForm}>Add a new project</button>
                 </div>
                 <div id={"projectdiv"}>
-                    {props.projects.map((project) => <Project project={project} openToDoForm={openProjectToDoForm}/>)}
+                    {props.projects.map((project) => <Project key={project.iD} project={project} openToDoForm={openProjectToDoForm}
+                    deleteProject={deleteProject} modifyProject={modifyProject}/>)}
                 </div>
                 <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
                 <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm} createProject={props.createProject}/>
@@ -92,7 +116,7 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
                     </div>
                 </div>
                 <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
-                <NewProjectForm formVisible={projectToDoFormVisible} close={closeProjectForm} createProject={props.createProject}/>
+                <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm} createProject={props.createProject}/>
             </>
         );
     }

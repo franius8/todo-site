@@ -51,7 +51,6 @@ moveToDone: (iD: number) => void}) {
             e.preventDefault();
             props.modifyToDo(props.toDo.iD, title, content, new Date(dueDate), priority);
             setDuringEdit(false);
-            console.log("submit");
         }
         const toggleEdit = () => {
             setDuringEdit(!duringEdit);
@@ -62,6 +61,7 @@ moveToDone: (iD: number) => void}) {
         const moveToDone = () => {
             props.moveToDone(props.toDo.iD);
         }
+
     if (!duringEdit) {
         return (
             <div className="todo">
