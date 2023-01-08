@@ -3,6 +3,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase
 import { db, auth } from "./firebase";
 import {doc, setDoc} from "firebase/firestore";
 import {useNavigate} from "react-router-dom";
+import LogoDiv from "./LogoDiv";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -50,14 +51,7 @@ export default function Register() {
     }
     return (
         <div id={"login"}>
-            <div id={"logodiv"}>
-                <div id={"checkmark"}>
-                    &#10003;
-                </div>
-                <div id={"logo"}>
-                    To Do
-                </div>
-            </div>
+            <LogoDiv />
             <div id={"loginform"}>
                 <div id={"loginformheader"}>
                     Register

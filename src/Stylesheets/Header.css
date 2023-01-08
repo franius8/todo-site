@@ -14,33 +14,6 @@
     padding: 1rem;
 }
 
-#logodiv {
-    display: flex;
-    align-items: center;
-}
-
-#logodiv:hover {
-    cursor: pointer;
-}
-
-#logo {
-    color: var(--main-color);
-    font-weight: 900;
-    font-family: 'Sansita Swashed', cursive;
-    font-size: 2rem;
-    padding: 1rem;
-    line-height: 0;
-}
-
-#checkmark {
-    background-color: var(--main-color);
-    font-family: 'Sansita Swashed', cursive;
-    color: white;
-    padding: 0.2rem 0.8rem;
-    border-radius: 1rem;
-    font-size: 2rem;
-}
-
 #navigationdiv {
     display: grid;
     justify-content: center;

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import DateConverter from "./DateConverter";
 import Todomanipulator from "./todomanipulator";
@@ -23,9 +24,15 @@ export default function NewProjectForm(props: { formVisible: boolean, close: () 
         props.close();
     }
 
+    const entryExitAnimation = {
+        initial: { opacity: 0, top: "-50%", transition: { type: "tween", duration: 2 } },
+        isOpen: { opacity: 1, top: "50%" },
+        exit: { opacity: 0, top: "-50%" }
+    };
+
     if (props.formVisible) {
         return (
-            <div id="projectformdiv" style={{display: "block"}}>
+            <motion.div id="projectformdiv" initial={"initial"}  animate={"isOpen"}  exit={"exit"}  variants={entryExitAnimation}>
                 <div id="closebuttondiv">
                     <button id="closebutton" onClick={props.close}><span className="material-symbols-outlined">close</span></button>
                 </div>
@@ -49,7 +56,7 @@ export default function NewProjectForm(props: { formVisible: boolean, close: () 
                     </div>
                     <button type="submit" id="todosubmit">Add</button>
                 </form>
-            </div>
+            </motion.div>
         );
     } else {
         return null;

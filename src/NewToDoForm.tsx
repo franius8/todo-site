@@ -1,4 +1,6 @@
 import React from "react";
+import { motion } from "framer-motion";
+
 import DateConverter from "./DateConverter";
 
 export default function NewToDoForm(props: { formVisible: boolean, close: () => void, newToDo: (heading: string, text: string, date: Date, priority: string) => void }) {
@@ -26,9 +28,15 @@ export default function NewToDoForm(props: { formVisible: boolean, close: () => 
         props.close();
     }
 
+    const entryExitAnimation = {
+        initial: { opacity: 0, top: "-50%", transition: { type: "spring" } },
+        isOpen: { opacity: 1, top: "50%" },
+        exit: { opacity: 0, top: "-50%" }
+    };
+
     if (props.formVisible) {
         return (
-            <div id="formdiv" style={{display: "block"}}>
+            <motion.div initial={"initial"}  animate={"isOpen"}  exit={"exit"}  variants={entryExitAnimation} id="formdiv">
                 <div id="closebuttondiv">
                     <button id="closebutton" onClick={props.close}><span className="material-symbols-outlined">close</span>
                     </button>
@@ -61,7 +69,7 @@ export default function NewToDoForm(props: { formVisible: boolean, close: () => 
                     </div>
                     <button type="submit" id="todosubmit">Add</button>
                 </form>
-            </div>
+            </motion.div>
         )
     } else {
         return null;

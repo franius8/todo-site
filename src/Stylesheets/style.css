@@ -245,16 +245,13 @@ button span {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block;
     background-color: white;
     padding: 1rem 2rem;
     border-radius: 1rem;
     border: 1px solid var(--light-gray);
-    display: none;
     z-index: 10;
-    min-width: 30rem;;
+    min-width: 30rem;
 }
 
 #projectformdiv {

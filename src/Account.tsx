@@ -3,6 +3,7 @@ import "./Stylesheets/Account.css";
 import {auth} from "./firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import LogoDiv from "./LogoDiv";
 
 export default function Account() {
     const navigate = useNavigate();
@@ -20,14 +21,7 @@ export default function Account() {
 
     return (
         <div id={"accountdiv"}>
-            <div id={"logodiv"} onClick={toHome}>
-                <div id={"checkmark"}>
-                    &#10003;
-                </div>
-                <div id={"logo"}>
-                    To Do
-                </div>
-            </div>
+            <LogoDiv />
             <div className={"accountcontentdiv"}>
                 <div className={"accountitemdiv"}>
                     <div className={"accountitemtitlediv"}>

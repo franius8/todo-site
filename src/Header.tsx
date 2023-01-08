@@ -1,5 +1,6 @@
 import React from "react";
 import NavItem from "./NavItem";
+import LogoDiv from "./LogoDiv";
 import {useNavigate} from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import {auth} from "./firebase";
@@ -23,14 +24,7 @@ export default function Header(props: { active: string, newTodo: () => void}) {
     }
     return (
         <header id={"header"}>
-            <div id={"logodiv"} onClick={backToHome}>
-                <div id={"checkmark"}>
-                    &#10003;
-                </div>
-                <div id={"logo"}>
-                    To Do
-                </div>
-            </div>
+            <LogoDiv />
             <div id={"navigationdiv"}>
                 {navitems.map((item) => <NavItem key={item[0]} text={item[0]} icon={item[1]} active={props.active} />)}
             </div>

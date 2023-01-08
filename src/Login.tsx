@@ -1,7 +1,9 @@
 import React from "react";
 import "./Stylesheets/Login.css"
+import LogoDiv from "./LogoDiv";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {useNavigate} from "react-router-dom";
+import styled from "styled-components";
 
 export default function Login() {
 
@@ -36,16 +38,35 @@ export default function Login() {
         navigate("/register");
     }
 
+    const LoginDiv = styled.div`
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border: 3px solid var(--light-gray);
+      padding: 1rem;
+      border-radius: 1rem;
+    `;
+
+    const RegisterButton = styled.button`
+      border-radius: 1rem;
+      border: 5px solid var(--main-color);
+      background-color: white;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: bold;
+      color: var(--main-color);
+      width: 10rem;
+      align-self: center;
+      justify-self: center;    
+    `;
+
     return (
-        <div id={"login"}>
-            <div id={"logodiv"}>
-                <div id={"checkmark"}>
-                    &#10003;
-                </div>
-                <div id={"logo"}>
-                    To Do
-                </div>
-            </div>
+        <LoginDiv>
+            <LogoDiv />
             <div id={"loginform"}>
                 <div id={"loginformheader"}>
                     Login
@@ -64,9 +85,9 @@ export default function Login() {
                     </div>
                 </form>
             </div>
-            <button id={"registerbutton"} onClick={toRegister}>
+            <RegisterButton onClick={toRegister}>
                 Register
-            </button>
-        </div>
+            </RegisterButton>
+        </LoginDiv>
     );
 }
