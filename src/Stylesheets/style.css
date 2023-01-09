@@ -240,20 +240,6 @@ button span {
     cursor: pointer;
 }
 
-#formdiv, #projectformdiv, #projecttodosformdiv {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    background-color: white;
-    padding: 1rem 2rem;
-    border-radius: 1rem;
-    border: 1px solid var(--light-gray);
-    z-index: 10;
-    min-width: 30rem;
-}
-
 #projectformdiv {
     width: 30rem;
 }
@@ -290,29 +276,6 @@ form input {
 
 .duringedit form .inputdiv {
     gap: 0.2rem;
-}
-
-#closebuttondiv {
-    padding: 0.5rem;
-    float: right;
-}
-
-#closebutton {
-    border-radius: 50%;
-    border: 1px solid var(--light-gray);
-    background-color: var(--light-gray);
-    height: 2rem;
-    width: 2rem;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#closebutton span {
-    line-height: 2rem;
-    height: 2rem;
-    width: 2rem;
 }
 
 .inputdiv {
@@ -380,7 +343,7 @@ button:hover {
     margin: 1rem;
 }
 
-#newprojectbutton, .addtodobutton {
+#newprojectbutton, .addtodobutton, .genericbutton {
     border-radius: 1rem;
     border: 5px solid var(--main-color);
     background-color: var(--main-color);
@@ -393,7 +356,7 @@ button:hover {
     justify-self: center;
 }
 
-#newprojectbutton:hover, .addtodobutton:hover {
+#newprojectbutton:hover, .addtodobutton:hover, .genericbutton:hover {
     cursor: pointer;
     background-color: white;
     color: var(--main-color);

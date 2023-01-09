@@ -10,7 +10,6 @@ createToDo: (heading: string, text: string, date: Date, priority: string) => voi
             <div id={"donediv"}>
                 <div id="actiondiv">No ToDos marked as done.</div>
             </div>
-            <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
         </>
     );
 }

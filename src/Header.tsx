@@ -3,12 +3,15 @@ import NavItem from "./NavItem";
 import LogoDiv from "./LogoDiv";
 import {useNavigate} from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import {auth} from "./Modules/firebase";
+import { auth } from "./Modules/firebase";
+import { useDispatch } from "react-redux";
+import { toggleToDoForm } from "./Redux/modalSlice";
 
 export default function Header(props: { active: string, newTodo: () => void}) {
     const navitems = [["home", "house"], ["done", "done"], ["projects", "assignment"]];
     const navigate = useNavigate();
-    const [user, setUser] = React.useState(false);
+
+    const dispatch = useDispatch();
 
     const backToHome = () => {
         navigate("/home");
@@ -29,7 +32,7 @@ export default function Header(props: { active: string, newTodo: () => void}) {
                 {navitems.map((item) => <NavItem key={item[0]} text={item[0]} icon={item[1]} active={props.active} />)}
             </div>
             <div id={"rightdiv"}>
-                <button id={"addnewbutton"} onClick={props.newTodo}>
+                <button id={"addnewbutton"} onClick={() => dispatch(toggleToDoForm())}>
                     Add ToDo
                 </button>
                 <div id={"loginbutton"} onClick={toLogin}>

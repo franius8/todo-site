@@ -1,13 +1,14 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import Header from "./Header";
 import Project from "./Project";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
-import NewToDoForm from "./NewToDoForm";
 import NewProjectForm from "./NewProjectForm";
 import ProjectToDoForm from "./ProjectToDoForm";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "./Modules/firebase";
 import {collection, doc, updateDoc} from "firebase/firestore";
+import { useSelector, useDispatch } from "react-redux";
+import {openModal, toggleProjectForm} from "./Redux/modalSlice";
 
 export default function Projects(props: { projects: ProjectInterface[], newToDo: () => void, closeToDo: () => void,
     formVisible: boolean, setContentClass: Dispatch<SetStateAction<string>>,
@@ -15,9 +16,11 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
     createProject: (name: string, date: Date, priority: string) => void,
     toDos: ToDoInterface[]}) {
 
-    const [projectFormVisible, setProjectFormVisible] = React.useState(false);
-    const [projectToDoFormVisible, setProjectToDoFormVisible] = React.useState(false);
-    const [projectToDosEdited, setProjectToDosEdited] = React.useState<ProjectInterface | null>(null);
+    const dispatch = useDispatch();
+
+    const [projectFormVisible, setProjectFormVisible] = useState(false);
+    const [projectToDoFormVisible, setProjectToDoFormVisible] = useState(false);
+    const [projectToDosEdited, setProjectToDosEdited] = useState<ProjectInterface | null>(null);
 
     const updateDatabase = async (projectsCopy: ProjectInterface[], toDosCopy: ToDoInterface[]) => {
         onAuthStateChanged(auth, async (user) => {
@@ -31,7 +34,7 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
                 } catch (e) {
                 }
             } else {
-                alert("No user is currently signed in. ToDos are saved in local storage.");
+                dispatch(openModal("No user is currently signed in. ToDos are saved in local storage."));
                 localStorage.setItem("projectsary", (JSON.stringify(projectsCopy)));
                 localStorage.setItem("todoary", (JSON.stringify(toDosCopy)));
             }
@@ -94,14 +97,12 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
             <>
                 <Header active={"projects"} newTodo={props.newToDo}/>
                 <div id="newprojectbuttondiv">
-                    <button id="newprojectbutton" onClick={openProjectForm}>Add a new project</button>
+                    <button id="newprojectbutton" onClick={() => dispatch(toggleProjectForm())}>Add a new project</button>
                 </div>
                 <div id={"projectdiv"}>
                     {props.projects.map((project) => <Project key={project.iD} project={project} openToDoForm={openProjectToDoForm}
                     deleteProject={deleteProject} modifyProject={modifyProject}/>)}
                 </div>
-                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
-                <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm} createProject={props.createProject}/>
                 <ProjectToDoForm visible={projectToDoFormVisible} toDos={props.toDos} close={closeProjectToDoForm}
                                  project={projectToDosEdited} databaseUpdate={handleToDoUpdate}/>
             </>
@@ -112,11 +113,9 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
                 <Header active={"projects"} newTodo={props.newToDo}/>
                 <div id="projectdiv">
                     <div id="actiondiv">
-                        No Projects yet. Time to <span id="addnew" onClick={openProjectForm}>add a new one</span>.
+                        No Projects yet. Time to <span id="addnew" onClick={() => dispatch(toggleProjectForm())}>add a new one</span>.
                     </div>
                 </div>
-                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
-                <NewProjectForm formVisible={projectFormVisible} close={closeProjectForm} createProject={props.createProject}/>
             </>
         );
     }

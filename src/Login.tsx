@@ -2,6 +2,7 @@ import React from "react";
 import InputElement from "./FormComponents/InputElement";
 import GenericLoneDiv from "./GenericLoneDiv";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "./Modules/firebase";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 
@@ -68,8 +69,6 @@ const ForgotPasswordLink = styled.a`
 
 
 export default function Login() {
-
-    const auth = getAuth();
     const navigate = useNavigate();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
@@ -104,26 +103,32 @@ export default function Login() {
         navigate("/forgot-password");
     }
 
-    return (
-        <GenericLoneDiv>
-            <>
-                <LoginFormDiv>
-                    <h2>Login</h2>
-                    <LoginForm id={"loginform"} onSubmit={login}>
-                        <InputElement type={"email"} name={"email"} value={email} heading={"Email"} handleChange={handleEmailChange} required={true}/>
-                        <InputElement type={"password"} name={"password"} value={password} heading={"Password"} handleChange={handlePasswordChange} required={true}/>
-                    </LoginForm>
-                </LoginFormDiv>
-                <ButtonDiv>
-                    <RegisterButton onClick={toRegister}>
-                        Register
-                    </RegisterButton>
-                    <LoginButton type={"submit"} form={"loginform"}>
-                        Login
-                    </LoginButton>
-                </ButtonDiv>
-                <ForgotPasswordLink onClick={toForgotPassword}>Forgot password</ForgotPasswordLink>
-            </>
-        </GenericLoneDiv>
-    );
+    if (getAuth().currentUser) {
+       return <div>Already logged in</div>
+    } else {
+        return (
+            <GenericLoneDiv>
+                <>
+                    <LoginFormDiv>
+                        <h2>Login</h2>
+                        <LoginForm id={"loginform"} onSubmit={login}>
+                            <InputElement type={"email"} name={"email"} value={email} heading={"Email"}
+                                          handleChange={handleEmailChange} required={true}/>
+                            <InputElement type={"password"} name={"password"} value={password} heading={"Password"}
+                                          handleChange={handlePasswordChange} required={true}/>
+                        </LoginForm>
+                    </LoginFormDiv>
+                    <ButtonDiv>
+                        <RegisterButton onClick={toRegister}>
+                            Register
+                        </RegisterButton>
+                        <LoginButton type={"submit"} form={"loginform"}>
+                            Login
+                        </LoginButton>
+                    </ButtonDiv>
+                    <ForgotPasswordLink onClick={toForgotPassword}>Forgot password</ForgotPasswordLink>
+                </>
+            </GenericLoneDiv>
+        );
+    }
 }

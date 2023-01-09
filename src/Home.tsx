@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import ToDo from "./ToDo";
-import NewToDoForm from "./NewToDoForm";
 import "./Stylesheets/header.css";
 import { ToDoInterface } from "./Modules/d";
-
-import {getAuth, onAuthStateChanged} from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./Modules/firebase";
 import { collection, doc, updateDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 export default function Home(props: {
     formVisible: boolean,
@@ -18,7 +17,7 @@ export default function Home(props: {
     createToDo: (heading: string, text: string, date: Date, priority: string) => void,
 }) {
 
-    const [toDos, setToDos] = useState<ToDoInterface[]>(props.toDos);
+    const toDoList = useSelector((state: {  content: {toDos: ToDoInterface[]} }) => state.content.toDos);
 
     const updateDatabase = async (toDosCopy: ToDoInterface[]) => {
         onAuthStateChanged(auth, async (user) => {
@@ -38,10 +37,6 @@ export default function Home(props: {
     }
 
     const moveToDone = (iD: number) => {
-        const toDo = toDos.filter(x => x.iD === iD)[0];
-        const toDosCopy = [...toDos].filter(x => x.iD !== iD);
-        updateDatabase(toDosCopy);
-        setToDos(toDosCopy);
     }
 
     if (props.toDos.length > 0) {
@@ -49,10 +44,9 @@ export default function Home(props: {
             <>
                 <Header active={"home"} newTodo={props.newToDo}/>
                 <div id={"tododiv"}>
-                    {props.toDos.map((toDo) => <ToDo toDo={toDo} key={toDo.iD} modifyToDo={props.modifyToDo}
+                    {toDoList.map((toDo) => <ToDo toDo={toDo} key={toDo.iD} modifyToDo={props.modifyToDo}
                     deleteToDo={props.deleteToDo} moveToDone={moveToDone}/>)}
                 </div>
-                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
             </>
         );
     } else {
@@ -64,7 +58,6 @@ export default function Home(props: {
                         No ToDos yet. Time to <span id="addnew" onClick={props.newToDo}>add a new one</span>.
                     </div>
                 </div>
-                <NewToDoForm formVisible={props.formVisible} close={props.closeToDo} newToDo={props.createToDo}/>
             </>
         );
     }

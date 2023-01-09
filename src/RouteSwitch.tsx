@@ -142,7 +142,6 @@ export default function RouteSwitch() {
         setProjects(projectsCopy);
     }
   return (
-      <div id={"content"} className={contentClass}>
             <BrowserRouter>
               <Routes>
                   <Route path="/" element={<Home key={0}
@@ -163,6 +162,5 @@ export default function RouteSwitch() {
                   <Route path="*" element={<NoMatch />} />
               </Routes>
             </BrowserRouter>
-      </div>
   );
 }

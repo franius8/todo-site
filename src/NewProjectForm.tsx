@@ -4,6 +4,8 @@ import StandardForm from "./FormComponents/StandardForm";
 import TextInputElement from "./FormComponents/TextInputElement";
 import DateInputElement from "./FormComponents/DateInputElement";
 import RadioInputElement from "./FormComponents/RadioInputElement";
+import { useSelector, useDispatch } from "react-redux";
+import {toggleProjectForm} from "./Redux/modalSlice";
 
 export default function NewProjectForm(props: { formVisible: boolean, close: () => void,
     createProject: (name: string, date: Date, priority: string) => void }) {
@@ -12,6 +14,9 @@ export default function NewProjectForm(props: { formVisible: boolean, close: () 
     const [priority, setPriority] = React.useState("");
 
     const priorities = ["Normal", "Urgent"];
+
+    const projectFormVisible = useSelector((state: { modal: {projectFormVisible: boolean} }) => state.modal.projectFormVisible);
+    const dispatch = useDispatch();
 
     const handdleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setProjectName(event.target.value);
@@ -28,9 +33,9 @@ export default function NewProjectForm(props: { formVisible: boolean, close: () 
         props.close();
     }
 
-    if (props.formVisible) {
+    if (projectFormVisible) {
         return (
-            <StandardForm close={props.close} heading={"Add a new project"} onSubmit={handleSubmit} submitText={"Add"} id={"projectformdiv"}>
+            <StandardForm close={() => dispatch(toggleProjectForm())} heading={"Add a new project"} onSubmit={handleSubmit} submitText={"Add"} id={"projectformdiv"}>
                 <>
                     <TextInputElement name={"projectname"} value={projectName} heading={"Name:"} handleChange={handdleNameChange} required={true}/>
                     <DateInputElement name={"projectdate"} value={projectDate} heading={"Due date:"} handleChange={handleDateChange} required={true}/>
