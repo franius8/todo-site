@@ -1,10 +1,9 @@
-import { motion } from "framer-motion";
 import React from "react";
 import DateConverter from "./DateConverter";
-import StandardForm from "./StandardForm";
-import TextInputElement from "./TextInputElement";
-import DateInputElement from "./DateInputElement";
-import RadioInputElement from "./RadioInputElement";
+import StandardForm from "./FormComponents/StandardForm";
+import TextInputElement from "./FormComponents/TextInputElement";
+import DateInputElement from "./FormComponents/DateInputElement";
+import RadioInputElement from "./FormComponents/RadioInputElement";
 
 export default function NewProjectForm(props: { formVisible: boolean, close: () => void,
     createProject: (name: string, date: Date, priority: string) => void }) {
@@ -28,12 +27,6 @@ export default function NewProjectForm(props: { formVisible: boolean, close: () 
         props.createProject(projectName, new Date(projectDate), priority);
         props.close();
     }
-
-    const entryExitAnimation = {
-        initial: { opacity: 0, top: "-50%", transition: { type: "tween", duration: 2 } },
-        isOpen: { opacity: 1, top: "50%" },
-        exit: { opacity: 0, top: "-50%" }
-    };
 
     if (props.formVisible) {
         return (

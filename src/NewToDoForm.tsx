@@ -1,9 +1,9 @@
 import React from "react";
-import StandardForm from "./StandardForm";
-import RadioElement from "./RadioElement";
-import TextInputElement from "./TextInputElement";
-import DateInputElement from "./DateInputElement";
-import RadioInputElement from "./RadioInputElement";
+import StandardForm from "./FormComponents/StandardForm";
+import RadioElement from "./FormComponents/RadioElement";
+import TextInputElement from "./FormComponents/TextInputElement";
+import DateInputElement from "./FormComponents/DateInputElement";
+import RadioInputElement from "./FormComponents/RadioInputElement";
 import DateConverter from "./DateConverter";
 
 export default function NewToDoForm(props: { formVisible: boolean, close: () => void, newToDo: (heading: string, text: string, date: Date, priority: string) => void }) {

@@ -7,6 +7,7 @@ import Login from "./Login";
 import Register from "./Register";
 import NoMatch from "./NoMatch";
 import Account from "./Account";
+import ForgotPassword from "./ForgotPassword";
 import {useEffect} from "react";
 import {ProjectInterface, ToDoInterface} from "./d";
 import {onAuthStateChanged} from "firebase/auth";
@@ -25,9 +26,9 @@ export default function RouteSwitch() {
     const [projects, setProjects] = React.useState<ProjectInterface[]>([] as ProjectInterface[]);
 
     useEffect(() => {
-        let rawToDoAry: any[] = [];
-        let rawDoneToDoAry: any[] = [];
-        let rawProjectAry: any[] = [];
+        let rawToDoAry: string[] = [];
+        let rawDoneToDoAry: string[] = [];
+        let rawProjectAry: string[] = [];
         let unsubscribe = () => {};
         onAuthStateChanged(auth,  async (user) => {
             if (user) {
@@ -43,6 +44,10 @@ export default function RouteSwitch() {
                 console.log("No user is currently signed in. ToDos are saved in local storage.");
                 rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
                 setToDos(convertRawToDos(rawToDoAry));
+                rawDoneToDoAry = JSON.parse(localStorage.getItem("doneary") || "[]");
+                setDoneToDos(convertRawToDos(rawDoneToDoAry));
+                rawProjectAry = JSON.parse(localStorage.getItem("projectary") || "[]")
+                setProjects(convertRawProjects(rawProjectAry));
             }
         });
         return () => unsubscribe();
@@ -154,6 +159,7 @@ export default function RouteSwitch() {
                   <Route path={"/login"} element={<Login />} />
                   <Route path={"/register"} element={<Register />} />
                   <Route path={"/account"} element={<Account />} />
+                  <Route path={"/forgot-password"} element={<ForgotPassword />} />
                   <Route path="*" element={<NoMatch />} />
               </Routes>
             </BrowserRouter>

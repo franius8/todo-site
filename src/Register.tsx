@@ -1,15 +1,18 @@
 import React, {useState} from "react";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { db, auth } from "./firebase";
 import {doc, setDoc} from "firebase/firestore";
 import {useNavigate} from "react-router-dom";
-import LogoDiv from "./LogoDiv";
+import GenericLoneDiv from "./GenericLoneDiv";
+import TextInputElement from "./FormComponents/TextInputElement";
+import InputElement from "./FormComponents/InputElement";
 
 export default function Register() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [repeatPassword, setRepeatPassword] = useState("")
 
     const register = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -49,34 +52,34 @@ export default function Register() {
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     }
-    return (
-        <div id={"login"}>
-            <LogoDiv />
-            <div id={"loginform"}>
-                <div id={"loginformheader"}>
-                    Register
-                </div>
-                <form id={"loginformbody"} onSubmit={register}>
-                    <div id={"loginformbodyinputdiv"}>
-                        <input id={"loginformbodyinput"} type={"text"} placeholder={"Name"} value={name} onChange={handleNameChange} />
-                    </div>
-                    <div className={"loginformbodyinput"}>
-                        <input type="email" placeholder="E-mail" value={email} onChange={handleEmailChange}/>
-                    </div>
-                    <div className={"loginformbodyinput"}>
-                        <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange}/>
-                    </div>
-                    <div className={"loginformbodyinput"}>
-                        <input type="password" placeholder="Repeat password"/>
-                    </div>
-                    <div id={"loginformbodybutton"}>
-                        <button>
-                            Register
-                        </button>
-                    </div>
-                </form>
-            </div>
+    const handleRepeatPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRepeatPassword(event.target.value);
+    }
 
-        </div>
+    return (
+        <GenericLoneDiv>
+            <>
+                <div id={"loginform"}>
+                    <div id={"loginformheader"}>
+                        Register
+                    </div>
+                    <form id={"loginformbody"} onSubmit={register}>
+                        <TextInputElement name={"name"} value={name}
+                                          heading={"Name"} handleChange={handleNameChange} required={true}/>
+                        <InputElement type={"email"} name={"email"} value={email}
+                                      heading={"Email"} handleChange={handleEmailChange} required={true}/>
+                        <InputElement type={"password"} name={"password"} value={password}
+                                      heading={"Password"} handleChange={handlePasswordChange} required={true}/>
+                        <InputElement type={"password"} name={"repeatpassword"} value={repeatPassword}
+                                      heading={"Repeat password:"} handleChange={handleRepeatPasswordChange} required={true}/>
+                        <div id={"loginformbodybutton"}>
+                            <button>
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </>
+        </GenericLoneDiv>
     )
 }

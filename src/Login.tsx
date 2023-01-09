@@ -1,9 +1,71 @@
 import React from "react";
-import "./Stylesheets/Login.css"
-import LogoDiv from "./LogoDiv";
+import InputElement from "./FormComponents/InputElement";
+import GenericLoneDiv from "./GenericLoneDiv";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
+
+const LoginFormDiv = styled.div`
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+`;
+
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
+
+const ButtonDiv = styled.div`
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  gap: 1rem;
+`
+
+const LoginButton = styled.button`
+      border-radius: 1rem;
+      border: 5px solid var(--main-color);
+      background-color: var(--main-color);
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: bold;
+      color: white;
+      align-self: center;
+      justify-self: center;
+`
+
+const RegisterButton = styled.button`
+      border-radius: 1rem;
+      border: 5px solid var(--main-color);
+      background-color: white;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: bold;
+      color: var(--main-color);
+      align-self: center;
+      justify-self: center;
+      &:hover {
+        background-color: var(--main-color);
+        color: white;
+        cursor: pointer;
+      }
+    `;
+
+const ForgotPasswordLink = styled.a`
+  color: var(--main-color);
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
 
 export default function Login() {
 
@@ -38,56 +100,30 @@ export default function Login() {
         navigate("/register");
     }
 
-    const LoginDiv = styled.div`
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      border: 3px solid var(--light-gray);
-      padding: 1rem;
-      border-radius: 1rem;
-    `;
-
-    const RegisterButton = styled.button`
-      border-radius: 1rem;
-      border: 5px solid var(--main-color);
-      background-color: white;
-      padding: 0.5rem 1rem;
-      font-family: inherit;
-      font-size: inherit;
-      font-weight: bold;
-      color: var(--main-color);
-      width: 10rem;
-      align-self: center;
-      justify-self: center;    
-    `;
+    const toForgotPassword = () => {
+        navigate("/forgot-password");
+    }
 
     return (
-        <LoginDiv>
-            <LogoDiv />
-            <div id={"loginform"}>
-                <div id={"loginformheader"}>
-                    Login
-                </div>
-                <form id={"loginformbody"} onSubmit={login}>
-                    <div id={"loginformbodyinput"}>
-                        <input type="email" placeholder="E-mail" value={email} onChange={handleEmailChange}/>
-                    </div>
-                    <div id={"loginformbodyinput"}>
-                        <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange}/>
-                    </div>
-                    <div id={"loginformbodybutton"}>
-                        <button>
-                            Login
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <RegisterButton onClick={toRegister}>
-                Register
-            </RegisterButton>
-        </LoginDiv>
+        <GenericLoneDiv>
+            <>
+                <LoginFormDiv>
+                    <h2>Login</h2>
+                    <LoginForm id={"loginform"} onSubmit={login}>
+                        <InputElement type={"email"} name={"email"} value={email} heading={"Email"} handleChange={handleEmailChange} required={true}/>
+                        <InputElement type={"password"} name={"password"} value={password} heading={"Password"} handleChange={handlePasswordChange} required={true}/>
+                    </LoginForm>
+                </LoginFormDiv>
+                <ButtonDiv>
+                    <RegisterButton onClick={toRegister}>
+                        Register
+                    </RegisterButton>
+                    <LoginButton type={"submit"} form={"loginform"}>
+                        Login
+                    </LoginButton>
+                </ButtonDiv>
+                <ForgotPasswordLink onClick={toForgotPassword}>Forgot password</ForgotPasswordLink>
+            </>
+        </GenericLoneDiv>
     );
 }

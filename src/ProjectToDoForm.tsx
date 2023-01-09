@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ProjectInterface, ToDoInterface} from "./d";
 import DateConverter from "./DateConverter";
-import StandardForm from "./StandardForm";
+import StandardForm from "./FormComponents/StandardForm";
 import "./stylesheets/ProjectToDoForm.css"
 
 export default function ProjectToDoForm({close, databaseUpdate, project, toDos, visible}: {

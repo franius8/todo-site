@@ -34,7 +34,7 @@ h2 {
 }
 
 /* For blurring the site content when form for adding new ToDos is open */
-#content.blurred div:not(#formdiv, #formdiv div, #projectformdiv, #projectformdiv div, #projecttodosformdiv, #projecttodosformdiv div) {
+#content.blurred div:not(.modaldiv, .modaldiv div) {
     -webkit-filter: blur(2px);
     -moz-filter: blur(2px);
     -o-filter: blur(2px);
@@ -270,7 +270,7 @@ button span {
     gap: 1rem;
 }
 
-#formdiv form input, #projectformdiv form input {
+form input {
     padding: 0.5rem;
     border-radius: 1rem;
     border: 1px solid var(--light-gray);

@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
+import GenericModal from "../GenericModal";
 
 const CloseButtonDiv = styled.div`
       padding: 0.5rem;
@@ -37,17 +38,14 @@ export default function StandardForm(props: { close: () => void, heading: string
 
 
     return (
-        <motion.div initial={"initial"}  animate={"isOpen"}  exit={"exit"}  variants={entryExitAnimation} id={props.id}>
-            <CloseButtonDiv>
-                <CloseButton onClick={props.close}>
-                    <CloseButtonIcon className="material-symbols-outlined">close</CloseButtonIcon>
-                </CloseButton>
-            </CloseButtonDiv>
-            <h2>{props.heading}</h2>
-            <form onSubmit={props.onSubmit}>
-                {props.children}
-                <button type="submit">{props.submitText}</button>
-            </form>
-        </motion.div>
+        <GenericModal id={props.id} close={props.close}>
+            <>
+                <h2>{props.heading}</h2>
+                <form onSubmit={props.onSubmit}>
+                    {props.children}
+                    <button type="submit">{props.submitText}</button>
+                </form>
+            </>
+        </GenericModal>
     )
 }

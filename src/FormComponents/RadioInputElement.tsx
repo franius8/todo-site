@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import RadioElement from "./RadioElement";
-import './stylesheets/RadioInputElement.css'
+import '../Stylesheets/RadioInputElement.css'
 
 const InputDiv = styled.div`
       display: flex;
