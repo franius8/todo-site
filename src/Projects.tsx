@@ -1,12 +1,12 @@
 import React, {Dispatch, SetStateAction} from "react";
 import Header from "./Header";
 import Project from "./Project";
-import {ProjectInterface, ToDoInterface} from "./d";
+import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import NewToDoForm from "./NewToDoForm";
 import NewProjectForm from "./NewProjectForm";
 import ProjectToDoForm from "./ProjectToDoForm";
 import {onAuthStateChanged} from "firebase/auth";
-import {auth, db} from "./firebase";
+import {auth, db} from "./Modules/firebase";
 import {collection, doc, updateDoc} from "firebase/firestore";
 
 export default function Projects(props: { projects: ProjectInterface[], newToDo: () => void, closeToDo: () => void,

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Stylesheets/Account.css";
-import {auth} from "./firebase";
+import {auth} from "./Modules/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import LogoDiv from "./LogoDiv";

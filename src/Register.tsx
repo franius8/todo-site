@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { db, auth } from "./firebase";
+import { db, auth } from "./Modules/firebase";
 import {doc, setDoc} from "firebase/firestore";
 import {useNavigate} from "react-router-dom";
 import GenericLoneDiv from "./GenericLoneDiv";

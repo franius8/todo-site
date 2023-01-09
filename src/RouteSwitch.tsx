@@ -9,14 +9,14 @@ import NoMatch from "./NoMatch";
 import Account from "./Account";
 import ForgotPassword from "./ForgotPassword";
 import {useEffect} from "react";
-import {ProjectInterface, ToDoInterface} from "./d";
+import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import {onAuthStateChanged} from "firebase/auth";
-import {auth, db} from "./firebase";
+import {auth, db} from "./Modules/firebase";
 import {collection, doc, onSnapshot, updateDoc} from "firebase/firestore";
-import dateFixer from "./datefixer";
-import todoObject from "./todoObject";
-import idGenerator from "./idGenerator";
-import Projectobject from "./projectobject";
+import dateFixer from "./Modules/datefixer";
+import todoObject from "./Modules/todoObject";
+import idGenerator from "./Modules/idGenerator";
+import Projectobject from "./Modules/projectobject";
 
 export default function RouteSwitch() {
     const [formVisible, setFormVisible] = React.useState(false);

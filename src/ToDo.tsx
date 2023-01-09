@@ -1,7 +1,7 @@
 import React from "react";
-import {ToDoInterface} from "./d";
-import DateConverter from "./DateConverter";
-import dateConverter from "./DateConverter";
+import {ToDoInterface} from "./Modules/d";
+import DateConverter from "./Modules/DateConverter";
+import dateConverter from "./Modules/DateConverter";
 
 export default function ToDo(props: { toDo: ToDoInterface,
     modifyToDo: (iD: number, heading: string, text: string, date: Date, priority: string) => void, deleteToDo: (iD: number) => void

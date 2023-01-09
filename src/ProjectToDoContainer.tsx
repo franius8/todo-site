@@ -1,7 +1,7 @@
 import React from "react";
 import "./stylesheets/ProjectToDoContainer.css";
-import {ProjectInterface, ToDoInterface} from "./d";
-import dateConverter from "./DateConverter";
+import {ProjectInterface, ToDoInterface} from "./Modules/d";
+import dateConverter from "./Modules/DateConverter";
 
 export default function ProjectToDoContainer(props: { visible: boolean, openToDoForm: (project: ProjectInterface) => void, project: ProjectInterface }) {
     const determinePriorityColor = (priority: string) => {

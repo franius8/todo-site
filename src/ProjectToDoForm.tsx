@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {ProjectInterface, ToDoInterface} from "./d";
-import DateConverter from "./DateConverter";
+import {ProjectInterface, ToDoInterface} from "./Modules/d";
+import DateConverter from "./Modules/DateConverter";
 import StandardForm from "./FormComponents/StandardForm";
 import "./stylesheets/ProjectToDoForm.css"
 

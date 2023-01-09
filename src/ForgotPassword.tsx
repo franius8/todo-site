@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { auth } from "./firebase";
+import { auth } from "./Modules/firebase";
 import GenericLoneDiv from "./GenericLoneDiv";
 import InputElement from "./FormComponents/InputElement";
 import { sendPasswordResetEmail } from "firebase/auth";

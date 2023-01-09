@@ -3,10 +3,10 @@ import Header from "./Header";
 import ToDo from "./ToDo";
 import NewToDoForm from "./NewToDoForm";
 import "./Stylesheets/header.css";
-import { ToDoInterface } from "./d";
+import { ToDoInterface } from "./Modules/d";
 
 import {getAuth, onAuthStateChanged} from "firebase/auth";
-import { auth, db } from "./firebase";
+import { auth, db } from "./Modules/firebase";
 import { collection, doc, updateDoc } from "firebase/firestore";
 
 export default function Home(props: {

@@ -3,7 +3,7 @@ import NavItem from "./NavItem";
 import LogoDiv from "./LogoDiv";
 import {useNavigate} from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import {auth} from "./firebase";
+import {auth} from "./Modules/firebase";
 
 export default function Header(props: { active: string, newTodo: () => void}) {
     const navitems = [["home", "house"], ["done", "done"], ["projects", "assignment"]];

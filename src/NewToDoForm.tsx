@@ -4,7 +4,7 @@ import RadioElement from "./FormComponents/RadioElement";
 import TextInputElement from "./FormComponents/TextInputElement";
 import DateInputElement from "./FormComponents/DateInputElement";
 import RadioInputElement from "./FormComponents/RadioInputElement";
-import DateConverter from "./DateConverter";
+import DateConverter from "./Modules/DateConverter";
 
 export default function NewToDoForm(props: { formVisible: boolean, close: () => void, newToDo: (heading: string, text: string, date: Date, priority: string) => void }) {
     const [title, setTitle] = React.useState("");
