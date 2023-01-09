@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ProjectInterface, ToDoInterface} from "./d";
 import DateConverter from "./DateConverter";
+import StandardForm from "./StandardForm";
 import "./stylesheets/ProjectToDoForm.css"
 
 export default function ProjectToDoForm({close, databaseUpdate, project, toDos, visible}: {
@@ -11,9 +12,9 @@ export default function ProjectToDoForm({close, databaseUpdate, project, toDos, 
 
     useEffect(() => {
         if (project) {
-            let checkedStateAry = new Array(toDos.length).fill(false);
+            const checkedStateAry = new Array(toDos.length).fill(false);
             project.toDosAry.forEach((projectToDo) => {
-                let index = toDos.findIndex((toDo) => toDo.iD == projectToDo.iD);
+                const index = toDos.findIndex((toDo) => toDo.iD == projectToDo.iD);
                 checkedStateAry[index] = true;
             });
             setCheckedState(checkedStateAry);
@@ -31,7 +32,7 @@ export default function ProjectToDoForm({close, databaseUpdate, project, toDos, 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (project) {
-            let toDosAry: ToDoInterface[] = [];
+            const toDosAry: ToDoInterface[] = [];
             checkedState.forEach((checked, index) => {
                 if (checked) {
                     toDosAry.push(toDos[index]);
@@ -47,36 +48,27 @@ export default function ProjectToDoForm({close, databaseUpdate, project, toDos, 
     console.log(project);
     if (visible) {
         return (
-            <div id="projecttodosformdiv" style={{display: "block"}}>
-                <div id="closebuttondiv">
-                    <button id="closebutton" onClick={close}>
-                        <span className="material-symbols-outlined">close</span>
-                    </button>
-                </div>
-                <h2 className="formheading">Add new ToDos to Project</h2>
-                <form onSubmit={onSubmit}>
-                    <div className="inputdiv"><label htmlFor="projectcheckboxdiv">Select ToDos:</label>
-                        <div className="projectcheckboxdiv">
-                            {toDos.map(({ iD, heading, date}, index) => {
-                                return (
-                                    <div className="projectcheckbox" key={index}>
-                                        <input type="checkbox" name="projectcheckbox" id={iD.toString()} value={heading}
-                                            checked={checkedState[index]} onChange={() => handleChange(index)}/>
-                                        <label htmlFor={iD.toString()}>
-                                            <div>{heading}</div>
-                                            <div className="formtododate">
-                                                <span className="material-symbols-outlined">calendar_month</span>
-                                                {DateConverter.convertToString(date)}
-                                            </div>
-                                        </label>
-                                    </div>
-                                );
-                            })}
-                        </div>
+            <StandardForm close={close} heading={"Add new ToDos to Project"} onSubmit={onSubmit} submitText={"Add"} id={"projecttodosformdiv"}>
+                <div className="inputdiv"><label htmlFor="projectcheckboxdiv">Select ToDos:</label>
+                    <div className="projectcheckboxdiv">
+                        {toDos.map(({ iD, heading, date}, index) => {
+                            return (
+                                <div className="projectcheckbox" key={index}>
+                                    <input type="checkbox" name="projectcheckbox" id={iD.toString()} value={heading}
+                                           checked={checkedState[index]} onChange={() => handleChange(index)}/>
+                                    <label htmlFor={iD.toString()}>
+                                        <div>{heading}</div>
+                                        <div className="formtododate">
+                                            <span className="material-symbols-outlined">calendar_month</span>
+                                            {DateConverter.convertToString(date)}
+                                        </div>
+                                    </label>
+                                </div>
+                            );
+                        })}
                     </div>
-                    <button type="submit" id="todosubmit">Add</button>
-                </form>
-            </div>
+                </div>
+            </StandardForm>
         )
     } else {
         return null;

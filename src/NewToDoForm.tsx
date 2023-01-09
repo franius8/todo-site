@@ -1,6 +1,9 @@
 import React from "react";
-import { motion } from "framer-motion";
-
+import StandardForm from "./StandardForm";
+import RadioElement from "./RadioElement";
+import TextInputElement from "./TextInputElement";
+import DateInputElement from "./DateInputElement";
+import RadioInputElement from "./RadioInputElement";
 import DateConverter from "./DateConverter";
 
 export default function NewToDoForm(props: { formVisible: boolean, close: () => void, newToDo: (heading: string, text: string, date: Date, priority: string) => void }) {
@@ -8,6 +11,8 @@ export default function NewToDoForm(props: { formVisible: boolean, close: () => 
     const [content, setContent] = React.useState("");
     const [dueDate, setDueDate] = React.useState(DateConverter.convertToInputFormat(new Date()));
     const [priority, setPriority] = React.useState("Normal");
+
+    const priorities = ["Low", "Standard", "High"];
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -28,48 +33,16 @@ export default function NewToDoForm(props: { formVisible: boolean, close: () => 
         props.close();
     }
 
-    const entryExitAnimation = {
-        initial: { opacity: 0, top: "-50%", transition: { type: "spring" } },
-        isOpen: { opacity: 1, top: "50%" },
-        exit: { opacity: 0, top: "-50%" }
-    };
-
     if (props.formVisible) {
         return (
-            <motion.div initial={"initial"}  animate={"isOpen"}  exit={"exit"}  variants={entryExitAnimation} id="formdiv">
-                <div id="closebuttondiv">
-                    <button id="closebutton" onClick={props.close}><span className="material-symbols-outlined">close</span>
-                    </button>
-                </div>
-                <h2 className="formheading">Add a new ToDo</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="inputdiv">
-                        <label htmlFor="todotitle">
-                            Title:
-                        </label>
-                        <input type="text" name="todotitle" id="todotitle" required={true} value={title} onChange={handleTitleChange}/>
-                    </div>
-                    <div className="inputdiv"><label htmlFor="todocontent">
-                        Content (optional):</label>
-                        <input type="text" name="todocontent" id="todocontent" value={content} onChange={handleContentChange}/>
-                    </div>
-                    <div className="inputdiv"><label htmlFor="tododate">Due date:</label>
-                        <input type="date" name="tododate" id="tododate" required={true} value={dueDate} onChange={handleDueDateChange}/>
-                    </div>
-                    <div className="inputdiv">
-                        <label htmlFor="radiocontainer">Priority:</label>
-                        <div className="radiocontainer" >
-                            <input type="radio" name="todopriority" value="Low" id="Low" onChange={handlePriorityChange}/>
-                            <label htmlFor="Low">Low</label>
-                            <input type="radio" name="todopriority" value="Standard" id="Standard" onChange={handlePriorityChange}/>
-                            <label htmlFor="Standard">Standard</label>
-                            <input type="radio" name="todopriority" value="High" id="High" onChange={handlePriorityChange}/>
-                            <label htmlFor="High">High</label>
-                        </div>
-                    </div>
-                    <button type="submit" id="todosubmit">Add</button>
-                </form>
-            </motion.div>
+           <StandardForm close={props.close} heading={"Add a new ToDo"} onSubmit={handleSubmit} submitText={"Add"} id={"formdiv"}>
+               <>
+                   <TextInputElement name={"todotitle"} heading={"Title"} value={title} handleChange={handleTitleChange} required={true}/>
+                   <TextInputElement name={"todocontent"} value={content} heading={"Content (optional)"} handleChange={handleContentChange} required={false}/>
+                   <DateInputElement name={"tododate"} value={dueDate} heading={"Due date:"} handleChange={handleDueDateChange} required={true}/>
+                   <RadioInputElement name={"todopriority"} values={priorities} heading={"Priority"} handleChange={handlePriorityChange} />
+               </>
+           </StandardForm>
         )
     } else {
         return null;

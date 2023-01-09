@@ -2,20 +2,13 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 
-export default function LogoDiv() {
-    const navigate = useNavigate();
-
-    const backToHome = () => {
-        navigate("/home");
-    }
-
-    const LogoDiv = styled.div`
+const MainLogoDiv = styled.div`
         display: flex;
         align-items: center;
         cursor: pointer;
     `;
 
-    const CheckMarkDiv = styled.div`
+const CheckMarkDiv = styled.div`
       background-color: var(--main-color);
       font-family: 'Sansita Swashed', cursive;
       color: white;
@@ -24,7 +17,7 @@ export default function LogoDiv() {
       font-size: 2rem;
     `;
 
-    const LogoText = styled.div`
+const LogoText = styled.div`
       color: var(--main-color);
       font-weight: 900;
       font-family: 'Sansita Swashed', cursive;
@@ -33,14 +26,21 @@ export default function LogoDiv() {
       line-height: 0;
     `;
 
+export default function LogoDiv() {
+    const navigate = useNavigate();
+
+    const backToHome = () => {
+        navigate("/home");
+    }
+
     return (
-        <LogoDiv onClick={backToHome}>
+        <MainLogoDiv onClick={backToHome}>
             <CheckMarkDiv>
                 &#10003;
             </CheckMarkDiv>
             <LogoText>
                 To Do
             </LogoText>
-        </LogoDiv>
+        </MainLogoDiv>
     );
 }
