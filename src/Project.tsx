@@ -6,9 +6,9 @@ import DateConverter from "./Modules/DateConverter";
 
 export default function Project(props: { project: ProjectInterface, openToDoForm: (project: ProjectInterface) => void,
     deleteProject: (project: ProjectInterface) => void,
-    modifyProject: (iD: number, name: string, date: Date, priority: string) => void }) {
+    modifyProject: (iD: number, name: string, date: string, priority: string) => void }) {
     const [name, setName] = useState(props.project.name);
-    const [date, setDate] = useState(DateConverter.convertToInputFormat(props.project.date));
+    const [date, setDate] = useState(props.project.date);
     const [priority, setPriority] = useState(props.project.priority);
     const [projectToDoVisible, setProjectToDoVisible] = useState(false);
     const [projectClass, setProjectClass] = useState("project");
@@ -64,7 +64,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        props.modifyProject(props.project.iD, name, new Date(date), priority);
+        props.modifyProject(props.project.iD, name, date, priority);
         setDuringEdit(false);
     }
 
@@ -81,7 +81,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                             <div className="projectname">{props.project.name}</div>
                             <div className="tododate">
                                 <div><span className="material-symbols-outlined">calendar_month</span></div>
-                                <div>{dateConverter.convertToString(props.project.date)} ({dateConverter.getDayDifference(props.project.date)} days
+                                <div>{props.project.date} ({dateConverter.getDayDifference(new Date(props.project.date))} days
                                     left)
                                 </div>
                             </div>

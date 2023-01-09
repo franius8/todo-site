@@ -4,13 +4,13 @@ import DateConverter from "./Modules/DateConverter";
 import dateConverter from "./Modules/DateConverter";
 
 export default function ToDo(props: { toDo: ToDoInterface,
-    modifyToDo: (iD: number, heading: string, text: string, date: Date, priority: string) => void, deleteToDo: (iD: number) => void
+    modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string) => void, deleteToDo: (iD: number) => void
 moveToDone: (iD: number) => void}) {
     const [duringEdit, setDuringEdit] = React.useState(false);
 
     const [title, setTitle] = React.useState(props.toDo.heading);
     const [content, setContent] = React.useState(props.toDo.text);
-    const [dueDate, setDueDate] = React.useState(DateConverter.convertToInputFormat(props.toDo.date));
+    const [dueDate, setDueDate] = React.useState(props.toDo.date);
     const [priority, setPriority] = React.useState(props.toDo.priority);
 
         let priorityColor;
@@ -49,7 +49,7 @@ moveToDone: (iD: number) => void}) {
         }
         const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            props.modifyToDo(props.toDo.iD, title, content, new Date(dueDate), priority);
+            props.modifyToDo(props.toDo.iD, title, content, dueDate, priority);
             setDuringEdit(false);
         }
         const toggleEdit = () => {

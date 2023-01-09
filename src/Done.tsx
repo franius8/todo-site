@@ -3,7 +3,7 @@ import Header from "./Header";
 import NewToDoForm from "./NewToDoForm";
 
 export default function Done(props: { formVisible: boolean, newToDo: () => void, closeToDo: () => void,
-createToDo: (heading: string, text: string, date: Date, priority: string) => void }) {
+createToDo: (heading: string, text: string, date: string, priority: string) => void }) {
     return (
         <>
             <Header active={"done"} newTodo={props.newToDo}/>

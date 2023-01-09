@@ -13,10 +13,9 @@ import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "./Modules/firebase";
 import {collection, doc, onSnapshot, updateDoc} from "firebase/firestore";
-import dateFixer from "./Modules/datefixer";
 import todoObject from "./Modules/todoObject";
 import idGenerator from "./Modules/idGenerator";
-import Projectobject from "./Modules/projectobject";
+import projectobject from "./Modules/projectobject";
 
 export default function RouteSwitch() {
     const [formVisible, setFormVisible] = React.useState(false);
@@ -43,6 +42,8 @@ export default function RouteSwitch() {
             } else {
                 console.log("No user is currently signed in. ToDos are saved in local storage.");
                 rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
+                console.log(rawToDoAry);
+                console.log(convertRawToDos(rawToDoAry));
                 setToDos(convertRawToDos(rawToDoAry));
                 rawDoneToDoAry = JSON.parse(localStorage.getItem("doneary") || "[]");
                 setDoneToDos(convertRawToDos(rawDoneToDoAry));
@@ -56,7 +57,6 @@ export default function RouteSwitch() {
     const convertRawToDos = (rawToDoAry: any[]) => {
         const toDoAry: ToDoInterface[] = [];
         rawToDoAry.forEach((todo: ToDoInterface) => {
-            todo.date = dateFixer.fixDates(todo.date);
             toDoAry.push(todoObject(todo.heading, todo.text, todo.date, todo.priority, todo.iD, todo.projectiDs));
         });
         return toDoAry;
@@ -65,9 +65,8 @@ export default function RouteSwitch() {
     const convertRawProjects = (rawProjectAry: any[]) => {
         const projectAry: ProjectInterface[] = [];
         rawProjectAry.forEach((project: ProjectInterface) => {
-            project.date = dateFixer.fixDates(project.date);
             project.toDosAry = convertRawToDos(project.toDosAry);
-            projectAry.push(Projectobject(project.iD, project.name, project.toDosAry, project.date, project.priority));
+            projectAry.push(projectobject(project.iD, project.name, project.toDosAry, project.date, project.priority));
         });
         return projectAry;
     }
@@ -110,7 +109,7 @@ export default function RouteSwitch() {
             }
         });
     }
-    const createToDo = (heading: string, text: string, date: Date, priority: string) => {
+    const createToDo = (heading: string, text: string, date: string, priority: string) => {
         const toDosCopy = [...toDos];
         const iD = idGenerator.generateID();
         const newToDo:ToDoInterface = todoObject(heading, text, date, priority, iD, []);
@@ -118,7 +117,7 @@ export default function RouteSwitch() {
         setToDos(toDosCopy);
         updateDatabase(toDosCopy, "todos");
     }
-    const modifyToDo = (iD: number, heading: string, text: string, date: Date, priority: string) => {
+    const modifyToDo = (iD: number, heading: string, text: string, date: string, priority: string) => {
         let toDosCopy = [...toDos];
         toDosCopy = toDosCopy.filter(x => x.iD !== iD)
         const newToDo:ToDoInterface = todoObject(heading, text, date, priority, iD, []);
@@ -134,10 +133,10 @@ export default function RouteSwitch() {
             setToDos(toDosCopy);
         }
     }
-    const createProject = (name: string, date: Date, priority: string) => {
+    const createProject = (name: string, date: string, priority: string) => {
         const projectsCopy = [...projects];
         const iD = idGenerator.generateID();
-        projectsCopy.push(Projectobject(iD, name, [], date, priority));
+        projectsCopy.push(projectobject(iD, name, [], date, priority));
         updateDatabase(projectsCopy, "projects");
         setProjects(projectsCopy);
     }

@@ -18,10 +18,10 @@ export const contentSlice = createSlice({
     initialState,
     reducers: {
         addToDo: (state, action: { payload: ToDoInterface}) => {
-            state.toDos.push(action.payload);
+            state.toDos = [...state.toDos, action.payload];
         },
         addProject: (state, action: { payload: ProjectInterface}) => {
-            state.projectList.push(action.payload);
+            state.projectList = [...state.projectList, action.payload];
         },
         setToDos: (state, action: { payload: ToDoInterface[]}) => {
             state.toDos = action.payload;

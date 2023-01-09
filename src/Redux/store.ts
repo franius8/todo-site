@@ -6,5 +6,5 @@ export default configureStore({
     reducer: {
         modal: modalSlice.reducer,
         content: contentSlice.reducer
-    }
+    },
 })

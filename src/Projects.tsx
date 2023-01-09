@@ -12,8 +12,8 @@ import {openModal, toggleProjectForm} from "./Redux/modalSlice";
 
 export default function Projects(props: { projects: ProjectInterface[], newToDo: () => void, closeToDo: () => void,
     formVisible: boolean, setContentClass: Dispatch<SetStateAction<string>>,
-    createToDo: (heading: string, text: string, date: Date, priority: string) => void,
-    createProject: (name: string, date: Date, priority: string) => void,
+    createToDo: (heading: string, text: string, date: string, priority: string) => void,
+    createProject: (name: string, date: string, priority: string) => void,
     toDos: ToDoInterface[]}) {
 
     const dispatch = useDispatch();
@@ -68,7 +68,7 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
         updateDatabase(projectsCopy, toDosCopy);
     }
 
-    const modifyProject = (iD: number, name: string, date: Date, priority: string) => {
+    const modifyProject = (iD: number, name: string, date: string, priority: string) => {
         const projectsCopy = [...props.projects];
         projectsCopy.forEach((project) => {
             if (project.iD === iD) {

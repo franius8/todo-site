@@ -1,24 +1,18 @@
 interface ToDoInterface {
     heading: string;
     text: string;
-    date: any;
+    date: string;
     priority: string;
     iD: number;
     projectiDs: number[];
-    markAsDone: () => void;
-    getDoneStatus: () => boolean;
 }
 
 interface ProjectInterface {
     name: string;
-    date: any;
+    date: string;
     priority: string;
     iD: number;
     toDosAry: ToDoInterface[];
-    addToDo: (toDo:ToDoInterface) => void;
-    clearToDos: () => void;
-    getToDos: () => ToDoInterface[];
-    setToDos: (toDos:ToDoInterface[]) => void;
 }
 
 interface RawProject {

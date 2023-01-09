@@ -7,15 +7,19 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./Modules/firebase";
 import { collection, doc, updateDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {toggleToDoForm} from "./Redux/modalSlice";
 
 export default function Home(props: {
     formVisible: boolean,
     newToDo: () => void, closeToDo: () => void,
     toDos: ToDoInterface[],
-    modifyToDo: (iD: number, heading: string, text: string, date: Date, priority: string) => void,
+    modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string) => void,
     deleteToDo: (iD: number) => void,
-    createToDo: (heading: string, text: string, date: Date, priority: string) => void,
+    createToDo: (heading: string, text: string, date: string, priority: string) => void,
 }) {
+
+    const dispatch = useDispatch();
 
     const toDoList = useSelector((state: {  content: {toDos: ToDoInterface[]} }) => state.content.toDos);
 
@@ -39,7 +43,7 @@ export default function Home(props: {
     const moveToDone = (iD: number) => {
     }
 
-    if (props.toDos.length > 0) {
+    if (toDoList.length > 0) {
         return (
             <>
                 <Header active={"home"} newTodo={props.newToDo}/>
@@ -55,7 +59,7 @@ export default function Home(props: {
                 <Header active={"home"} newTodo={props.newToDo}/>
                 <div id={"tododiv"}>
                     <div id="actiondiv">
-                        No ToDos yet. Time to <span id="addnew" onClick={props.newToDo}>add a new one</span>.
+                        No ToDos yet. Time to <span id="addnew" onClick={() => dispatch(toggleToDoForm())}>add a new one</span>.
                     </div>
                 </div>
             </>
