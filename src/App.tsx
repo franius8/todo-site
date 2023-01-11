@@ -7,21 +7,14 @@ import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "./Modules/firebase";
 import {doc, onSnapshot} from "firebase/firestore";
-import idGenerator from "./Modules/idGenerator";
 import todoObject from "./Modules/todoObject";
-import {addToDo, setProjects, setToDos} from "./Redux/contentSlice";
+import {setDoneList, setProjects, setToDos} from "./Redux/contentSlice";
 import Projectobject from "./Modules/projectobject";
 import InfoErrorModal from "./InfoErrorModal";
-import database from "./Modules/database";
 
 export default function App() {
     const dispatch = useDispatch();
-    const toDos = useSelector((state: any) => state.content.toDos);
-
-    const projectFormVisible = useSelector((state: { modal: { projectFormVisible: boolean } }) => state.modal.projectFormVisible);
     const contentClass = useSelector((state: any) => state.modal.contentClass);
-
-    let unsubscribe = () => {};
 
 
     useEffect(() => {
@@ -45,10 +38,11 @@ export default function App() {
                 rawDoneToDoAry = JSON.parse(localStorage.getItem("doneary") || "[]");
                 rawProjectAry = JSON.parse(localStorage.getItem("projectary") || "[]");
                 dispatch(setToDos(convertRawToDos(rawToDoAry)));
+                dispatch(setDoneList(convertRawToDos(rawDoneToDoAry)));
                 dispatch(setProjects(convertRawProjects(rawProjectAry)));
             }
         });
-        return () => unsubscribe();
+        unsubscribe()
     }, []);
 
     const convertRawToDos = (rawToDoAry: any[]) => {
@@ -66,15 +60,6 @@ export default function App() {
             projectAry.push(Projectobject(project.iD, project.name, project.toDosAry, project.date, project.priority));
         });
         return projectAry;
-    }
-
-    const createToDo = (heading: string, text: string, date: string, priority: string) => {
-        const toDosCopy = [...toDos];
-        const iD = idGenerator.generateID();
-        const newToDo:ToDoInterface = todoObject(heading, text, date, priority, iD, []);
-        toDosCopy.push(newToDo);
-        dispatch(addToDo(newToDo));
-        database.updateDatabase(toDosCopy, "todos");
     }
 
     return (

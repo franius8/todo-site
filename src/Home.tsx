@@ -1,11 +1,12 @@
 import React from "react";
 import Header from "./Header";
-import ToDo from "./ToDo";
+import ToDoElement from "./ToDoElement";
 import "./Stylesheets/header.css";
 import { ToDoInterface } from "./Modules/d";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { toggleToDoForm } from "./Redux/modalSlice";
+import {addDone, setToDos} from "./Redux/contentSlice";
 
 export default function Home(props: {
     formVisible: boolean,
@@ -19,6 +20,15 @@ export default function Home(props: {
     const toDoList = useSelector((state: {  content: {toDos: ToDoInterface[]} }) => state.content.toDos);
 
     const moveToDone = (iD: number) => {
+        const toDosCopy = [...toDoList];
+        const toDo = toDosCopy.find((toDo: ToDoInterface) => toDo.iD === iD);
+        const filteredToDos = toDosCopy.filter((toDo: ToDoInterface) => toDo.iD !== iD);
+        if (toDo) {
+            props.modifyToDo(iD, toDo.heading, toDo.text, toDo.date, "done");
+        }
+        dispatch(setToDos(filteredToDos));
+        dispatch(addDone(toDo as ToDoInterface));
+
     }
 
     if (toDoList.length > 0) {
@@ -26,8 +36,8 @@ export default function Home(props: {
             <>
                 <Header active={"home"}/>
                 <div id={"tododiv"}>
-                    {toDoList.map((toDo) => <ToDo toDo={toDo} key={toDo.iD} modifyToDo={props.modifyToDo}
-                    deleteToDo={props.deleteToDo}/>)}
+                    {toDoList.map((toDo) => <ToDoElement toDo={toDo} key={toDo.iD} modifyToDo={props.modifyToDo}
+                                                         deleteToDo={props.deleteToDo}/>)}
                 </div>
             </>
         );

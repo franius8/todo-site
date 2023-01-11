@@ -28,6 +28,6 @@
 }
 
 .radiocontainer label:hover {
-    background-color: var(--light-gray);
+    background-color: #a7a7a7;
     cursor: pointer;
 }

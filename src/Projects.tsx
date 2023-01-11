@@ -8,7 +8,6 @@ import { auth, db} from "./Modules/firebase";
 import { collection, doc, updateDoc } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
 import {openModal, toggleProjectForm, toggleProjectToDoForm} from "./Redux/modalSlice";
-import database from "./Modules/database";
 import { setProjects, setToDos } from "./Redux/contentSlice";
 
 export default function Projects(props: { projects: ProjectInterface[]
@@ -66,9 +65,7 @@ export default function Projects(props: { projects: ProjectInterface[]
             const newProjectsCopy = projectsCopy.filter(x => x.iD !== project.iD);
             const newToDosCopy = toDosCopy.filter(x => !x.projectiDs.includes(project.iD));
             dispatch(setProjects(newProjectsCopy));
-            dispatch(setToDos(toDosCopy));
-            database.updateDatabase(newProjectsCopy, "projects");
-            database.updateDatabase(newToDosCopy, "todos");
+            dispatch(setToDos(newToDosCopy));
         }
     }
 

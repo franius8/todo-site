@@ -11,7 +11,6 @@ import idGenerator from "./Modules/idGenerator";
 import { ToDoInterface } from "./Modules/d";
 import todoObject from "./Modules/todoObject";
 import { auth } from "./Modules/firebase";
-import database from "./Modules/database";
 
 export default function NewToDoForm() {
     const dispatch = useDispatch();
@@ -51,8 +50,6 @@ export default function NewToDoForm() {
         console.log(newToDo);
         toDosCopy.push(newToDo);
         dispatch(addToDo(newToDo));
-        database.updateDatabase(toDosCopy, "todos");
-        console.log(auth.currentUser);
         if (!auth.currentUser) {
             dispatch(openModal("You are not signed in. ToDos are saved in local storage."));
         }

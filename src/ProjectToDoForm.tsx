@@ -4,9 +4,7 @@ import StandardForm from "./FormComponents/StandardForm";
 import "./stylesheets/ProjectToDoForm.css"
 import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectToDoForm } from "./Redux/modalSlice";
-import database from "./Modules/database";
 import {setProjects, setToDos} from "./Redux/contentSlice";
-import {To} from "react-router-dom";
 
 export default function ProjectToDoForm(props: { project: ProjectInterface | null } ) {
     const dispatch = useDispatch();
@@ -25,7 +23,6 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
                 checkedStateAry[index] = true;
             });
             setCheckedState(checkedStateAry);
-            console.log(checkedStateAry);
         }
     }, [props.project, toDos]);
 
@@ -53,10 +50,8 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
                         const toDoCopy: ToDoInterface = { ...currentToDo, projectiDs: [...currentToDo.projectiDs, projectCopy.iD] };
                         newToDos.push(toDoCopy);
                     } else if (currentToDo.projectiDs.includes(projectCopy.iD)) {
-                        console.log(currentToDo)
                         const toDoCopy: ToDoInterface = { ...currentToDo, projectiDs:
                                 currentToDo.projectiDs.filter((projectID) => projectID !== projectCopy.iD) };
-                        console.log (toDoCopy);
                         newToDos.push(toDoCopy);
                     } else {
                         newToDos.push(currentToDo);
@@ -66,8 +61,6 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
             }
             // @ts-ignore
             projectsCopy = projectsCopy.filter((project) => project.iD !== props.project.iD);
-            database.updateDatabase([...toDosCopy, ...newToDos], "todos");
-            database.updateDatabase([...projectsCopy, projectCopy], "projects");
             dispatch(setProjects([...projectsCopy, projectCopy]));
             dispatch(setToDos([...toDosCopy, ...newToDos]));
             dispatch(toggleProjectToDoForm());

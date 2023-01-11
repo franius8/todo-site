@@ -9,7 +9,6 @@ import { toggleProjectForm } from "./Redux/modalSlice";
 import idGenerator from "./Modules/idGenerator";
 import projectobject from "./Modules/projectobject";
 import { ProjectInterface } from "./Modules/d";
-import database from "./Modules/database";
 import { setProjects } from "./Redux/contentSlice";
 
 export default function NewProjectForm() {
@@ -43,7 +42,6 @@ export default function NewProjectForm() {
         const projectsCopy = [...projects];
         const iD = idGenerator.generateID();
         projectsCopy.push(projectobject(iD, projectName, [], projectDate, priority));
-        database.updateDatabase(projectsCopy, "projects");
         dispatch(setProjects(projectsCopy));
         dispatch(toggleProjectForm());
     }
