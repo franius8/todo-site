@@ -4,7 +4,7 @@ import Project from "./Project";
 import { ProjectInterface, ToDoInterface } from "./Modules/d";
 import ProjectToDoForm from "./ProjectToDoForm";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./Modules/firebase";
+import { auth, db} from "./Modules/firebase";
 import { collection, doc, updateDoc } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
 import {openModal, toggleProjectForm, toggleProjectToDoForm} from "./Redux/modalSlice";

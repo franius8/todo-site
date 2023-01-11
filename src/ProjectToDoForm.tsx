@@ -6,14 +6,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectToDoForm } from "./Redux/modalSlice";
 import database from "./Modules/database";
 import {setProjects, setToDos} from "./Redux/contentSlice";
+import {To} from "react-router-dom";
 
 export default function ProjectToDoForm(props: { project: ProjectInterface | null } ) {
+    const dispatch = useDispatch();
+
     const toDoFormVisible = useSelector((state: { modal: {projectToDoFormVisible: boolean} }) => state.modal.projectToDoFormVisible);
     const toDos = useSelector((state: {content: {toDos: ToDoInterface[]}}) => state.content.toDos);
     const projects = useSelector((state: {content: {projectList: ProjectInterface[]}}) => state.content.projectList);
-    const dispatch = useDispatch();
 
-    const [checkedState, setCheckedState] = useState<boolean[]>( [] );
+    const [checkedState, setCheckedState] = useState<boolean[]>( new Array(toDos.length).fill(false) );
 
     useEffect(() => {
         if (props.project) {
@@ -27,10 +29,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
         }
     }, [props.project, toDos]);
 
-
-
     const handleChange = (position: number) => {
-        console.log(checkedState);
         const updatedCheckedState = checkedState.map((item, index) =>
             index === position ? !item : item
         );
@@ -40,26 +39,27 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         if (props.project) {
             e.preventDefault();
-            let toDosCopy = [...toDos];
+            const toDosCopy = [...toDos];
+            const newToDos: ToDoInterface[] = [];
             let projectsCopy = [...projects];
-            let newToDos: ToDoInterface[] = [];
             // @ts-ignore
             const projectCopy = { ...projectsCopy.filter((project) => project.iD === props.project.iD)[0] };
             if (projectCopy) {
                 const toDosAry: ToDoInterface[] = [];
-                console.log(checkedState);
                 checkedState.forEach((checked, index) => {
+                    const currentToDo = toDosCopy.shift() as ToDoInterface;
                     if (checked) {
-                        toDosAry.push(toDos[index]);
-                        const toDoCopy: ToDoInterface = { ...toDosCopy[index],
-                            projectiDs: [...toDosCopy[index].projectiDs, projectCopy.iD] };
-                        toDosCopy = toDosCopy.filter((toDo) => toDo.iD !== toDoCopy.iD);
+                        toDosAry.push(currentToDo);
+                        const toDoCopy: ToDoInterface = { ...currentToDo, projectiDs: [...currentToDo.projectiDs, projectCopy.iD] };
                         newToDos.push(toDoCopy);
-                    } else if (toDosCopy[index].projectiDs.includes(projectCopy.iD)) {
-                        const toDoCopy: ToDoInterface = { ...toDosCopy[index], projectiDs:
-                                toDosCopy[index].projectiDs.filter((projectID) => projectID !== projectCopy.iD) };
-                        toDosCopy = toDosCopy.filter((toDo) => toDo.iD !== toDoCopy.iD);
+                    } else if (currentToDo.projectiDs.includes(projectCopy.iD)) {
+                        console.log(currentToDo)
+                        const toDoCopy: ToDoInterface = { ...currentToDo, projectiDs:
+                                currentToDo.projectiDs.filter((projectID) => projectID !== projectCopy.iD) };
+                        console.log (toDoCopy);
                         newToDos.push(toDoCopy);
+                    } else {
+                        newToDos.push(currentToDo);
                     }
                 });
                 projectCopy.toDosAry = toDosAry;

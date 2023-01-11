@@ -48,6 +48,7 @@ export default function NewToDoForm() {
         const toDosCopy = [...toDos];
         const iD = idGenerator.generateID();
         const newToDo:ToDoInterface = todoObject(title, content, dueDate, priority, iD, []);
+        console.log(newToDo);
         toDosCopy.push(newToDo);
         dispatch(addToDo(newToDo));
         database.updateDatabase(toDosCopy, "todos");
