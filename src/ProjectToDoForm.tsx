@@ -5,32 +5,28 @@ import "./stylesheets/ProjectToDoForm.css"
 import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectToDoForm } from "./Redux/modalSlice";
 import database from "./Modules/database";
+import {setProjects, setToDos} from "./Redux/contentSlice";
 
-export default function ProjectToDoForm() {
+export default function ProjectToDoForm(props: { project: ProjectInterface | null } ) {
     const toDoFormVisible = useSelector((state: { modal: {projectToDoFormVisible: boolean} }) => state.modal.projectToDoFormVisible);
     const toDos = useSelector((state: {content: {toDos: ToDoInterface[]}}) => state.content.toDos);
     const projects = useSelector((state: {content: {projectList: ProjectInterface[]}}) => state.content.projectList);
     const dispatch = useDispatch();
-    const editedProjectID = +useSelector((state: {modal: {editedProjectID: string}}) => state.modal.editedProjectID);
-    const project = projects.find((project) => project.iD === editedProjectID);
 
     const [checkedState, setCheckedState] = useState<boolean[]>( [] );
-    const [currEditedId, setCurrEditedId] = useState(0);
 
     useEffect(() => {
-        if (project) {
-            console.log("aaa")
-            const checkedStateAry: boolean[] = new Array(toDos.length).fill(false);
-            project.toDosAry.forEach((projectToDo) => {
+        if (props.project) {
+            const checkedStateAry = new Array(toDos.length).fill(false);
+            props.project.toDosAry.forEach((projectToDo) => {
                 const index = toDos.findIndex((toDo) => toDo.iD == projectToDo.iD);
                 checkedStateAry[index] = true;
-
             });
             setCheckedState(checkedStateAry);
             console.log(checkedStateAry);
         }
-        console.log("aaa")
-    }, []);
+    }, [props.project, toDos]);
+
 
 
     const handleChange = (position: number) => {
@@ -42,28 +38,45 @@ export default function ProjectToDoForm() {
     }
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const toDosCopy = [...toDos];
-        const projectsCopy = [...projects];
-        const projectCopy = projectsCopy.find((project) => project.iD === currEditedId);
-        if (projectCopy) {
-            const toDosAry: ToDoInterface[] = [];
-            checkedState.forEach((checked, index) => {
-                if (checked) {
-                    toDosAry.push(toDos[index]);
-                    toDosCopy[index].projectiDs.push(projectCopy.iD);
-                }
-            });
-            projectCopy.toDosAry = toDosAry;
+        if (props.project) {
+            e.preventDefault();
+            let toDosCopy = [...toDos];
+            let projectsCopy = [...projects];
+            let newToDos: ToDoInterface[] = [];
+            // @ts-ignore
+            const projectCopy = { ...projectsCopy.filter((project) => project.iD === props.project.iD)[0] };
+            if (projectCopy) {
+                const toDosAry: ToDoInterface[] = [];
+                console.log(checkedState);
+                checkedState.forEach((checked, index) => {
+                    if (checked) {
+                        toDosAry.push(toDos[index]);
+                        const toDoCopy: ToDoInterface = { ...toDosCopy[index],
+                            projectiDs: [...toDosCopy[index].projectiDs, projectCopy.iD] };
+                        toDosCopy = toDosCopy.filter((toDo) => toDo.iD !== toDoCopy.iD);
+                        newToDos.push(toDoCopy);
+                    } else if (toDosCopy[index].projectiDs.includes(projectCopy.iD)) {
+                        const toDoCopy: ToDoInterface = { ...toDosCopy[index], projectiDs:
+                                toDosCopy[index].projectiDs.filter((projectID) => projectID !== projectCopy.iD) };
+                        toDosCopy = toDosCopy.filter((toDo) => toDo.iD !== toDoCopy.iD);
+                        newToDos.push(toDoCopy);
+                    }
+                });
+                projectCopy.toDosAry = toDosAry;
+            }
+            // @ts-ignore
+            projectsCopy = projectsCopy.filter((project) => project.iD !== props.project.iD);
+            database.updateDatabase([...toDosCopy, ...newToDos], "todos");
+            database.updateDatabase([...projectsCopy, projectCopy], "projects");
+            dispatch(setProjects([...projectsCopy, projectCopy]));
+            dispatch(setToDos([...toDosCopy, ...newToDos]));
+            dispatch(toggleProjectToDoForm());
         }
-        database.updateDatabase(toDosCopy, "todos");
-        database.updateDatabase(projectsCopy, "projects");
-        close();
     }
 
     if (toDoFormVisible) {
         return (
-            <StandardForm close={() => dispatch(toggleProjectToDoForm(0))} heading={"Add new ToDos to Project"} onSubmit={onSubmit} submitText={"Add"} id={"projecttodosformdiv"}>
+            <StandardForm close={() => dispatch(toggleProjectToDoForm())} heading={"Add new ToDos to Project"} onSubmit={onSubmit} submitText={"Add"} id={"projecttodosformdiv"}>
                 <div className="inputdiv"><label htmlFor="projectcheckboxdiv">Select ToDos:</label>
                     <div className="projectcheckboxdiv">
                         {toDos.map(({ iD, heading, date}, index) => {

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {ProjectInterface} from "./Modules/d";
 import dateConverter from "./Modules/DateConverter";
 import ProjectToDoContainer from "./ProjectToDoContainer";
-import DateConverter from "./Modules/DateConverter";
 
 export default function Project(props: { project: ProjectInterface, openToDoForm: (project: ProjectInterface) => void,
     deleteProject: (project: ProjectInterface) => void,

@@ -15,16 +15,4 @@ interface ProjectInterface {
     toDosAry: ToDoInterface[];
 }
 
-interface RawProject {
-    name: string;
-    date: any;
-    priority: string;
-    iD: number;
-    toDosAry: ToDoInterface[];
-}
-
-interface generalObject {
-    [key: string]: unknown;
-}
-
-export type { ToDoInterface, ProjectInterface, RawProject, generalObject };
+export type { ToDoInterface, ProjectInterface };

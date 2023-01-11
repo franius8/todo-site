@@ -38,6 +38,12 @@ const LoginButton = styled.button`
       color: white;
       align-self: center;
       justify-self: center;
+  &:hover {
+        cursor: pointer;
+        background-color: white;
+        color: var(--main-color);
+        border: 5px solid var(--main-color);
+  }
 `
 
 const RegisterButton = styled.button`

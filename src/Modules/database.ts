@@ -1,7 +1,6 @@
 import {auth, db} from "./firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import {collection, doc, updateDoc} from "firebase/firestore";
-import {openModal} from "../Redux/modalSlice";
 import {ProjectInterface, ToDoInterface} from "./d";
 
 const database = (() => {

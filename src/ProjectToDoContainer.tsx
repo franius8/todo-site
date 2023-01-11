@@ -1,9 +1,31 @@
 import React from "react";
-import "./stylesheets/ProjectToDoContainer.css";
-import {ProjectInterface, ToDoInterface} from "./Modules/d";
+import {ProjectInterface} from "./Modules/d";
 import dateConverter from "./Modules/DateConverter";
-import { useSelector, useDispatch } from "react-redux";
-import {toggleProjectToDoForm} from "./Redux/modalSlice";
+import { useDispatch } from "react-redux";
+import styled from "styled-components";
+
+const ProjectToDoDiv = styled.div`
+  border-radius: 0 0 1rem 1rem;
+  border: 1px solid var(--light-gray);
+  box-shadow: 3px 3px 3px rgb(150, 150, 150);
+  background-color: white;
+  z-index: 1;  
+`
+
+const ProjectToDoContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+`
+
+const NoToDosDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+`
 
 export default function ProjectToDoContainer(props: { visible: boolean, openToDoForm: (project: ProjectInterface) => void, project: ProjectInterface }) {
     const dispatch = useDispatch();
@@ -17,24 +39,29 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
         }
     }
 
+    const openToDoForm = () => {
+        console.log(props.project);
+        props.openToDoForm(props.project);
+    }
+
     if (props.visible && props.project.toDosAry.length == 0) {
         return (
-            <div className="projecttododiv" style={{display: "block"}}>
-                <div className="projecttodoscontainer">
-                    <div className="notodosdiv">
+            <ProjectToDoDiv>
+                <ProjectToDoContainerDiv>
+                    <NoToDosDiv>
                         <div className="notodos">No ToDos for this project yet</div>
-                        <button className="addtodobutton" onClick={() => dispatch(toggleProjectToDoForm(props.project.iD))}>Add/Remove ToDos</button>
-                    </div>
-                </div>
-            </div>
+                        <button className="addtodobutton" onClick={openToDoForm}>Add/Remove ToDos</button>
+                    </NoToDosDiv>
+                </ProjectToDoContainerDiv>
+            </ProjectToDoDiv>
         );
     } else if (props.visible) {
         return (
-            <div className="projecttododiv" style={{display: "block"}}>
-                <div className="projecttodoscontainer">
-                    <div className="notodosdiv">
-                        <button className="addtodobutton" onClick={() => dispatch(toggleProjectToDoForm(props.project.iD))}>Add/Remove ToDos</button>
-                    </div>
+            <ProjectToDoDiv>
+                <ProjectToDoContainerDiv>
+                    <NoToDosDiv>
+                        <button className="addtodobutton" onClick={openToDoForm}>Add/Remove ToDos</button>
+                    </NoToDosDiv>
                         {props.project.toDosAry.map(({iD, heading, text, priority, date}, index) => {
                             return (
                                 <div className="projecttodo" key={props.project.iD + " " + iD}>
@@ -56,8 +83,8 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
                         })
                         }
 
-                </div>
-            </div>
+                </ProjectToDoContainerDiv>
+            </ProjectToDoDiv>
         )
     } else {
         return null;

@@ -1,25 +1,24 @@
-import React, {Dispatch, SetStateAction, useState} from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Project from "./Project";
-import {ProjectInterface, ToDoInterface} from "./Modules/d";
-import NewProjectForm from "./NewProjectForm";
+import { ProjectInterface, ToDoInterface } from "./Modules/d";
 import ProjectToDoForm from "./ProjectToDoForm";
-import {onAuthStateChanged} from "firebase/auth";
-import {auth, db} from "./Modules/firebase";
-import {collection, doc, updateDoc} from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "./Modules/firebase";
+import { collection, doc, updateDoc } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
-import {openModal, toggleProjectForm} from "./Redux/modalSlice";
+import {openModal, toggleProjectForm, toggleProjectToDoForm} from "./Redux/modalSlice";
+import database from "./Modules/database";
+import { setProjects, setToDos } from "./Redux/contentSlice";
 
-export default function Projects(props: { projects: ProjectInterface[], newToDo: () => void, closeToDo: () => void,
-    formVisible: boolean, setContentClass: Dispatch<SetStateAction<string>>,
+export default function Projects(props: { projects: ProjectInterface[]
     createToDo: (heading: string, text: string, date: string, priority: string) => void,
     createProject: (name: string, date: string, priority: string) => void,
     toDos: ToDoInterface[]}) {
 
     const dispatch = useDispatch();
+    const projects = useSelector((state: { content: {projectList: ProjectInterface[]} }) => state.content.projectList);
 
-    const [projectFormVisible, setProjectFormVisible] = useState(false);
-    const [projectToDoFormVisible, setProjectToDoFormVisible] = useState(false);
     const [projectToDosEdited, setProjectToDosEdited] = useState<ProjectInterface | null>(null);
 
     const updateDatabase = async (projectsCopy: ProjectInterface[], toDosCopy: ToDoInterface[]) => {
@@ -41,31 +40,9 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
         });
     }
 
-    const openProjectForm = () => {
-        setProjectFormVisible(true);
-        props.setContentClass("blurred");
-    }
-    const closeProjectForm = () => {
-        setProjectFormVisible(false);
-        props.setContentClass("");
-    }
-
     const openProjectToDoForm = (project: ProjectInterface) => {
-        props.setContentClass("blurred");
-        setProjectToDoFormVisible(true);
         setProjectToDosEdited(project);
-    }
-    const closeProjectToDoForm = () => {
-        props.setContentClass("");
-        setProjectToDoFormVisible(false);
-        setProjectToDosEdited(null);
-    }
-
-    const handleToDoUpdate = () => {
-        const projectsCopy = [...props.projects];
-        const toDosCopy = [...props.toDos];
-        console.log(projectsCopy);
-        updateDatabase(projectsCopy, toDosCopy);
+        dispatch(toggleProjectToDoForm());
     }
 
     const modifyProject = (iD: number, name: string, date: string, priority: string) => {
@@ -88,29 +65,31 @@ export default function Projects(props: { projects: ProjectInterface[], newToDo:
             const projectToDos = project.toDosAry;
             const newProjectsCopy = projectsCopy.filter(x => x.iD !== project.iD);
             const newToDosCopy = toDosCopy.filter(x => !x.projectiDs.includes(project.iD));
-            updateDatabase(newProjectsCopy, newToDosCopy);
+            dispatch(setProjects(newProjectsCopy));
+            dispatch(setToDos(toDosCopy));
+            database.updateDatabase(newProjectsCopy, "projects");
+            database.updateDatabase(newToDosCopy, "todos");
         }
     }
 
-    if (props.projects.length > 0) {
+    if (projects.length > 0) {
         return (
             <>
-                <Header active={"projects"} newTodo={props.newToDo}/>
+                <Header active={"projects"}/>
                 <div id="newprojectbuttondiv">
                     <button id="newprojectbutton" onClick={() => dispatch(toggleProjectForm())}>Add a new project</button>
                 </div>
                 <div id={"projectdiv"}>
-                    {props.projects.map((project) => <Project key={project.iD} project={project} openToDoForm={openProjectToDoForm}
+                    {projects.map((project) => <Project key={project.iD} project={project} openToDoForm={openProjectToDoForm}
                     deleteProject={deleteProject} modifyProject={modifyProject}/>)}
                 </div>
-                <ProjectToDoForm visible={projectToDoFormVisible} toDos={props.toDos} close={closeProjectToDoForm}
-                                 project={projectToDosEdited} databaseUpdate={handleToDoUpdate}/>
+                <ProjectToDoForm project={projectToDosEdited} />
             </>
         );
     } else {
         return (
             <>
-                <Header active={"projects"} newTodo={props.newToDo}/>
+                <Header active={"projects"}/>
                 <div id="projectdiv">
                     <div id="actiondiv">
                         No Projects yet. Time to <span id="addnew" onClick={() => dispatch(toggleProjectForm())}>add a new one</span>.

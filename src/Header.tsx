@@ -7,15 +7,13 @@ import { auth } from "./Modules/firebase";
 import { useDispatch } from "react-redux";
 import { toggleToDoForm } from "./Redux/modalSlice";
 
-export default function Header(props: { active: string, newTodo: () => void}) {
+export default function Header(props: { active: string }) {
+    const dispatch = useDispatch();
+
     const navitems = [["home", "house"], ["done", "done"], ["projects", "assignment"]];
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
 
-    const backToHome = () => {
-        navigate("/home");
-    }
     const toLogin = () => {
         onAuthStateChanged(auth, (user) => {
             if (user) {

@@ -1,12 +1,10 @@
 import React from "react";
 import Header from "./Header";
-import NewToDoForm from "./NewToDoForm";
 
-export default function Done(props: { formVisible: boolean, newToDo: () => void, closeToDo: () => void,
-createToDo: (heading: string, text: string, date: string, priority: string) => void }) {
+export default function Done() {
     return (
         <>
-            <Header active={"done"} newTodo={props.newToDo}/>
+            <Header active={"done"}/>
             <div id={"donediv"}>
                 <div id="actiondiv">No ToDos marked as done.</div>
             </div>

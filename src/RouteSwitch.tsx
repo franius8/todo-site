@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Routes, Route, useNavigate, To} from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from "./Home";
 import Projects from "./Projects";
 import Done from "./Done";
@@ -19,7 +19,6 @@ import projectobject from "./Modules/projectobject";
 
 export default function RouteSwitch() {
     const [formVisible, setFormVisible] = React.useState(false);
-    const [contentClass, setContentClass] = React.useState("");
     const [toDos, setToDos] = React.useState<ToDoInterface[]>([] as ToDoInterface[]);
     const [doneToDos, setDoneToDos] = React.useState<ToDoInterface[]>([] as ToDoInterface[]);
     const [projects, setProjects] = React.useState<ProjectInterface[]>([] as ProjectInterface[]);
@@ -70,15 +69,6 @@ export default function RouteSwitch() {
         });
         return projectAry;
     }
-
-    const openToDoForm = () => {
-        setFormVisible(true);
-        setContentClass("blurred");
-    }
-    const closeToDoForm = () => {
-        setFormVisible(false);
-        setContentClass("");
-    }
     const updateDatabase = async (toDosCopy: ToDoInterface[] | ProjectInterface[], type: string) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -128,7 +118,6 @@ export default function RouteSwitch() {
     const deleteToDo = (iD: number) => {
         if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
             const toDosCopy = [...toDos].filter(x => x.iD !== iD);
-            idGenerator.freeID(iD);
             updateDatabase(toDosCopy, "todos");
             setToDos(toDosCopy);
         }
@@ -144,16 +133,12 @@ export default function RouteSwitch() {
             <BrowserRouter>
               <Routes>
                   <Route path="/" element={<Home key={0}
-                      formVisible={formVisible} newToDo={openToDoForm} modifyToDo={modifyToDo} deleteToDo={deleteToDo}
-                      closeToDo={closeToDoForm} toDos={toDos} createToDo={createToDo}/>} />
+                      formVisible={formVisible} modifyToDo={modifyToDo} deleteToDo={deleteToDo} createToDo={createToDo}/>} />
                   <Route path="/home" element={<Home key={0}
-                      formVisible={formVisible} newToDo={openToDoForm} modifyToDo={modifyToDo} deleteToDo={deleteToDo}
-                      closeToDo={closeToDoForm} toDos={toDos} createToDo={createToDo}/>} />
-                  <Route path="/done" element={<Done createToDo={createToDo}
-                      formVisible={formVisible} newToDo={openToDoForm} closeToDo={closeToDoForm}/>} />
+                      formVisible={formVisible} modifyToDo={modifyToDo} deleteToDo={deleteToDo} createToDo={createToDo}/>} />
+                  <Route path="/done" element={<Done />} />
                   <Route path="/projects" element={<Projects createToDo={createToDo} toDos={toDos}
-                      projects={projects} newToDo={openToDoForm} createProject={createProject}
-                      closeToDo={closeToDoForm} formVisible={formVisible} setContentClass={setContentClass}/>} />
+                      projects={projects} createProject={createProject} />} />
                   <Route path={"/login"} element={<Login />} />
                   <Route path={"/register"} element={<Register />} />
                   <Route path={"/account"} element={<Account />} />

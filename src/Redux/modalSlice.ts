@@ -7,7 +7,6 @@ export const modalSlice = createSlice({
         toDoFormVisible: false,
         projectFormVisible: false,
         projectToDoFormVisible: false,
-        editedProjectId: 0,
         modalText: '',
         contentClass: ""
     },
@@ -23,10 +22,9 @@ export const modalSlice = createSlice({
             state.contentClass = state.projectFormVisible ? "blurred" : "";
         },
 
-        toggleProjectToDoForm: (state, action) => {
+        toggleProjectToDoForm: (state) => {
             state.projectToDoFormVisible = !state.projectToDoFormVisible;
             state.contentClass = state.projectToDoFormVisible ? "blurred" : "";
-            state.editedProjectId = action.payload;
         },
 
         toggleModal: (state) => {

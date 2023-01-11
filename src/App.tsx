@@ -6,15 +6,13 @@ import {useDispatch, useSelector} from 'react-redux'
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "./Modules/firebase";
-import {collection, doc, onSnapshot, updateDoc} from "firebase/firestore";
+import {doc, onSnapshot} from "firebase/firestore";
 import idGenerator from "./Modules/idGenerator";
 import todoObject from "./Modules/todoObject";
 import {addToDo, setProjects, setToDos} from "./Redux/contentSlice";
-import {openModal} from "./Redux/modalSlice";
 import Projectobject from "./Modules/projectobject";
 import InfoErrorModal from "./InfoErrorModal";
 import database from "./Modules/database";
-import ProjectToDoForm from "./ProjectToDoForm";
 
 export default function App() {
     const dispatch = useDispatch();
@@ -84,7 +82,6 @@ export default function App() {
             <RouteSwitch />
             <NewToDoForm />
             <NewProjectForm />
-            <ProjectToDoForm />
             <InfoErrorModal />
         </div>
     )
