@@ -9,7 +9,7 @@ import { toggleProjectForm } from "./Redux/modalSlice";
 import idGenerator from "./Modules/idGenerator";
 import projectobject from "./Modules/projectobject";
 import { ProjectInterface } from "./Modules/d";
-import { setProjects } from "./Redux/contentSlice";
+import {addProject, setProjects} from "./Redux/contentSlice";
 
 export default function NewProjectForm() {
     const dispatch = useDispatch();
@@ -19,7 +19,6 @@ export default function NewProjectForm() {
     const [priority, setPriority] = React.useState("");
 
     const projectFormVisible = useSelector((state: { modal: {projectFormVisible: boolean} }) => state.modal.projectFormVisible);
-    const projects = useSelector(( state: {content: { projectList: ProjectInterface[] } }) => state.content.projectList);
 
     const priorities = ["Normal", "Urgent"];
 
@@ -39,10 +38,8 @@ export default function NewProjectForm() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const projectsCopy = [...projects];
         const iD = idGenerator.generateID();
-        projectsCopy.push(projectobject(iD, projectName, [], projectDate, priority));
-        dispatch(setProjects(projectsCopy));
+        dispatch(addProject(projectobject(iD, projectName, [], projectDate, priority)));
         dispatch(toggleProjectForm());
     }
 

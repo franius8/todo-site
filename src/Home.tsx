@@ -8,12 +8,7 @@ import { useDispatch } from "react-redux";
 import { toggleToDoForm } from "./Redux/modalSlice";
 import {addDone, setToDos} from "./Redux/contentSlice";
 
-export default function Home(props: {
-    formVisible: boolean,
-    modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string) => void,
-    deleteToDo: (iD: number) => void,
-    createToDo: (heading: string, text: string, date: string, priority: string) => void,
-}) {
+export default function Home() {
 
     const dispatch = useDispatch();
 
@@ -24,11 +19,23 @@ export default function Home(props: {
         const toDo = toDosCopy.find((toDo: ToDoInterface) => toDo.iD === iD);
         const filteredToDos = toDosCopy.filter((toDo: ToDoInterface) => toDo.iD !== iD);
         if (toDo) {
-            props.modifyToDo(iD, toDo.heading, toDo.text, toDo.date, "done");
+            modifyToDo(iD, toDo.heading, toDo.text, toDo.date, "done");
         }
         dispatch(setToDos(filteredToDos));
         dispatch(addDone(toDo as ToDoInterface));
 
+    }
+
+    const modifyToDo = (iD: number, heading: string, text: string, date: string, priority: string) => {
+
+
+    }
+
+    const deleteToDo = (iD: number) => {
+        if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
+            const toDosCopy = [...toDoList].filter(x => x.iD !== iD);
+            dispatch(setToDos(toDosCopy));
+        }
     }
 
     if (toDoList.length > 0) {
@@ -36,8 +43,8 @@ export default function Home(props: {
             <>
                 <Header active={"home"}/>
                 <div id={"tododiv"}>
-                    {toDoList.map((toDo) => <ToDoElement toDo={toDo} key={toDo.iD} modifyToDo={props.modifyToDo}
-                                                         deleteToDo={props.deleteToDo}/>)}
+                    {toDoList.map((toDo) => <ToDoElement toDo={toDo} key={toDo.iD} modifyToDo={modifyToDo}
+                                                         moveToDone={moveToDone} deleteToDo={deleteToDo}/>)}
                 </div>
             </>
         );

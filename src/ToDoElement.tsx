@@ -4,12 +4,13 @@ import dateConverter from "./Modules/DateConverter";
 import { priorityGetter } from "./Modules/priorityGetter";
 
 export default function ToDoElement(props: { toDo: ToDoInterface,
-    modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string) => void, deleteToDo: (iD: number) => void }) {
+    modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string) => void,
+    deleteToDo: (iD: number) => void, moveToDone: (iD: number) => void }) {
     const [duringEdit, setDuringEdit] = React.useState(false);
 
-    const [title, setTitle] = useState(props.toDo.heading);
-    const [content, setContent] = useState(props.toDo.text);
-    const [dueDate, setDueDate] = useState(props.toDo.date);
+    const [heading, setHeading] = useState(props.toDo.heading);
+    const [text, setText] = useState(props.toDo.text);
+    const [date, setDate] = useState(props.toDo.date);
     const [priority, setPriority] = useState(props.toDo.priority);
     const [priorityColor, setPriorityColor] = useState(priorityGetter(props.toDo.priority));
 
@@ -21,13 +22,13 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
         const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
             switch (e.target.name) {
                 case "todotitle":
-                    setTitle(e.target.value);
+                    setHeading(e.target.value);
                     break;
                 case "todocontent":
-                    setContent(e.target.value);
+                    setText(e.target.value);
                     break;
                 case "tododate":
-                    setDueDate(e.target.value);
+                    setDate(e.target.value);
                     break;
                 case "todopriority":
                     setPriority(e.target.value);
@@ -37,7 +38,7 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
 
         const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            props.modifyToDo(props.toDo.iD, title, content, dueDate, priority);
+            props.modifyToDo(props.toDo.iD, heading, text, date, priority);
             setDuringEdit(false);
         }
         const toggleEdit = () => {
@@ -47,20 +48,24 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
             props.deleteToDo(props.toDo.iD);
         }
 
+        const moveToDone = () => {
+            props.moveToDone(props.toDo.iD);
+        }
+
     if (!duringEdit) {
         return (
             <div className="todo">
                 <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
                 <div className="middlediv">
                     <div className="checkboxdiv">
-                        <div className="checkbox" onClick={() => {}}>✓</div>
+                        <div className="checkbox" onClick={moveToDone}>✓</div>
                     </div>
                     <div className="todocontent">
-                        <div className="todoheading">{title}</div>
-                        <div className="todotext">{content}</div>
+                        <div className="todoheading">{heading}</div>
+                        <div className="todotext">{text}</div>
                         <div className="tododate">
                             <div><span className="material-symbols-outlined">calendar_month</span></div>
-                            <div>{dateConverter.convertToString(new Date(dueDate))} ({dateConverter.getDayDifference(new Date(dueDate))} days left)
+                            <div>{dateConverter.convertToString(new Date(date))} ({dateConverter.getDayDifference(new Date(date))} days left)
                             </div>
                         </div>
                         <div className="todopriority">
@@ -88,13 +93,13 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
                     <div className="duringedit">
                         <form className="todocontent" id="editform" onSubmit={handleSubmit}>
                             <div className="inputdiv"><label htmlFor="todotitleedit">Title:</label>
-                                <input type="text" name="todotitleedit" id="todotitleedit" required={true} value={title} onChange={handleInputChange}/>
+                                <input type="text" name="todotitleedit" id="todotitleedit" required={true} value={heading} onChange={handleInputChange}/>
                             </div>
                             <div className="inputdiv"><label htmlFor="todocontentedit">Content (optional):</label>
-                                <input type="text" name="todocontentedit" id="todocontentedit" value={content} onChange={handleInputChange}/>
+                                <input type="text" name="todocontentedit" id="todocontentedit" value={text} onChange={handleInputChange}/>
                             </div>
                             <div className="inputdiv"><label htmlFor="tododateedit">Due date:</label>
-                                <input type="date" name="tododateedit" id="tododateedit" required={true} value={dueDate} onChange={handleInputChange}/>
+                                <input type="date" name="tododateedit" id="tododateedit" required={true} value={date} onChange={handleInputChange}/>
                             </div>
                             <div className="inputdiv"><label htmlFor="radiocontainer">Priority:</label>
                                 <div className="radiocontainer">

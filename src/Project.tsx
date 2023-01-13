@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import {ProjectInterface} from "./Modules/d";
 import dateConverter from "./Modules/DateConverter";
 import ProjectToDoContainer from "./ProjectToDoContainer";
+import styled from "styled-components";
+
+const ProjectContentForm = styled.form`
+    display: flex;
+    gap: 1rem;
+`
 
 export default function Project(props: { project: ProjectInterface, openToDoForm: (project: ProjectInterface) => void,
     deleteProject: (project: ProjectInterface) => void,
-    modifyProject: (iD: number, name: string, date: string, priority: string) => void }) {
+    modifyProject: (iD: number, name: string, date: string, priority: string) => void,
+    moveToDone: (project: ProjectInterface) => void }) {
     const [name, setName] = useState(props.project.name);
     const [date, setDate] = useState(props.project.date);
     const [priority, setPriority] = useState(props.project.priority);
@@ -41,31 +48,23 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
         setProjectClass(newProjectClass);
     }
 
-    const toggleEdit = () => {
-        setDuringEdit(!duringEdit);
-    }
+    const toggleEdit = () => setDuringEdit(!duringEdit);
 
-    const handleDeleteProject = () => {
-        props.deleteProject(props.project);
-    }
+    const handleDeleteProject = () => props.deleteProject(props.project);
 
-    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
-    }
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);
 
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDate(dateConverter.convertToInputFormat(new Date(e.target.value)));
-    }
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => setDate(dateConverter.convertToInputFormat(new Date(e.target.value)));
 
-    const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPriority(e.target.value);
-    }
+    const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => setPriority(e.target.value);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         props.modifyProject(props.project.iD, name, date, priority);
         setDuringEdit(false);
     }
+
+    const moveToDone = () => props.moveToDone(props.project);
 
     if (!duringEdit) {
         return (
@@ -74,7 +73,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                     <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
                     <div className="middlediv">
                         <div className="checkboxdiv">
-                            <div className="checkbox">✓</div>
+                            <div className="checkbox" onClick={moveToDone}>✓</div>
                         </div>
                         <div className="projectcontent">
                             <div className="projectname">{props.project.name}</div>
@@ -99,7 +98,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         </div>
                     </div>
                     <div className="expandbutton" onClick={toggleToDos}>
-                        <span className="material-symbols-outlined">expand_more</span>
+                        <span className={`material-symbols-outlined ${projectToDoVisible ? "rotate" : ""}`}>expand_less</span>
                     </div>
                 </div>
                 <ProjectToDoContainer visible={projectToDoVisible} project={props.project}
@@ -115,8 +114,8 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         <div className="checkboxdiv">
                             <div className="checkbox">✓</div>
                         </div>
-                        <div className="projectcontent">
-                            <form className="projectcontent" id="editform" onSubmit={handleSubmit}>
+                        <div>
+                            <ProjectContentForm id="editform" onSubmit={handleSubmit}>
                                 <div className="inputdiv">
                                     <label htmlFor="projectnameedit">Name:</label>
                                     <input type="text" name="projectnameedit" id="projectnameedit" required={true}
@@ -138,7 +137,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                                         <label htmlFor="Urgent">Urgent</label>
                                     </div>
                                 </div>
-                            </form>
+                            </ProjectContentForm>
                         </div>
                         <div className="buttondiv">
                             <button className="cancelbutton" onClick={toggleEdit}>
@@ -150,7 +149,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         </div>
                     </div>
                     <div className="expandbutton" onClick={toggleToDos}>
-                        <span className="material-symbols-outlined">expand_more</span>
+                        <span className="material-symbols-outlined">{projectToDoVisible ? "expand_more" : "expand_less"}</span>
                     </div>
                 </div>
                 <ProjectToDoContainer visible={projectToDoVisible} project={props.project}

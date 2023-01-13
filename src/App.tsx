@@ -8,19 +8,20 @@ import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "./Modules/firebase";
 import {doc, onSnapshot} from "firebase/firestore";
 import todoObject from "./Modules/todoObject";
-import {setDoneList, setProjects, setToDos} from "./Redux/contentSlice";
+import {loadInitialState, setDoneList, setDoneProjects, setProjects, setToDos} from "./Redux/contentSlice";
 import Projectobject from "./Modules/projectobject";
-import InfoErrorModal from "./InfoErrorModal";
+import InfoErrorModal from "./Modals/InfoErrorModal";
 
 export default function App() {
     const dispatch = useDispatch();
     const contentClass = useSelector((state: any) => state.modal.contentClass);
 
-
     useEffect(() => {
+        console.log("fetched")
         let rawToDoAry: string[] = [];
         let rawDoneToDoAry: string[] = [];
         let rawProjectAry: string[] = [];
+        let rawDoneProjectAry: string[] = [];
         let unsubscribe = () => {};
         //Does not return a promise, dispatch code temporarily doubled
         onAuthStateChanged(auth, (user) => {
@@ -29,17 +30,17 @@ export default function App() {
                     rawToDoAry = JSON.parse(doc.data()?.todos || "[]");
                     rawDoneToDoAry = JSON.parse(doc.data()?.donetodos || "[]");
                     rawProjectAry = JSON.parse(doc.data()?.projects || "[]");
-                    dispatch(setToDos(convertRawToDos(rawToDoAry)));
-                    dispatch(setProjects(convertRawProjects(rawProjectAry)));
+                    rawDoneProjectAry = JSON.parse(doc.data()?.doneprojects || "[]")
+                    dispatch(loadInitialState({ toDos: convertRawToDos(rawToDoAry), doneToDos: convertRawToDos(rawToDoAry),
+                    projects: convertRawProjects(rawProjectAry), doneProjects: convertRawProjects(rawProjectAry)}))
                 });
             } else {
                 console.log("No user is currently signed in. ToDos are saved in local storage.");
                 rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
                 rawDoneToDoAry = JSON.parse(localStorage.getItem("doneary") || "[]");
                 rawProjectAry = JSON.parse(localStorage.getItem("projectary") || "[]");
-                dispatch(setToDos(convertRawToDos(rawToDoAry)));
-                dispatch(setDoneList(convertRawToDos(rawDoneToDoAry)));
-                dispatch(setProjects(convertRawProjects(rawProjectAry)));
+                dispatch(loadInitialState({ toDos: convertRawToDos(rawToDoAry), doneToDos: convertRawToDos(rawToDoAry),
+                    projects: convertRawProjects(rawProjectAry), doneProjects: convertRawProjects(rawProjectAry)}))
             }
         });
         unsubscribe()

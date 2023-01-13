@@ -1,7 +1,7 @@
 import React from "react";
 import GenericModal from "./GenericModal";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleModal } from "./Redux/modalSlice";
+import { toggleModal } from "../Redux/modalSlice";
 
 export default function InfoErrorModal() {
     const dispatch = useDispatch()
