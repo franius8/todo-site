@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
+import ElementPriority from "./ElementPriority";
+import ElementButtonDiv from "./ElementButtonDiv";
 import dateConverter from "./Modules/DateConverter";
 import ProjectToDoContainer from "./ProjectToDoContainer";
 import styled from "styled-components";
 import {priorityGetter} from "./Modules/priorityGetter";
+import ElementDate from "./ElementDate";
 
 const ProjectContentForm = styled.form`
     display: flex;
@@ -61,25 +64,10 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         </div>
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
-                            <div className="tododate">
-                                <div><span className="material-symbols-outlined">calendar_month</span></div>
-                                <div>{date} ({dateConverter.getDayDifference(new Date(date))} days
-                                    left)
-                                </div>
-                            </div>
-                            <div className="todopriority">
-                                <div className="prioritycircle" style={{backgroundColor: priorityColor}} />
-                                <div>{priority} priority</div>
-                            </div>
+                            <ElementDate date={date} done={false} />
+                            <ElementPriority priority={priority} priorityColor={priorityColor} done={false}/>
                         </div>
-                        <div className="buttondiv">
-                            <button className="editbutton" onClick={toggleEdit}>
-                                <span className="material-symbols-outlined">edit</span>
-                            </button>
-                            <button className="deletebutton" onClick={handleDeleteProject}>
-                                <span className="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
+                        <ElementButtonDiv delete={handleDeleteProject} toggleEdit={toggleEdit} />
                     </div>
                     <div className="expandbutton" onClick={toggleToDos}>
                         <span className={`material-symbols-outlined ${projectToDoVisible ? "rotate" : ""}`}>expand_less</span>

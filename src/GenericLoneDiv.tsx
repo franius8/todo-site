@@ -17,10 +17,11 @@ const MainDiv = styled.div`
       }
     `;
 
-export default function GenericLoneDiv(props: { children: JSX.Element }) {
+export default function GenericLoneDiv(props: { children: JSX.Element, heading: string }) {
     return (
         <MainDiv>
             <LogoDiv />
+            <h2>{props.heading}</h2>
             {props.children}
         </MainDiv>
     )

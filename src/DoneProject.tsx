@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import ProjectToDoContainer from "./ProjectToDoContainer";
+import ElementButtonDiv from "./ElementButtonDiv";
+import ElementDate from "./ElementDate";
+import ElementPriority from "./ElementPriority";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import styled from "styled-components";
 
@@ -50,23 +53,10 @@ export default function DoneProject(props: { project: ProjectInterface,
                         </div>
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
-                            <div className="tododate">
-                                <div><span className="material-symbols-outlined">calendar_month</span></div>
-                                <div>{date}</div>
-                            </div>
-                            <div className="todopriority">
-                                <div className="prioritycircle" style={{backgroundColor: "gray"}} />
-                                <div>Done</div>
-                            </div>
+                            <ElementDate date={date} done={true} />
+                            <ElementPriority priority={"Done"} priorityColor={"gray"} done={true} />
                         </div>
-                        <div className="buttondiv">
-                            <button className="editbutton" onClick={toggleEdit}>
-                                <span className="material-symbols-outlined">edit</span>
-                            </button>
-                            <button className="deletebutton" onClick={handleDeleteProject}>
-                                <span className="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
+                        <ElementButtonDiv toggleEdit={toggleEdit} delete={handleDeleteProject} />
                     </div>
                     <div className="expandbutton" onClick={toggleToDos}>
                     <span

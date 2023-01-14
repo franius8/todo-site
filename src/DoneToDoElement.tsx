@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import dateConverter from "./Modules/DateConverter";
+import ElementButtonDiv from "./ElementButtonDiv";
+import ElementDate from "./ElementDate";
+import ElementPriority from "./ElementPriority";
 import {ToDoInterface} from "./Modules/d";
 
 export default function DoneToDoElement(props: { toDo: ToDoInterface, deleteToDo: (toDo:ToDoInterface) => void,
@@ -33,23 +35,10 @@ revertDone: (toDo: ToDoInterface) => void} ) {
                 <div className="todocontent">
                     <div className="todoheading">{heading}</div>
                     <div className="todotext">{text}</div>
-                    <div className="tododate">
-                        <div><span className="material-symbols-outlined">calendar_month</span></div>
-                        <div>
-                            {dateConverter.convertToString(new Date(date))}
-                        </div>
-                    </div>
-                    <div className="todopriority">
-                        <div className="prioritycircle" style={{backgroundColor: "gray"}} />
-                        <div>Done</div>
-                    </div>
+                    <ElementDate date={date} done={true} />
+                    <ElementPriority priority={"Done"} priorityColor={"gray"} done={true} />
                 </div>
-                <div className="buttondiv">
-                    <button className="editbutton" onClick={toggleEdit}>
-                        <span className="material-symbols-outlined">edit</span></button>
-                    <button className="deletebutton" onClick={deleteToDo}>
-                        <span className="material-symbols-outlined">delete</span></button>
-                </div>
+                <ElementButtonDiv delete={deleteToDo} toggleEdit={toggleEdit} />
             </div>
         </div>
     )
