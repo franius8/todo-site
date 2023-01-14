@@ -22,6 +22,7 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
     }, [priority]);
 
 
+        // Generic function for handling heading input change
         const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
             switch (e.target.name) {
                 case "todotitleedit":
@@ -39,18 +40,25 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
             }
         }
 
+        // Function for handling form submit
         const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             props.modifyToDo(props.toDo.iD, heading, text, date, priority, props.toDo.projectiDs);
             setDuringEdit(false);
         }
+
+        // Function for toggling ToDo edit mode
         const toggleEdit = () => {
             setDuringEdit(!duringEdit);
         }
+
+        // Function for handling delete button click
         const deleteToDo = () => {
             props.deleteToDo(props.toDo.iD);
         }
 
+
+        // Function for handling move to done button click
         const moveToDone = () => {
             props.moveToDone(props.toDo.iD);
         }
