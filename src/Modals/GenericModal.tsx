@@ -39,8 +39,10 @@ const CloseButtonIcon = styled.span`
         width: 2rem;
 `;
 
+// Generic component for modals
 export default function GenericModal(props: {children: JSX.Element, id: string, close: () => void }) {
 
+    // Object ganlidng modal animations
     const entryExitAnimation = {
         initial: { opacity: 0, top: "-50%", transition: { type: "spring" } },
         isOpen: { opacity: 1, top: "50%" },

@@ -1,5 +1,6 @@
 import React from "react";
 
+// Generic component for single form radio element
 export default function RadioElement(props: { name: string, value: string, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void}) {
 
     return (

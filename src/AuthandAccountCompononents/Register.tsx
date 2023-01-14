@@ -7,6 +7,7 @@ import GenericLoneDiv from "../GenericLoneDiv";
 import TextInputElement from "../FormComponents/TextInputElement";
 import InputElement from "../FormComponents/InputElement";
 
+// Component for registering a new user
 export default function Register() {
     useNavigate();
     const [name, setName] = useState("");

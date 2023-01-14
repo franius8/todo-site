@@ -26,6 +26,7 @@ export default function App() {
         let rawDoneProjectAry: ProjectInterface[] = [];
         let unsubscribe = () => {};
 
+        // Function converting raw JSON data from firestore to ToDoInterface objects
         const convertRawToDos = (rawToDoAry: ToDoInterface[]) => {
             const toDoAry: ToDoInterface[] = [];
             rawToDoAry.forEach((todo: ToDoInterface) => {
@@ -34,6 +35,7 @@ export default function App() {
             return toDoAry;
         }
 
+        // Function converting raw JSON data from firestore to ProjectInterface objects
         const convertRawProjects = (rawProjectAry: ProjectInterface[]) => {
             const projectAry: ProjectInterface[] = [];
             rawProjectAry.forEach((project: ProjectInterface) => {

@@ -37,12 +37,13 @@ text-decoration: underline;
 }
 `
 
-
+// Component for displaying the login page
 export default function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
+    // Function for handling the login form submission
     const login = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         signInWithEmailAndPassword(auth, email, password)
@@ -59,16 +60,22 @@ export default function Login() {
             });
     }
 
+    // Function for handling email input change
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     }
+
+    // Function for handling password input change
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     }
+
+    // Function for navigating to register page
     const toRegister = () => {
         navigate("/register");
     }
 
+    // Function for navigating to forgot password page
     const toForgotPassword = () => {
         navigate("/forgot-password");
     }

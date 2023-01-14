@@ -21,19 +21,23 @@ const LoginForm = styled.form`
   gap: 1rem;
 `
 
+// Component for dislpaying the change password page
 export default function ChangePassword() {
   const navigate = useNavigate();
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
 
+  // Function for handling password input change
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   }
 
+  /// Function for handling confirm password input change
   const handleConfirmPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(event.target.value);
   }
 
+  // Function for handling the form submission
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const user = auth.currentUser;
