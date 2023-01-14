@@ -39,8 +39,8 @@ revertDone: (toDo: ToDoInterface) => void} ) {
                 <div className="todocontent">
                     <div className="todoheading">{heading}</div>
                     <div className="todotext">{text}</div>
-                    <ElementDate date={date} done={true} />
-                    <ElementPriority priority={"Done"} priorityColor={"gray"} done={true} />
+                    <ElementDate date={date} done />
+                    <ElementPriority priority={"Done"} priorityColor={"gray"} done />
                 </div>
                 <ElementButtonDiv delete={deleteToDo} toggleEdit={toggleEdit} />
             </div>
