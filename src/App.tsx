@@ -17,7 +17,7 @@ export default function App() {
     const contentClass = useSelector((state: any) => state.modal.contentClass);
 
     useEffect(() => {
-        console.log("fetched")
+        
         let rawToDoAry: string[] = [];
         let rawDoneToDoAry: string[] = [];
         let rawProjectAry: string[] = [];
@@ -31,12 +31,12 @@ export default function App() {
                     rawDoneToDoAry = JSON.parse(doc.data()?.donetodos || "[]");
                     rawProjectAry = JSON.parse(doc.data()?.projects || "[]");
                     rawDoneProjectAry = JSON.parse(doc.data()?.doneprojects || "[]");
-                    console.log(rawDoneToDoAry)
+                    
                     dispatch(loadInitialState({ toDos: convertRawToDos(rawToDoAry), doneToDos: convertRawToDos(rawDoneToDoAry),
                     projects: convertRawProjects(rawProjectAry), doneProjects: convertRawProjects(rawDoneProjectAry)}))
                 });
             } else {
-                console.log("No user is currently signed in. ToDos are saved in local storage.");
+                
                 rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
                 rawDoneToDoAry = JSON.parse(localStorage.getItem("doneary") || "[]");
                 rawProjectAry = JSON.parse(localStorage.getItem("projectary") || "[]");
