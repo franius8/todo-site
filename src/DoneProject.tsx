@@ -43,7 +43,7 @@ export default function DoneProject(props: { project: ProjectInterface,
         return (
             <div className="projectcontainer">
                 <div className={"project"}>
-                    <div className="labelstripe" style={{backgroundColor: "grey"}}></div>
+                    <div className="labelstripe" style={{backgroundColor: "grey"}} />
                     <div className="middlediv">
                         <div className="checkboxdiv">
                             <div className="checkbox donecheckbox" onClick={revertProject}>↺</div>
@@ -55,7 +55,7 @@ export default function DoneProject(props: { project: ProjectInterface,
                                 <div>{date}</div>
                             </div>
                             <div className="todopriority">
-                                <div className="prioritycircle" style={{backgroundColor: "gray"}}></div>
+                                <div className="prioritycircle" style={{backgroundColor: "gray"}} />
                                 <div>Done</div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@ export default function DoneProject(props: { project: ProjectInterface,
         return (
             <div className="projectcontainer">
                 <div className={"doneproject"}>
-                    <div className="labelstripe" style={{backgroundColor: "gray"}}></div>
+                    <div className="labelstripe" style={{backgroundColor: "gray"}} />
                     <div className="middlediv">
                         <div className="checkboxdiv">
                             <div className="checkbox">✓</div>
