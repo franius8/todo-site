@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import { Routes, Route, HashRouter} from "react-router-dom";
 import Home from "./Home";
 import Projects from "./Projects";
 import Done from "./Done";
@@ -14,7 +14,7 @@ import ChangePassword from "./AuthandAccountCompononents/ChangePassword";
 export default function RouteSwitch() {
 
   return (
-            <BrowserRouter>
+            <HashRouter>
               <Routes>
                   <Route path="/" element={<Home key={0} />} />
                   <Route path="/home" element={<Home key={0} />} />
@@ -28,6 +28,6 @@ export default function RouteSwitch() {
                   <Route path="/change-password" element={<ChangePassword />} />
                   <Route path="*" element={<NoMatch />} />
               </Routes>
-            </BrowserRouter>
+            </HashRouter>
   );
 }
