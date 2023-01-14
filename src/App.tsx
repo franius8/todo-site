@@ -24,7 +24,9 @@ export default function App() {
         let rawDoneToDoAry: ToDoInterface[] = [];
         let rawProjectAry: ProjectInterface[] = [];
         let rawDoneProjectAry: ProjectInterface[] = [];
-        let unsubscribe = () => {};
+
+        // Function to unsubscribe from firebase if component dismounts
+        let unsubscribe = () => { /* nothing if user will not be logged in */ };
 
         // Function converting raw JSON data from firestore to ToDoInterface objects
         const convertRawToDos = (rawToDoAry: ToDoInterface[]) => {

@@ -3,6 +3,7 @@ import ProjectToDoContainer from "./ProjectToDoContainer";
 import ElementButtonDiv from "./ElementButtonDiv";
 import ElementDate from "./ElementDate";
 import ElementPriority from "./ElementPriority";
+import EditFormButtonDiv from "./EditFormButtonDiv";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import styled from "styled-components";
 
@@ -65,7 +66,7 @@ export default function DoneProject(props: { project: ProjectInterface,
                         </div>
                         <ElementButtonDiv toggleEdit={toggleEdit} delete={handleDeleteProject} />
                     </div>
-                    <div className="expandbutton" onClick={toggleToDos}>
+                    <div className="expandbutton" role="button" onClick={toggleToDos}>
                     <span
                         className={`material-symbols-outlined ${projectToDoVisible ? "rotate" : ""}`}>expand_less</span>
                     </div>
@@ -81,7 +82,7 @@ export default function DoneProject(props: { project: ProjectInterface,
                     <div className="labelstripe" style={{backgroundColor: "gray"}} />
                     <div className="middlediv">
                         <div className="checkboxdiv">
-                            <div className="checkbox">✓</div>
+                            <div className="checkbox" role="button">✓</div>
                         </div>
                         <div>
                             <ProjectContentForm id="editform" onSubmit={handleSubmit}>
@@ -92,16 +93,9 @@ export default function DoneProject(props: { project: ProjectInterface,
                                 </div>
                             </ProjectContentForm>
                         </div>
-                        <div className="buttondiv">
-                            <button className="cancelbutton" onClick={toggleEdit}>
-                                <span className="material-symbols-outlined">undo</span>
-                            </button>
-                            <button className="acceptbutton" type="submit" form="editform">
-                                <span className="material-symbols-outlined">check</span>
-                            </button>
-                        </div>
+                        <EditFormButtonDiv toggleEdit={toggleEdit} />
                     </div>
-                    <div className="expandbutton" onClick={toggleToDos}>
+                    <div className="expandbutton" onClick={toggleToDos} role="button">
                         <span className="material-symbols-outlined">{projectToDoVisible ? "expand_more" : "expand_less"}</span>
                     </div>
                 </div>

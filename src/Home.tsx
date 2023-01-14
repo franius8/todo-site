@@ -64,7 +64,8 @@ export default function Home() {
                     <div id="actiondiv">
                         {auth.currentUser?.displayName &&
                            <p>Welcome {auth.currentUser.displayName}!</p>}
-                        No ToDos yet. Time to <span id="addnew" onClick={() => dispatch(toggleToDoForm())}>add a new one</span>.
+                        No ToDos yet. Time to <span id="addnew" onClick={() => dispatch(toggleToDoForm())}
+                                                    role="button">add a new one</span>.
                     </div>
                 </div>
             </>

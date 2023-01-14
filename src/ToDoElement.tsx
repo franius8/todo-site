@@ -2,6 +2,7 @@ import React, {useState, FormEvent, ChangeEvent, useEffect} from "react";
 import ElementDate from "./ElementDate";
 import ElementPriority from "./ElementPriority";
 import ElementButtonDiv from "./ElementButtonDiv";
+import EditFormButtonDiv from "./EditFormButtonDiv";
 import {ToDoInterface} from "./Modules/d";
 import { priorityGetter } from "./Modules/priorityGetter";
 
@@ -37,6 +38,8 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
                 case "todopriorityedit":
                     setPriority(e.target.value);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -69,7 +72,7 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
                 <div className="labelstripe" style={{backgroundColor: priorityColor}} />
                 <div className="middlediv">
                     <div className="checkboxdiv">
-                        <div className="checkbox" onClick={moveToDone}>✓</div>
+                        <div className="checkbox" onClick={moveToDone} role="button">✓</div>
                     </div>
                     <div className="todocontent">
                         <div className="todoheading">{heading}</div>
@@ -114,13 +117,7 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
                             </div>
                         </form>
                     </div>
-                    <div className="buttondiv">
-                        <button className="cancelbutton" onClick={toggleEdit}>
-                            <span className="material-symbols-outlined">undo</span>
-                        </button>
-                        <button className="acceptbutton" type="submit" form="editform">
-                            <span className="material-symbols-outlined">check</span></button>
-                    </div>
+                    <EditFormButtonDiv toggleEdit={toggleEdit} />
                 </div>
             </div>
         );

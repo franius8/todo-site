@@ -49,13 +49,13 @@ export default function Login() {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in
-                const user = userCredential.user;
+
                 navigate("/home");
                 // ...
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
+
+
                 
             });
     }
@@ -98,7 +98,7 @@ export default function Login() {
                         <GenericButton variantMain={false} type={"button"} form={""} onClick={toRegister}>
                             Register
                         </GenericButton>
-                        <GenericButton variantMain type={"submit"} form={"loginform"} onClick={() => {}}>
+                        <GenericButton variantMain type={"submit"} form={"loginform"} onClick={() => {/* nothing */}}>
                             Login
                         </GenericButton>
                     </ButtonDiv>

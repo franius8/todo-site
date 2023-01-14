@@ -59,7 +59,7 @@ export default function ChangePassword() {
                           handleChange={handlePasswordChange} required/>
             <InputElement type={"password"} name={"confirmpassword"} value={confirmPassword} heading={"Confirm password"}
                           handleChange={handleConfirmPasswordChange} required/>
-            <GenericButton type={"submit"} onClick={() => {}} form={"loginform"} variantMain>
+            <GenericButton type={"submit"} onClick={() => {/* nothing */}} form={"loginform"} variantMain>
               Login
             </GenericButton>
             <GenericButton type={"button"} form={""} variantMain={false} onClick={() => navigate(-2)}>

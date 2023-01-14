@@ -1,10 +1,6 @@
 // A helper function to generate unique IDs
-const idGenerator = (() => {
-    JSON.parse(localStorage.getItem("idsary") || "[]");
-    const generateID = () => {
-        return new Date().getTime();
-    }
-    return { generateID };
-})();
+const idGenerator = () => {
+    return new Date().getTime();
+};
 
 export default idGenerator;

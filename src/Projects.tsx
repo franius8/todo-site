@@ -103,7 +103,8 @@ export default function Projects() {
                 <Header active={"projects"}/>
                 <div id="projectdiv">
                     <div id="actiondiv">
-                        No Projects yet. Time to <span id="addnew" onClick={() => dispatch(toggleProjectForm())}>add a new one</span>.
+                        No Projects yet. Time to <span id="addnew" onClick={() => dispatch(toggleProjectForm())}
+                                                       role="button">add a new one</span>.
                     </div>
                 </div>
             </>
