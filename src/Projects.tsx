@@ -8,9 +8,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectForm, toggleProjectToDoForm } from "./Redux/modalSlice";
 import {addDoneProject, addProject, setDoneList, setDoneProjects, setProjects, setToDos} from "./Redux/contentSlice";
 
-export default function Projects(props: { toDos: ToDoInterface[]}) {
+export default function Projects() {
 
     const dispatch = useDispatch();
+    const toDoList = useSelector((state: StateInterface) => state.content.toDos);
     const doneToDos = useSelector((state: StateInterface) => state.content.doneList);
     const projects = useSelector((state: StateInterface) => state.content.projectList);
     const doneProjects = useSelector((state: StateInterface) => state.content.doneProjectList);
@@ -22,28 +23,18 @@ export default function Projects(props: { toDos: ToDoInterface[]}) {
         dispatch(toggleProjectToDoForm());
     }
 
-    const modifyProject = (iD: number, name: string, date: string, priority: string) => {
-        const projectsCopy = [...projects];
-        projectsCopy.forEach((project) => {
-            if (project.iD === iD) {
-                project.name = name;
-                project.date = date;
-                project.priority = priority;
-            }
-        });
+    const modifyProject = (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => {
+        const projectsCopy = [...projects].filter(x => x.iD !== iD);
+        const project: ProjectInterface = {iD, name, date, priority, toDosAry};
+        projectsCopy.push(project);
         dispatch(setProjects(projectsCopy));
     }
 
-    const modifyDoneProject = ( {iD, name, date, priority}: ProjectInterface ) => {
-        const doneProjectsCopy = [...doneProjects];
-        doneProjectsCopy.forEach((project) => {
-            if (project.iD === iD) {
-                project.name = name;
-                project.date = date;
-                project.priority = priority;
-            }
-        });
-        dispatch(setProjects(doneProjectsCopy));
+    const modifyDoneProject = (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => {
+        const doneProjectsCopy = [...doneProjects].filter(x => x.iD !== iD);
+        const project: ProjectInterface = {iD, name, date, priority, toDosAry};
+        doneProjectsCopy.push(project);
+        dispatch(setDoneProjects(doneProjectsCopy));
     }
 
     const revertProject = (project: ProjectInterface) => {
@@ -55,7 +46,7 @@ export default function Projects(props: { toDos: ToDoInterface[]}) {
     const deleteProject = ( { iD }: ProjectInterface) => {
         if (confirm('Are you sure you want to delete that?\nThis is an irreversible operation\nProject ToDos will be deleted as well.')) {
             const projectsCopy = [...projects];
-            const toDosCopy = [...props.toDos];
+            const toDosCopy = [...toDoList];
             const newProjectsCopy = projectsCopy.filter(x => x.iD !== iD);
             const newToDosCopy = toDosCopy.filter(x => !x.projectiDs.includes(iD));
             dispatch(setProjects(newProjectsCopy));

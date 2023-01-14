@@ -1,76 +1,40 @@
 import React from "react";
-import InputElement from "./FormComponents/InputElement";
-import GenericLoneDiv from "./GenericLoneDiv";
+import InputElement from "../FormComponents/InputElement";
+import GenericLoneDiv from "../GenericLoneDiv";
+import GenericButton from "../GenericButton";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import {auth} from "./Modules/firebase";
+import {auth} from "../Modules/firebase";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 
 const LoginFormDiv = styled.div`
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 `;
 
 const LoginForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+display: flex;
+flex-direction: column;
+gap: 1rem;
 `
 
 const ButtonDiv = styled.div`
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  gap: 1rem;
+display: flex;
+align-content: center;
+justify-content: center;
+gap: 1rem;
 `
-
-const LoginButton = styled.button`
-      border-radius: 1rem;
-      border: 5px solid var(--main-color);
-      background-color: var(--main-color);
-      padding: 0.5rem 1rem;
-      font-family: inherit;
-      font-size: inherit;
-      font-weight: bold;
-      color: white;
-      align-self: center;
-      justify-self: center;
-  &:hover {
-        cursor: pointer;
-        background-color: white;
-        color: var(--main-color);
-        border: 5px solid var(--main-color);
-  }
-`
-
-const RegisterButton = styled.button`
-      border-radius: 1rem;
-      border: 5px solid var(--main-color);
-      background-color: white;
-      padding: 0.5rem 1rem;
-      font-family: inherit;
-      font-size: inherit;
-      font-weight: bold;
-      color: var(--main-color);
-      align-self: center;
-      justify-self: center;
-      &:hover {
-        background-color: var(--main-color);
-        color: white;
-        cursor: pointer;
-      }
-    `;
 
 const ForgotPasswordLink = styled.a`
-  color: var(--main-color);
-  cursor: pointer;
-  font-weight: bold;
-  &:hover {
-    text-decoration: underline;
-  }
+color: var(--main-color);
+cursor: pointer;
+font-weight: bold;
+&:hover {
+text-decoration: underline;
+}
 `
 
 
@@ -125,12 +89,12 @@ export default function Login() {
                         </LoginForm>
                     </LoginFormDiv>
                     <ButtonDiv>
-                        <RegisterButton onClick={toRegister}>
+                        <GenericButton variantMain={false} type={"button"} form={""} onClick={toRegister}>
                             Register
-                        </RegisterButton>
-                        <LoginButton type={"submit"} form={"loginform"}>
+                        </GenericButton>
+                        <GenericButton variantMain={true} type={"submit"} form={"loginform"} onClick={() => {}}>
                             Login
-                        </LoginButton>
+                        </GenericButton>
                     </ButtonDiv>
                     <ForgotPasswordLink onClick={toForgotPassword}>Forgot password</ForgotPasswordLink>
                 </>

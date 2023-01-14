@@ -1,13 +1,24 @@
-import React from "react";
-import "./Stylesheets/Account.css";
-import {auth} from "./Modules/firebase";
+import React, {useEffect} from "react";
+import "../Stylesheets/Account.css";
+import {auth} from "../Modules/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import LogoDiv from "./LogoDiv";
+import LogoDiv from "../LogoDiv";
 
 export default function Account() {
     const navigate = useNavigate();
-    const user = auth.currentUser;
+    const [user, setUser] = React.useState(auth.currentUser);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setUser(user);
+            } else {
+                navigate("/");
+            }
+        });
+        return unsubscribe;
+    }, [navigate]);
     const signOutUser = () => {
         signOut(auth).then(() => {
             navigate("/home");
@@ -15,8 +26,9 @@ export default function Account() {
             // An error happened.
         });
     }
-    const toHome = () => {
-        navigate("/home");
+
+    const changePassword = () => {
+        navigate("/reauthenticate", { state: { path: "/change-password" } });
     }
 
     return (
@@ -51,9 +63,9 @@ export default function Account() {
                         <h2>Actions</h2>
                     </div>
                     <div  className={"accountbuttondiv"}>
-                        <button className={"accountButton"}>Change password</button>
+                        <button className={"accountButton"} onClick={changePassword}>Change password</button>
                         <button className={"accountButton"} id={"delete-account"}>Delete account</button>
-                        <button className={"accountButton"} onClick={toHome}>Back to home</button>
+                        <button className={"accountButton"} onClick={() => navigate(-1)}>Back</button>
                         <button className={"accountButton"} id={"logout"} onClick={signOutUser}>Log Out</button>
                     </div>
                 </div>

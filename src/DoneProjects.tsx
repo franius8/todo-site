@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { ProjectInterface } from "./Modules/d";
+import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import DoneProject from "./DoneProject";
 
 const Header = styled.h2`
@@ -12,7 +12,7 @@ const Header = styled.h2`
 
 export default function DoneProjects(props: { doneProjects: ProjectInterface[],
     openToDoForm: (project: ProjectInterface) => void,
-    modifyProject: (project: ProjectInterface) => void,
+    modifyProject: (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => void,
     deleteProject: (projects: ProjectInterface) => void,
     revertProject: (project: ProjectInterface) => void}) {
 
@@ -26,11 +26,13 @@ export default function DoneProjects(props: { doneProjects: ProjectInterface[],
                 <span className={`material-symbols-outlined ${doneProjectsVisible ? "" : "rotate"}`}>expand_more</span>
             </Header>
             {doneProjectsVisible &&
+                (props.doneProjects.length > 0 ?
                 <div id={"doneprojectscontainer"}>
                 {props.doneProjects.map((project) => <DoneProject key={project.iD} project={project} openToDoForm={props.openToDoForm}
-                                                    deleteProject={props.deleteProject} modifyProject={props.modifyProject}
-                                                    revertProject = {props.revertProject}/>)}
-            </div>}
+                                                                  deleteProject={props.deleteProject} modifyProject={props.modifyProject} revertProject = {props.revertProject}/>)}
+                </div> :
+                <div id={"noprojects"}>No projects marked as done yet</div>)
+            }
         </div>
     )
 }

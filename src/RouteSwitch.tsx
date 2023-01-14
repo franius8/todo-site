@@ -3,35 +3,15 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from "./Home";
 import Projects from "./Projects";
 import Done from "./Done";
-import Login from "./Login";
-import Register from "./Register";
+import Login from "./AuthandAccountCompononents/Login";
+import Register from "./AuthandAccountCompononents/Register";
 import NoMatch from "./NoMatch";
-import Account from "./Account";
+import Account from "./AuthandAccountCompononents/Account";
 import ForgotPassword from "./ForgotPassword";
-import {ProjectInterface, ToDoInterface} from "./Modules/d";
-import todoObject from "./Modules/todoObject";
-import projectobject from "./Modules/projectobject";
+import Reauthenticate from "./AuthandAccountCompononents/Reauthenticate";
+import ChangePassword from "./AuthandAccountCompononents/ChangePassword";
 
 export default function RouteSwitch() {
-    const [toDos, setToDos] = React.useState<ToDoInterface[]>([] as ToDoInterface[]);
-
-
-    const convertRawToDos = (rawToDoAry: any[]) => {
-        const toDoAry: ToDoInterface[] = [];
-        rawToDoAry.forEach((todo: ToDoInterface) => {
-            toDoAry.push(todoObject(todo.heading, todo.text, todo.date, todo.priority, todo.iD, todo.projectiDs));
-        });
-        return toDoAry;
-    }
-
-    const convertRawProjects = (rawProjectAry: any[]) => {
-        const projectAry: ProjectInterface[] = [];
-        rawProjectAry.forEach((project: ProjectInterface) => {
-            project.toDosAry = convertRawToDos(project.toDosAry);
-            projectAry.push(projectobject(project.iD, project.name, project.toDosAry, project.date, project.priority));
-        });
-        return projectAry;
-    }
 
   return (
             <BrowserRouter>
@@ -39,11 +19,13 @@ export default function RouteSwitch() {
                   <Route path="/" element={<Home key={0} />} />
                   <Route path="/home" element={<Home key={0} />} />
                   <Route path="/done" element={<Done />} />
-                  <Route path="/projects" element={<Projects toDos={toDos} />} />
+                  <Route path="/projects" element={<Projects />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/account" element={<Account />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reauthenticate" element={<Reauthenticate />} />
+                  <Route path="/change-password" element={<ChangePassword />} />
                   <Route path="*" element={<NoMatch />} />
               </Routes>
             </BrowserRouter>

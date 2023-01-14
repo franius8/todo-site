@@ -16,40 +16,44 @@ const initialState: ContentState = {
     doneProjectList: [],
 }
 
+const sortByDate = (array: ToDoInterface[] | ProjectInterface[]) => {
+       return [...array].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+}
+
 export const contentSlice = createSlice({
     name: 'content',
     initialState,
     reducers: {
         addToDo: (state, action: { payload: ToDoInterface}) => {
-            state.toDos = [...state.toDos, action.payload];
+            state.toDos = sortByDate([...state.toDos, action.payload]) as ToDoInterface[];
             database.updateDatabase(state.toDos, 'todos');
         },
         addProject: (state, action: { payload: ProjectInterface}) => {
-            state.projectList = [...state.projectList, action.payload];
+            state.projectList = sortByDate([...state.projectList, action.payload]) as ProjectInterface[];
             database.updateDatabase(state.projectList, 'projects');
         },
         addDone: (state, action: { payload: ToDoInterface}) => {
-            state.doneList = [...state.doneList, action.payload];
+            state.doneList = sortByDate([...state.doneList, action.payload]).reverse() as ToDoInterface[];
             database.updateDatabase(state.doneList, 'donetodos');
         },
         addDoneProject: (state, action: { payload: ProjectInterface}) => {
-            state.doneProjectList = [...state.doneProjectList, action.payload];
+            state.doneProjectList = sortByDate([...state.doneProjectList, action.payload]).reverse() as ProjectInterface[];
             database.updateDatabase(state.doneProjectList, 'doneprojects');
         },
         setToDos: (state, action: { payload: ToDoInterface[]}) => {
-            state.toDos = action.payload;
+            state.toDos = sortByDate(action.payload) as ToDoInterface[];
             database.updateDatabase(state.toDos, 'todos');
         },
         setProjects: (state, action: { payload: ProjectInterface[]}) => {
-            state.projectList = action.payload;
+            state.projectList = sortByDate(action.payload) as ProjectInterface[];
             database.updateDatabase(state.projectList, 'projects');
         },
         setDoneList: (state, action: { payload: ToDoInterface[]}) => {
-            state.doneList = action.payload;
+            state.doneList = sortByDate(action.payload).reverse() as ToDoInterface[];
             database.updateDatabase(state.doneList, 'donetodos');
         },
         setDoneProjects: (state, action: { payload: ProjectInterface[]}) => {
-            state.doneProjectList = action.payload;
+            state.doneProjectList = sortByDate(action.payload).reverse() as ProjectInterface[];
             database.updateDatabase(state.doneProjectList, 'doneprojects');
         },
         loadInitialState: (state, action: {payload: {toDos: ToDoInterface[], doneToDos: ToDoInterface[],

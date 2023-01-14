@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import dateConverter from "./Modules/DateConverter";
+import React, { useState } from "react";
 import ProjectToDoContainer from "./ProjectToDoContainer";
-import {ProjectInterface} from "./Modules/d";
+import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import styled from "styled-components";
 
 const ProjectContentForm = styled.form`
@@ -11,11 +10,11 @@ const ProjectContentForm = styled.form`
 
 export default function DoneProject(props: { project: ProjectInterface,
     openToDoForm: (project: ProjectInterface) => void,
-    modifyProject: (project: ProjectInterface) => void,
+    modifyProject: (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => void,
     deleteProject: (project: ProjectInterface) => void,
     revertProject: (project: ProjectInterface) => void }) {
     const [name, setName] = useState(props.project.name)
-    const [date, setDate] = useState(props.project.date)
+    const [date] = useState(props.project.date)
     const [projectToDoVisible, setProjectToDoVisible] = useState(false);
     const [duringEdit, setDuringEdit] = useState(false);
 
@@ -33,7 +32,7 @@ export default function DoneProject(props: { project: ProjectInterface,
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        props.modifyProject(props.project)
+        props.modifyProject(props.project.iD, name, date, props.project.priority, props.project.toDosAry)
         setDuringEdit(false)
     }
 

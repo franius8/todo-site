@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import {ProjectInterface} from "./Modules/d";
+import React, {useEffect, useState} from "react";
+import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import dateConverter from "./Modules/DateConverter";
 import ProjectToDoContainer from "./ProjectToDoContainer";
 import styled from "styled-components";
+import {priorityGetter} from "./Modules/priorityGetter";
 
 const ProjectContentForm = styled.form`
     display: flex;
@@ -11,7 +12,7 @@ const ProjectContentForm = styled.form`
 
 export default function Project(props: { project: ProjectInterface, openToDoForm: (project: ProjectInterface) => void,
     deleteProject: (project: ProjectInterface) => void,
-    modifyProject: (iD: number, name: string, date: string, priority: string) => void,
+    modifyProject: (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => void,
     moveToDone: (project: ProjectInterface) => void }) {
     const [name, setName] = useState(props.project.name);
     const [date, setDate] = useState(props.project.date);
@@ -19,28 +20,11 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
     const [projectToDoVisible, setProjectToDoVisible] = useState(false);
     const [projectClass, setProjectClass] = useState("project");
     const [duringEdit, setDuringEdit] = useState(false);
+    const [priorityColor, setPriorityColor] = useState(priorityGetter(props.project.priority));
 
-    let priorityColor;
-    switch (props.project.priority) {
-        case 'High':
-            priorityColor = 'red';
-            break;
-        case 'Standard':
-            priorityColor = 'orange';
-            break;
-        case 'Low':
-            priorityColor = 'green';
-            break;
-        case 'Normal':
-            priorityColor = 'skyblue';
-            break;
-        case 'Urgent':
-            priorityColor = 'crimson';
-            break;
-        default:
-            priorityColor = 'gray';
-            break
-    }
+    useEffect(() => {
+        setPriorityColor(priorityGetter(priority));
+    }, [priority]);
 
     const toggleToDos = () => {
         setProjectToDoVisible(!projectToDoVisible);
@@ -60,7 +44,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        props.modifyProject(props.project.iD, name, date, priority);
+        props.modifyProject(props.project.iD, name, date, priority, props.project.toDosAry);
         setDuringEdit(false);
     }
 
@@ -76,16 +60,16 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                             <div className="checkbox" onClick={moveToDone}>✓</div>
                         </div>
                         <div className="projectcontent">
-                            <div className="projectname">{props.project.name}</div>
+                            <div className="projectname">{name}</div>
                             <div className="tododate">
                                 <div><span className="material-symbols-outlined">calendar_month</span></div>
-                                <div>{props.project.date} ({dateConverter.getDayDifference(new Date(props.project.date))} days
+                                <div>{date} ({dateConverter.getDayDifference(new Date(date))} days
                                     left)
                                 </div>
                             </div>
                             <div className="todopriority">
                                 <div className="prioritycircle" style={{backgroundColor: priorityColor}}></div>
-                                <div>{props.project.priority} priority</div>
+                                <div>{priority} priority</div>
                             </div>
                         </div>
                         <div className="buttondiv">

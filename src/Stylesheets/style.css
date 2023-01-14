@@ -17,7 +17,6 @@ body {
 }
 
 #content {
-    height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -357,6 +356,7 @@ form button {
 #actiondiv {
     margin: auto;
     justify-self: center;
+    text-align: center;
     font-size: 1.5rem;
 }
 

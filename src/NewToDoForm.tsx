@@ -33,7 +33,8 @@ export default function NewToDoForm() {
             case "todocontent":
                 setContent(e.target.value);
                 break;
-            case "tododueDate":
+            case "tododate":
+                console.log(e.target.value);
                 setDueDate(e.target.value);
                 break;
             case "todopriority":

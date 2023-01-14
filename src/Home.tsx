@@ -6,7 +6,8 @@ import { ToDoInterface } from "./Modules/d";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { toggleToDoForm } from "./Redux/modalSlice";
-import {addDone, setToDos} from "./Redux/contentSlice";
+import { addDone, setToDos } from "./Redux/contentSlice";
+import  {auth } from "./Modules/firebase";
 
 export default function Home() {
 
@@ -19,15 +20,18 @@ export default function Home() {
         const toDo = toDosCopy.find((toDo: ToDoInterface) => toDo.iD === iD);
         const filteredToDos = toDosCopy.filter((toDo: ToDoInterface) => toDo.iD !== iD);
         if (toDo) {
-            modifyToDo(iD, toDo.heading, toDo.text, toDo.date, "done");
+            modifyToDo(iD, toDo.heading, toDo.text, toDo.date, "done", toDo.projectiDs);
         }
         dispatch(setToDos(filteredToDos));
         dispatch(addDone(toDo as ToDoInterface));
 
     }
 
-    const modifyToDo = (iD: number, heading: string, text: string, date: string, priority: string) => {
-
+    const modifyToDo = (iD: number, heading: string, text: string, date: string, priority: string, projectiDs: number[]) => {
+        const toDosCopy = [...toDoList].filter(x => x.iD !== iD);
+        const toDo: ToDoInterface = {iD, heading, text, date, priority, projectiDs};
+        toDosCopy.push(toDo);
+        dispatch(setToDos(toDosCopy));
 
     }
 
@@ -54,6 +58,8 @@ export default function Home() {
                 <Header active={"home"}/>
                 <div id={"tododiv"}>
                     <div id="actiondiv">
+                        {auth.currentUser?.displayName &&
+                           <p>Welcome {auth.currentUser.displayName}!</p>}
                         No ToDos yet. Time to <span id="addnew" onClick={() => dispatch(toggleToDoForm())}>add a new one</span>.
                     </div>
                 </div>

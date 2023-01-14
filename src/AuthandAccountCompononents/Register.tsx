@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { db, auth } from "./Modules/firebase";
+import { db, auth } from "../Modules/firebase";
 import {doc, setDoc} from "firebase/firestore";
 import {useNavigate} from "react-router-dom";
-import GenericLoneDiv from "./GenericLoneDiv";
-import TextInputElement from "./FormComponents/TextInputElement";
-import InputElement from "./FormComponents/InputElement";
+import GenericLoneDiv from "../GenericLoneDiv";
+import TextInputElement from "../FormComponents/TextInputElement";
+import InputElement from "../FormComponents/InputElement";
 
 export default function Register() {
-    const navigate = useNavigate();
+    useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

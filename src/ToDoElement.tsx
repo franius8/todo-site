@@ -4,7 +4,7 @@ import dateConverter from "./Modules/DateConverter";
 import { priorityGetter } from "./Modules/priorityGetter";
 
 export default function ToDoElement(props: { toDo: ToDoInterface,
-    modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string) => void,
+    modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string, projectiDs: number[]) => void,
     deleteToDo: (iD: number) => void, moveToDone: (iD: number) => void }) {
     const [duringEdit, setDuringEdit] = React.useState(false);
 
@@ -21,16 +21,16 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
 
         const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
             switch (e.target.name) {
-                case "todotitle":
+                case "todotitleedit":
                     setHeading(e.target.value);
                     break;
-                case "todocontent":
+                case "todocontentedit":
                     setText(e.target.value);
                     break;
-                case "tododate":
+                case "tododateedit":
                     setDate(e.target.value);
                     break;
-                case "todopriority":
+                case "todopriorityedit":
                     setPriority(e.target.value);
                     break;
             }
@@ -38,7 +38,7 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
 
         const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            props.modifyToDo(props.toDo.iD, heading, text, date, priority);
+            props.modifyToDo(props.toDo.iD, heading, text, date, priority, props.toDo.projectiDs);
             setDuringEdit(false);
         }
         const toggleEdit = () => {
@@ -65,7 +65,8 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
                         <div className="todotext">{text}</div>
                         <div className="tododate">
                             <div><span className="material-symbols-outlined">calendar_month</span></div>
-                            <div>{dateConverter.convertToString(new Date(date))} ({dateConverter.getDayDifference(new Date(date))} days left)
+                            <div className={new Date() > new Date(date) ? "missedtodo" : ""}>
+                                {dateConverter.convertToString(new Date(date))} ({dateConverter.getDayDifference(new Date(date))} days left)
                             </div>
                         </div>
                         <div className="todopriority">
