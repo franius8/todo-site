@@ -54,7 +54,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
         return (
             <div className="projectcontainer">
                 <div className={projectClass}>
-                    <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
+                    <div className="labelstripe" style={{backgroundColor: priorityColor}} />
                     <div className="middlediv">
                         <div className="checkboxdiv">
                             <div className="checkbox" onClick={moveToDone}>✓</div>
@@ -68,7 +68,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                                 </div>
                             </div>
                             <div className="todopriority">
-                                <div className="prioritycircle" style={{backgroundColor: priorityColor}}></div>
+                                <div className="prioritycircle" style={{backgroundColor: priorityColor}} />
                                 <div>{priority} priority</div>
                             </div>
                         </div>
@@ -93,7 +93,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
         return (
             <div className="projectcontainer">
                 <div className={projectClass}>
-                    <div className="labelstripe" style={{backgroundColor: priorityColor}}></div>
+                    <div className="labelstripe" style={{backgroundColor: priorityColor}} />
                     <div className="middlediv">
                         <div className="checkboxdiv">
                             <div className="checkbox">✓</div>
