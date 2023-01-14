@@ -58,7 +58,7 @@ export const contentSlice = createSlice({
         },
         loadInitialState: (state, action: {payload: {toDos: ToDoInterface[], doneToDos: ToDoInterface[],
             projects: ProjectInterface[], doneProjects: ProjectInterface[]}}) => {
-            console.log(action.payload)
+            
             state.toDos = action.payload.toDos
             state.doneList = action.payload.doneToDos
             state.projectList = action.payload.projects

@@ -34,7 +34,7 @@ export default function NewToDoForm() {
                 setContent(e.target.value);
                 break;
             case "tododate":
-                console.log(e.target.value);
+                
                 setDueDate(e.target.value);
                 break;
             case "todopriority":
@@ -48,7 +48,7 @@ export default function NewToDoForm() {
         const toDosCopy = [...toDos];
         const iD = idGenerator.generateID();
         const newToDo:ToDoInterface = todoObject(title, content, dueDate, priority, iD, []);
-        console.log(newToDo);
+        
         toDosCopy.push(newToDo);
         dispatch(addToDo(newToDo));
         if (!auth.currentUser) {

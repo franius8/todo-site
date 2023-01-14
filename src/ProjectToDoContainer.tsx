@@ -40,7 +40,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
     }
 
     const openToDoForm = () => {
-        console.log(props.project);
+        
         props.openToDoForm(props.project);
     }
 

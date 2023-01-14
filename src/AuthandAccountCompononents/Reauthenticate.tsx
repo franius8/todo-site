@@ -38,7 +38,7 @@ export default function Reauthenticate() {
             reauthenticateWithCredential(user, credential).then(() => {
                navigate(path);
             }).catch((error) => {
-                console.log(error)
+                
             });
         }
     }

@@ -12,10 +12,10 @@ export default function Done() {
     const doneToDos = useSelector((state: StateInterface) => state.content.doneList)
 
     const deleteToDo = ( { iD }:ToDoInterface ) => {
-        console.log(iD)
+        
         if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
             const doneToDosCopy = [...doneToDos].filter(x => x.iD !== iD);
-            console.log(doneToDosCopy)
+            
             dispatch(setDoneList(doneToDosCopy));
         }
     }

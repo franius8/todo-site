@@ -7,7 +7,7 @@ import {To} from "react-router-dom";
 const database = (() => {
     const updateDatabase = (toDosCopy: ToDoInterface[] | ProjectInterface[], type: string) => {
         onAuthStateChanged(auth, async (user) => {
-            console.log("Fetched data")
+            
             if (user) {
                 const uid = user.uid;
                 try {
@@ -37,7 +37,7 @@ const database = (() => {
         });
     }
     const loadDatabase = async () => {
-        console.log("fetched")
+        
         let rawToDoAry: ToDoInterface[] = [];
         let rawDoneToDoAry: ToDoInterface[] = [];
         let rawProjectAry: ProjectInterface[] = [];
@@ -46,14 +46,14 @@ const database = (() => {
             if (user) {
                 const docRef = doc(db, "users", user.uid);
                 const docSnap = await getDoc(docRef);
-                console.log(docSnap.data()?.todos)
+                
                 rawToDoAry = JSON.parse(docSnap.data()?.todos || "[]");
                 rawDoneToDoAry = JSON.parse(docSnap.data()?.donetodos || "[]");
                 rawProjectAry = JSON.parse(docSnap.data()?.projects || "[]");
                 rawDoneProjectAry = JSON.parse(docSnap.data()?.doneprojects || "[]");
                 return {todos: rawToDoAry, donetodos: rawDoneToDoAry, projects: rawProjectAry, doneprojects: rawDoneProjectAry, one: 1}
             } else {
-                console.log("No user is currently signed in. ToDos are saved in local storage.");
+                
                 rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
                 rawDoneToDoAry = JSON.parse(localStorage.getItem("donetodoary") || "[]");
                 rawProjectAry = JSON.parse(localStorage.getItem("projectary") || "[]");
