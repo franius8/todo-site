@@ -1,10 +1,6 @@
 import { createSlice} from "@reduxjs/toolkit";
 import { ToDoInterface, ProjectInterface } from "../Modules/d";
 import database from "../Modules/database";
-import {AppDispatch} from "./store";
-import {onAuthStateChanged} from "firebase/auth";
-import {auth, db} from "../Modules/firebase";
-import {doc, getDoc} from "firebase/firestore";
 
 interface ContentState {
     toDos: ToDoInterface[];
@@ -58,6 +54,7 @@ export const contentSlice = createSlice({
         },
         loadInitialState: (state, action: {payload: {toDos: ToDoInterface[], doneToDos: ToDoInterface[],
             projects: ProjectInterface[], doneProjects: ProjectInterface[]}}) => {
+            console.log(action.payload)
             state.toDos = action.payload.toDos
             state.doneList = action.payload.doneToDos
             state.projectList = action.payload.projects

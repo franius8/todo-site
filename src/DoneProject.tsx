@@ -12,9 +12,10 @@ const ProjectContentForm = styled.form`
 export default function DoneProject(props: { project: ProjectInterface,
     openToDoForm: (project: ProjectInterface) => void,
     modifyProject: (project: ProjectInterface) => void,
-    deleteProject: (project: ProjectInterface) => void}) {
+    deleteProject: (project: ProjectInterface) => void,
+    revertProject: (project: ProjectInterface) => void }) {
     const [name, setName] = useState(props.project.name)
-    const [date, setDate] = useState(props.project.name)
+    const [date, setDate] = useState(props.project.date)
     const [projectToDoVisible, setProjectToDoVisible] = useState(false);
     const [duringEdit, setDuringEdit] = useState(false);
 
@@ -23,7 +24,11 @@ export default function DoneProject(props: { project: ProjectInterface,
     const toggleEdit = () => setDuringEdit(!duringEdit)
 
     const handleDeleteProject = () => {
+        props.deleteProject(props.project)
+    }
 
+    const revertProject = () => {
+        props.revertProject(props.project)
     }
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -38,13 +43,11 @@ export default function DoneProject(props: { project: ProjectInterface,
     if (!duringEdit) {
         return (
             <div className="projectcontainer">
-                <div className={"doneproject"}>
+                <div className={"project"}>
                     <div className="labelstripe" style={{backgroundColor: "grey"}}></div>
                     <div className="middlediv">
                         <div className="checkboxdiv">
-                            <div className="checkbox">
-                                <span className="material-symbols-outlined">arrow_back</span>
-                            </div>
+                            <div className="checkbox donecheckbox" onClick={revertProject}>↺</div>
                         </div>
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>

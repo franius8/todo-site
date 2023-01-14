@@ -6,26 +6,31 @@ import DoneProject from "./DoneProject";
 const Header = styled.h2`
   display: flex;
   align-content: center;
+  justify-content: center;
+  cursor: pointer;
 `
 
 export default function DoneProjects(props: { doneProjects: ProjectInterface[],
     openToDoForm: (project: ProjectInterface) => void,
     modifyProject: (project: ProjectInterface) => void,
-    deleteProject: (projects: ProjectInterface) => void}) {
+    deleteProject: (projects: ProjectInterface) => void,
+    revertProject: (project: ProjectInterface) => void}) {
 
-    const [icon, setIcon] = useState(false);
+    const [doneProjectsVisible, setDoneProjectsVisible] = useState(false);
 
-    const toggleIcon = () => setIcon(!icon);
+    const toggleIcon = () => setDoneProjectsVisible(!doneProjectsVisible);
 
     return (
         <div id={"doneprojects"}>
             <Header onClick={toggleIcon}>Done Projects
-                <span className={`material-symbols-outlined ${icon ? "rotate" : ""}`}>expand_more</span>
+                <span className={`material-symbols-outlined ${doneProjectsVisible ? "" : "rotate"}`}>expand_more</span>
             </Header>
-            <div id={"doneprojectscontainer"}>
+            {doneProjectsVisible &&
+                <div id={"doneprojectscontainer"}>
                 {props.doneProjects.map((project) => <DoneProject key={project.iD} project={project} openToDoForm={props.openToDoForm}
-                                                    deleteProject={props.deleteProject} modifyProject={props.modifyProject}/>)}
-            </div>
+                                                    deleteProject={props.deleteProject} modifyProject={props.modifyProject}
+                                                    revertProject = {props.revertProject}/>)}
+            </div>}
         </div>
     )
 }

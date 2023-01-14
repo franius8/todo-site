@@ -2,10 +2,25 @@ import React, { useState } from "react";
 import dateConverter from "./Modules/DateConverter";
 import {ToDoInterface} from "./Modules/d";
 
-export default function DoneToDoElement(props: { toDo: ToDoInterface } ) {
+export default function DoneToDoElement(props: { toDo: ToDoInterface, deleteToDo: (toDo:ToDoInterface) => void,
+revertDone: (toDo: ToDoInterface) => void} ) {
 
     const [heading, setHeading] = useState(props.toDo.heading)
     const [text, setText] = useState(props.toDo.text)
+    const [date, setDate] = useState(props.toDo.date)
+    const [dusingEdit, setDuringEdit] = useState(false)
+
+    const toggleEdit = () => {
+        setDuringEdit(!dusingEdit)
+    }
+
+    const deleteToDo = () => {
+        props.deleteToDo(props.toDo)
+    }
+
+    const revertDone = () => {
+        props.revertDone(props.toDo)
+    }
 
 
     return (
@@ -13,7 +28,7 @@ export default function DoneToDoElement(props: { toDo: ToDoInterface } ) {
             <div className="labelstripe" style={{backgroundColor: "gray"}}></div>
             <div className="middlediv">
                 <div className="checkboxdiv">
-                    <div className="checkbox" onClick={moveToDone}>✓</div>
+                    <div className="checkbox donecheckbox" onClick={revertDone}>↺</div>
                 </div>
                 <div className="todocontent">
                     <div className="todoheading">{heading}</div>

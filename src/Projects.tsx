@@ -3,17 +3,17 @@ import Header from "./Header";
 import Project from "./Project";
 import DoneProjects from "./DoneProjects";
 import ProjectToDoForm from "./ProjectToDoForm";
-import { ProjectInterface, ToDoInterface } from "./Modules/d";
+import { ProjectInterface, ToDoInterface, StateInterface } from "./Modules/d";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectForm, toggleProjectToDoForm } from "./Redux/modalSlice";
-import {addDoneProject, setDoneList, setDoneProjects, setProjects, setToDos} from "./Redux/contentSlice";
+import {addDoneProject, addProject, setDoneList, setDoneProjects, setProjects, setToDos} from "./Redux/contentSlice";
 
 export default function Projects(props: { toDos: ToDoInterface[]}) {
 
     const dispatch = useDispatch();
-    const doneToDos = useSelector((state: { content: {doneList: ToDoInterface[]} }) => state.content.doneList);
-    const projects = useSelector((state: { content: {projectList: ProjectInterface[]} }) => state.content.projectList);
-    const doneProjects = useSelector((state: { content: {doneProjects: ProjectInterface[]} }) => state.content.doneProjects);
+    const doneToDos = useSelector((state: StateInterface) => state.content.doneList);
+    const projects = useSelector((state: StateInterface) => state.content.projectList);
+    const doneProjects = useSelector((state: StateInterface) => state.content.doneProjectList);
 
     const [projectToDosEdited, setProjectToDosEdited] = useState<ProjectInterface | null>(null);
 
@@ -46,6 +46,12 @@ export default function Projects(props: { toDos: ToDoInterface[]}) {
         dispatch(setProjects(doneProjectsCopy));
     }
 
+    const revertProject = (project: ProjectInterface) => {
+        const doneProjectsCopy = [...doneProjects].filter(x => x.iD !== project.iD);
+        dispatch(setDoneProjects(doneProjectsCopy));
+        dispatch(addProject(project));
+    }
+
     const deleteProject = ( { iD }: ProjectInterface) => {
         if (confirm('Are you sure you want to delete that?\nThis is an irreversible operation\nProject ToDos will be deleted as well.')) {
             const projectsCopy = [...projects];
@@ -70,12 +76,11 @@ export default function Projects(props: { toDos: ToDoInterface[]}) {
 
     const moveToDone = (project: ProjectInterface) => {
         const projectsCopy = [...projects].filter(x => x.iD !== project.iD);
-        project.priority = "Done";
         dispatch(addDoneProject(project));
         dispatch(setProjects(projectsCopy));
     }
 
-    if (projects.length > 0) {
+    if (projects.length > 0 || doneProjects.length > 0) {
         return (
             <>
                 <Header active={"projects"}/>
@@ -86,7 +91,7 @@ export default function Projects(props: { toDos: ToDoInterface[]}) {
                     {projects.map((project) => <Project key={project.iD} project={project} openToDoForm={openProjectToDoForm}
                     deleteProject={deleteProject} modifyProject={modifyProject} moveToDone={moveToDone}/>)}
                     <DoneProjects doneProjects={doneProjects} openToDoForm={openProjectToDoForm} modifyProject={modifyDoneProject}
-                        deleteProject={deleteDoneProject}/>
+                        deleteProject={deleteDoneProject} revertProject={revertProject}/>
                 </div>
                 <ProjectToDoForm project={projectToDosEdited} />
             </>

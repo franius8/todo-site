@@ -30,9 +30,10 @@ export default function App() {
                     rawToDoAry = JSON.parse(doc.data()?.todos || "[]");
                     rawDoneToDoAry = JSON.parse(doc.data()?.donetodos || "[]");
                     rawProjectAry = JSON.parse(doc.data()?.projects || "[]");
-                    rawDoneProjectAry = JSON.parse(doc.data()?.doneprojects || "[]")
-                    dispatch(loadInitialState({ toDos: convertRawToDos(rawToDoAry), doneToDos: convertRawToDos(rawToDoAry),
-                    projects: convertRawProjects(rawProjectAry), doneProjects: convertRawProjects(rawProjectAry)}))
+                    rawDoneProjectAry = JSON.parse(doc.data()?.doneprojects || "[]");
+                    console.log(rawDoneToDoAry)
+                    dispatch(loadInitialState({ toDos: convertRawToDos(rawToDoAry), doneToDos: convertRawToDos(rawDoneToDoAry),
+                    projects: convertRawProjects(rawProjectAry), doneProjects: convertRawProjects(rawDoneProjectAry)}))
                 });
             } else {
                 console.log("No user is currently signed in. ToDos are saved in local storage.");

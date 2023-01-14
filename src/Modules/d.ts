@@ -15,4 +15,21 @@ interface ProjectInterface {
     toDosAry: ToDoInterface[];
 }
 
-export type { ToDoInterface, ProjectInterface };
+interface StateInterface {
+    content: {
+        toDos: ToDoInterface[];
+        projectList: ProjectInterface[];
+        doneList: ToDoInterface[];
+        doneProjectList: ProjectInterface[];
+    }
+    modal: {
+        modalVisible: boolean,
+        toDoFormVisible: boolean,
+        projectFormVisible: boolean,
+        projectToDoFormVisible: boolean,
+        modalText: string,
+        contentClass: string
+    }
+}
+
+export type { ToDoInterface, ProjectInterface, StateInterface };

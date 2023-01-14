@@ -7,6 +7,7 @@ Header CSS in separate file
     --main-color: #16a34a;
     --light-gray: #e5e7eb;
     --lighter-gray: #f7f7f7;
+    --secondary-color: #f3f4f6;
 }
 
 body {
@@ -32,6 +33,23 @@ label {
 h2 {
     white-space: nowrap;
 }
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    border-radius: 1rem;
+}
+
+span {
+    pointer-events: none;
+}
+
+.actionspan {
+    pointer-events: all;
+    cursor: pointer;
+}
+
 
 /* For blurring the site content when form for adding new ToDos is open */
 #content.blurred div:not(.modaldiv, .modaldiv div) {
@@ -132,7 +150,6 @@ h2 {
 }
 
 .expandbutton:hover {
-    cursor: pointer;
     background-color: rgb(160, 160, 160);
     border: 1px solid rgb(160, 160, 160);
     border-radius: 0 1rem 1rem 0;
@@ -194,11 +211,7 @@ h2 {
 .editbutton, .deletebutton, .cancelbutton, .acceptbutton {
     border-radius: 0.5rem;
     padding: 0.1rem 0.5rem;
-    color: white;
-}
-
-button span {
-    pointer-events: none;
+    color: var(--secondary-color);
 }
 
 .deletebutton {
@@ -248,9 +261,22 @@ button span {
     font-family: 'Sansita Swashed', cursive;
 }
 
+.donecheckbox {
+    border: 3px solid red;
+    color: red;
+    line-height: 1.5rem;
+    font-size: 2rem;
+}
+
 .checkbox:hover {
     background-color: var(--main-color);
-    color: white;
+    color: var(--light-gray);
+    cursor: pointer;
+}
+
+.donecheckbox:hover {
+    background-color: red;
+    color: var(--light-gray);
     cursor: pointer;
 }
 
@@ -300,14 +326,11 @@ form input {
 }
 
 form button {
-    border-radius: 1rem;
     border: 5px solid var(--main-color);
     background-color: var(--main-color);
     padding: 0.5rem 1rem;
-    font-family: inherit;
-    font-size: inherit;
     font-weight: bold;
-    color: white;
+    color: var(--secondary-color);
     width: 10rem;
     align-self: center;
     justify-self: center;
@@ -320,10 +343,6 @@ form button {
 #projectformdiv form div:nth-child(3) {
     grid-area: 2 / 1 / 2 / span 2;
     justify-self: center;
-}
-
-button:hover {
-    cursor: pointer;
 }
 
 #doneheader {
@@ -339,6 +358,10 @@ button:hover {
     margin: auto;
     justify-self: center;
     font-size: 1.5rem;
+}
+
+#actiondiv span {
+    pointer-events: all;
 }
 
 #addnew {
@@ -358,21 +381,17 @@ button:hover {
 }
 
 #newprojectbutton, .addtodobutton, .genericbutton {
-    border-radius: 1rem;
     border: 5px solid var(--main-color);
     background-color: var(--main-color);
     padding: 0.5rem 1rem;
-    font-family: inherit;
-    font-size: inherit;
     font-weight: bold;
-    color: white;
+    color: var(--secondary-color);
     align-self: center;
     justify-self: center;
 }
 
 #newprojectbutton:hover, .addtodobutton:hover, .genericbutton:hover {
-    cursor: pointer;
-    background-color: white;
+    background-color: var(--secondary-color);
     color: var(--main-color);
     border: 5px solid var(--main-color);
 }

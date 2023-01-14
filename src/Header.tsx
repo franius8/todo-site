@@ -33,9 +33,9 @@ export default function Header(props: { active: string }) {
                 <button id={"addnewbutton"} onClick={() => dispatch(toggleToDoForm())}>
                     Add ToDo
                 </button>
-                <div id={"loginbutton"} onClick={toLogin}>
+                <button id={"loginbutton"} onClick={toLogin}>
                     Account
-                </div>
+                </button>
             </div>
         </header>
     ) ;

@@ -44,12 +44,7 @@
 }
 
 .navitem:hover, .navitem.active {
-    cursor: pointer;
     background-color: var(--light-gray);
-}
-
-.navitem span {
-    pointer-events: none;
 }
 
 #rightdiv {
@@ -60,12 +55,10 @@
 
 #addnewbutton {
     padding: 0.5rem 0.8rem;
-    font-family: inherit;
     font-weight: bold;
     font-size: 1.25rem;
     background-color: var(--main-color);
     color: white;
-    border-radius: 1rem;
     border: 5px solid var(--main-color);
 }
 
@@ -73,17 +66,13 @@
 
 #loginbutton {
     background-color: var(--light-gray);
-    border-radius: 1rem;
+    border: 1px solid var(--light-gray);
+    outline: none;
     font-size: 1.25rem;
-    padding: 0.7rem 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    padding: 0.5rem 0.8rem;
 }
 
 #loginbutton:hover {
-    cursor: pointer;
     background-color: var(--main-color);
     color: white;
 }
