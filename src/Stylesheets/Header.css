@@ -1,0 +1,84 @@
+/*noinspection CssUnknownTarget*/
+@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@900&display=swap");
+
+#header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: white;
+    box-shadow: 0 0 5px rgb(100, 100, 100);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+#navigationdiv {
+    display: grid;
+    justify-content: center;
+    align-self: center;
+    justify-self: center;
+    grid-template: 1fr / 1fr 1fr 1fr;
+    border: 1px solid var(--light-gray);
+    border-radius: 1rem;
+    gap: 0.1rem;
+    background-color: var(--light-gray);
+}
+
+.navitem {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
+}
+
+.navitem:first-child {
+    border-radius: 1rem 0 0 1rem;
+}
+
+.navitem:last-child {
+    border-radius: 0 1rem 1rem 0;
+}
+
+.navitem:hover, .navitem.active {
+    background-color: var(--light-gray);
+}
+
+#rightdiv {
+    display: flex;
+    justify-content: right;
+    gap: 1rem;
+}
+
+#addnewbutton {
+    padding: 0.5rem 0.8rem;
+    font-weight: bold;
+    font-size: 1.25rem;
+    background-color: var(--main-color);
+    color: white;
+    border: 5px solid var(--main-color);
+}
+
+.material-symbols-outlined.md-36 { font-size: 36px; }
+
+#loginbutton {
+    background-color: var(--light-gray);
+    border: 1px solid var(--light-gray);
+    outline: none;
+    font-size: 1.25rem;
+    padding: 0.5rem 0.8rem;
+}
+
+#loginbutton:hover {
+    background-color: var(--main-color);
+    color: white;
+}
+
+#addnewbutton:hover, form button:hover {
+    color: var(--main-color);
+    background-color: white;
+}
