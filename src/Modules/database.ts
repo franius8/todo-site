@@ -3,7 +3,10 @@ import {onAuthStateChanged} from "firebase/auth";
 import {collection, doc, getDoc, updateDoc} from "firebase/firestore";
 import {ProjectInterface, ToDoInterface} from "./d";
 
+// Module for handling database operations
 const database = (() => {
+
+    // Function for updating database records
     const updateDatabase = (toDosCopy: ToDoInterface[] | ProjectInterface[], type: string) => {
         onAuthStateChanged(auth, async (user) => {
             
@@ -35,6 +38,8 @@ const database = (() => {
             }
         });
     }
+
+    // Function for retrieving database records on app startup
     const loadDatabase = () => {
         
         let rawToDoAry: ToDoInterface[] = [];

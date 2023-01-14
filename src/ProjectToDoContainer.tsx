@@ -3,6 +3,7 @@ import {ProjectInterface} from "./Modules/d";
 import dateConverter from "./Modules/DateConverter";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import {priorityGetter} from "./Modules/priorityGetter";
 
 const ProjectToDoDiv = styled.div`
   border-radius: 0 0 1rem 1rem;
@@ -30,16 +31,8 @@ const NoToDosDiv = styled.div`
 // Component for displaying project ToDos
 export default function ProjectToDoContainer(props: { visible: boolean, openToDoForm: (project: ProjectInterface) => void, project: ProjectInterface }) {
     useDispatch();
-    const determinePriorityColor = (priority: string) => {
-        if (priority === "High") {
-            return "red";
-        } else if (priority === "Medium") {
-            return "yellow";
-        } else {
-            return "green";
-        }
-    }
 
+    // Function for opening form for adding new ToDos to project
     const openToDoForm = () => {
         
         props.openToDoForm(props.project);
@@ -66,7 +59,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
                         {props.project.toDosAry.map(({iD, heading, text, priority, date}) => {
                             return (
                                 <div className="projecttodo" key={props.project.iD + " " + iD}>
-                                    <div className="labelstripe" style={{backgroundColor: determinePriorityColor(priority)}} />
+                                    <div className="labelstripe" style={{backgroundColor: priorityGetter(priority)}} />
                                     <div className="todocontent">
                                         <div className="todoheading">{heading}</div>
                                         <div className="todotext">{text}</div>
@@ -75,7 +68,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
                                             <div>{date} ({dateConverter.getDayDifference(new Date(date))} days left)</div>
                                         </div>
                                         <div className="todopriority">
-                                            <div className="prioritycircle" style={{backgroundColor: determinePriorityColor(priority)}} />
+                                            <div className="prioritycircle" style={{backgroundColor: priorityGetter(priority)}} />
                                             <div>{priority} priority</div>
                                         </div>
                                     </div>

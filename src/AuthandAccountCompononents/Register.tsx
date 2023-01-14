@@ -15,6 +15,7 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("")
 
+    // Function for handling form submit
     const register = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         createUserWithEmailAndPassword(auth, email, password)
@@ -44,15 +45,23 @@ export default function Register() {
                 // ..
             });
     }
+
+    // Function for handling name input change
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
     }
+
+    // Function for handling email input change
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     }
+
+    // Function for handling password input change
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     }
+
+    // Function for handling repeat password input change
     const handleRepeatPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRepeatPassword(event.target.value);
     }

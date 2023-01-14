@@ -1,3 +1,4 @@
+// Function for getting the priority display color
 export const priorityGetter = (priority: string) => {
     switch (priority) {
         case 'High':

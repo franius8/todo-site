@@ -11,6 +11,8 @@ import ForgotPassword from "./ForgotPassword";
 import Reauthenticate from "./AuthandAccountCompononents/Reauthenticate";
 import ChangePassword from "./AuthandAccountCompononents/ChangePassword";
 
+
+// Main and only route switch for the app
 export default function RouteSwitch() {
 
   return (

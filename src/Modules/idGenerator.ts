@@ -1,3 +1,4 @@
+// A helper function to generate unique IDs
 const idGenerator = (() => {
     JSON.parse(localStorage.getItem("idsary") || "[]");
     const generateID = () => {
