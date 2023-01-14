@@ -8,6 +8,7 @@ const ButtonDiv = styled.div`
     display: flex;
 `
 
+// Generic component for confirmation modal
 export default function ConfirmModal(props: { id: string, close: () => void, confirm: () => void, text: string,
     header: string, innerText: string, onConfirm: () => void }) {
     const dispatch = useDispatch();

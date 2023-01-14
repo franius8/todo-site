@@ -8,6 +8,7 @@ const InputDiv = styled.div`
       gap: 0.5rem;
     `
 
+// Generic component for form input elements
 export default function InputElement(props: { type: string, name: string, value: string, heading: string,
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void, required: boolean}) {
 

@@ -21,15 +21,19 @@ const LoginForm = styled.form`
   gap: 1rem;
 `
 
+// This component is used to reauthenticate a user before they can perform sensitive actions
 export default function Reauthenticate() {
     const navigate = useNavigate();
     const {state} = useLocation();
     const {path} = state as {path: string};
     const [password, setPassword] = React.useState("");
+
+    // Function for handling password input change
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     }
 
+    // Function for handling form submission
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const user = auth.currentUser;
@@ -44,9 +48,8 @@ export default function Reauthenticate() {
     }
 
     return (
-        <GenericLoneDiv>
+        <GenericLoneDiv heading={"Enter Password"}>
                 <LoginFormDiv>
-                    <h2>Enter password</h2>
                     <LoginForm id={"loginform"} onSubmit={handleSubmit}>
                         <InputElement type={"password"} name={"password"} value={password} heading={"Password"}
                                       handleChange={handlePasswordChange} required/>

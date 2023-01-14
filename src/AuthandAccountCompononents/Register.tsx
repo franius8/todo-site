@@ -7,6 +7,7 @@ import GenericLoneDiv from "../GenericLoneDiv";
 import TextInputElement from "../FormComponents/TextInputElement";
 import InputElement from "../FormComponents/InputElement";
 
+// Component for registering a new user
 export default function Register() {
     useNavigate();
     const [name, setName] = useState("");
@@ -22,7 +23,7 @@ export default function Register() {
                 const user = userCredential.user;
                 await setDoc(doc(db, "users", user.uid), {
                     user: user.uid,
-                    email: email,
+                    email,
                     todos: "[]",
                     done: "[]",
                     projects: "[]"
@@ -57,29 +58,22 @@ export default function Register() {
     }
 
     return (
-        <GenericLoneDiv>
-            <>
-                <div id={"loginform"}>
-                    <div id={"loginformheader"}>
+        <GenericLoneDiv heading={"Register"}>
+            <form id={"loginformbody"} onSubmit={register}>
+                <TextInputElement name={"name"} value={name}
+                                  heading={"Name"} handleChange={handleNameChange} required/>
+                <InputElement type={"email"} name={"email"} value={email}
+                              heading={"Email"} handleChange={handleEmailChange} required/>
+                <InputElement type={"password"} name={"password"} value={password}
+                              heading={"Password"} handleChange={handlePasswordChange} required/>
+                <InputElement type={"password"} name={"repeatpassword"} value={repeatPassword}
+                              heading={"Repeat password"} handleChange={handleRepeatPasswordChange} required/>
+                <div id={"loginformbodybutton"}>
+                    <button>
                         Register
-                    </div>
-                    <form id={"loginformbody"} onSubmit={register}>
-                        <TextInputElement name={"name"} value={name}
-                                          heading={"Name"} handleChange={handleNameChange} required/>
-                        <InputElement type={"email"} name={"email"} value={email}
-                                      heading={"Email"} handleChange={handleEmailChange} required/>
-                        <InputElement type={"password"} name={"password"} value={password}
-                                      heading={"Password"} handleChange={handlePasswordChange} required/>
-                        <InputElement type={"password"} name={"repeatpassword"} value={repeatPassword}
-                                      heading={"Repeat password:"} handleChange={handleRepeatPasswordChange} required/>
-                        <div id={"loginformbodybutton"}>
-                            <button>
-                                Register
-                            </button>
-                        </div>
-                    </form>
+                    </button>
                 </div>
-            </>
+            </form>
         </GenericLoneDiv>
     )
 }

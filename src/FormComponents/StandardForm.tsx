@@ -1,6 +1,7 @@
 import React from "react";
 import GenericModal from "../Modals/GenericModal";
 
+// Generic component for form elements
 export default function StandardForm(props: { close: () => void, heading: string, children: JSX.Element,
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void, submitText: string, id: string}) {
 

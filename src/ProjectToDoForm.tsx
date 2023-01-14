@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectToDoForm } from "./Redux/modalSlice";
 import {setProjects, setToDos} from "./Redux/contentSlice";
 
+// Component displaying a form for adding new ToDos to a Project
 export default function ProjectToDoForm(props: { project: ProjectInterface | null } ) {
     const dispatch = useDispatch();
 
@@ -19,13 +20,14 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
         if (props.project) {
             const checkedStateAry = new Array(toDos.length).fill(false);
             props.project.toDosAry.forEach((projectToDo) => {
-                const index = toDos.findIndex((toDo) => toDo.iD == projectToDo.iD);
+                const index = toDos.findIndex((toDo) => toDo.iD === projectToDo.iD);
                 checkedStateAry[index] = true;
             });
             setCheckedState(checkedStateAry);
         }
     }, [props.project, toDos]);
 
+    // Function to handle a click on form radio element
     const handleChange = (position: number) => {
         const updatedCheckedState = checkedState.map((item, index) =>
             index === position ? !item : item
@@ -33,14 +35,14 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
         setCheckedState(updatedCheckedState);
     }
 
+    // Function to handle a click on form submit button
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         if (props.project) {
             e.preventDefault();
             const toDosCopy = [...toDos];
             const newToDos: ToDoInterface[] = [];
             let projectsCopy = [...projects];
-            // @ts-ignore
-            const projectCopy = { ...projectsCopy.filter((project) => project.iD === props.project.iD)[0] };
+            const projectCopy = { ...projectsCopy.filter((project) => project.iD === props.project?.iD)[0] };
             if (projectCopy) {
                 const toDosAry: ToDoInterface[] = [];
                 checkedState.forEach((checked, index) => {
@@ -59,8 +61,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
                 });
                 projectCopy.toDosAry = toDosAry;
             }
-            // @ts-ignore
-            projectsCopy = projectsCopy.filter((project) => project.iD !== props.project.iD);
+            projectsCopy = projectsCopy.filter((project) => project.iD !== props.project?.iD);
             dispatch(setProjects([...projectsCopy, projectCopy]));
             dispatch(setToDos([...toDosCopy, ...newToDos]));
             dispatch(toggleProjectToDoForm());
@@ -74,7 +75,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
                     <div className="projectcheckboxdiv">
                         {toDos.map(({ iD, heading, date}, index) => {
                             return (
-                                <div className="projectcheckbox" key={index}>
+                                <div className="projectcheckbox" key={iD}>
                                     <input type="checkbox" name="projectcheckbox" id={iD.toString()} value={heading}
                                            checked={checkedState[index]} onChange={() => handleChange(index)}/>
                                     <label htmlFor={iD.toString()}>

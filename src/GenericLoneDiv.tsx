@@ -17,10 +17,13 @@ const MainDiv = styled.div`
       }
     `;
 
-export default function GenericLoneDiv(props: { children: JSX.Element }) {
+
+// A generic component for use in single-div pages with a logo and a title
+export default function GenericLoneDiv(props: { children: JSX.Element, heading: string }) {
     return (
         <MainDiv>
             <LogoDiv />
+            <h2>{props.heading}</h2>
             {props.children}
         </MainDiv>
     )

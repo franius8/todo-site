@@ -409,3 +409,11 @@ form button {
 .expanded .expandbutton {
     border-radius: 0 1rem 0 0;
 }
+
+#loginformbody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}

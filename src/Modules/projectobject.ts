@@ -1,7 +1,7 @@
 import { ToDoInterface } from "./d";
 
-const projectobject = (iD: number, name:string, toDos:ToDoInterface[], date: string, priority: string) => {
-    return { iD:iD, name:name, date:date, priority:priority, toDosAry:toDos };
+const projectobject = (iD: number, name:string, toDosAry:ToDoInterface[], date: string, priority: string) => {
+    return { iD, name, date, priority, toDosAry };
 }
 
 export default projectobject;

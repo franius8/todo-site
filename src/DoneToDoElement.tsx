@@ -1,23 +1,29 @@
 import React, { useState } from "react";
-import dateConverter from "./Modules/DateConverter";
+import ElementButtonDiv from "./ElementButtonDiv";
+import ElementDate from "./ElementDate";
+import ElementPriority from "./ElementPriority";
 import {ToDoInterface} from "./Modules/d";
 
+// Component for displaying done ToDo elements
 export default function DoneToDoElement(props: { toDo: ToDoInterface, deleteToDo: (toDo:ToDoInterface) => void,
 revertDone: (toDo: ToDoInterface) => void} ) {
 
-    const [heading, setHeading] = useState(props.toDo.heading)
-    const [text, setText] = useState(props.toDo.text)
-    const [date, setDate] = useState(props.toDo.date)
+    const [heading] = useState(props.toDo.heading)
+    const [text] = useState(props.toDo.text)
+    const [date] = useState(props.toDo.date)
     const [dusingEdit, setDuringEdit] = useState(false)
 
+    // Function for toggling between edit and display mode
     const toggleEdit = () => {
         setDuringEdit(!dusingEdit)
     }
 
+    // Function for deleting ToDo element
     const deleteToDo = () => {
         props.deleteToDo(props.toDo)
     }
 
+    // Function for reverting ToDo element to the ToDo list
     const revertDone = () => {
         props.revertDone(props.toDo)
     }
@@ -33,23 +39,10 @@ revertDone: (toDo: ToDoInterface) => void} ) {
                 <div className="todocontent">
                     <div className="todoheading">{heading}</div>
                     <div className="todotext">{text}</div>
-                    <div className="tododate">
-                        <div><span className="material-symbols-outlined">calendar_month</span></div>
-                        <div>
-                            {dateConverter.convertToString(new Date(date))}
-                        </div>
-                    </div>
-                    <div className="todopriority">
-                        <div className="prioritycircle" style={{backgroundColor: "gray"}} />
-                        <div>Done</div>
-                    </div>
+                    <ElementDate date={date} done={true} />
+                    <ElementPriority priority={"Done"} priorityColor={"gray"} done={true} />
                 </div>
-                <div className="buttondiv">
-                    <button className="editbutton" onClick={toggleEdit}>
-                        <span className="material-symbols-outlined">edit</span></button>
-                    <button className="deletebutton" onClick={deleteToDo}>
-                        <span className="material-symbols-outlined">delete</span></button>
-                </div>
+                <ElementButtonDiv delete={deleteToDo} toggleEdit={toggleEdit} />
             </div>
         </div>
     )
