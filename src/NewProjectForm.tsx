@@ -8,8 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectForm } from "./Redux/modalSlice";
 import idGenerator from "./Modules/idGenerator";
 import projectobject from "./Modules/projectobject";
-import { ProjectInterface } from "./Modules/d";
-import {addProject, setProjects} from "./Redux/contentSlice";
+import {addProject} from "./Redux/contentSlice";
 
 export default function NewProjectForm() {
     const dispatch = useDispatch();

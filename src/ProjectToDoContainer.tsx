@@ -28,7 +28,7 @@ const NoToDosDiv = styled.div`
 `
 
 export default function ProjectToDoContainer(props: { visible: boolean, openToDoForm: (project: ProjectInterface) => void, project: ProjectInterface }) {
-    const dispatch = useDispatch();
+    useDispatch();
     const determinePriorityColor = (priority: string) => {
         if (priority === "High") {
             return "red";
@@ -44,7 +44,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
         props.openToDoForm(props.project);
     }
 
-    if (props.visible && props.project.toDosAry.length == 0) {
+    if (props.visible && props.project.toDosAry.length === 0) {
         return (
             <ProjectToDoDiv>
                 <ProjectToDoContainerDiv>
@@ -62,7 +62,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
                     <NoToDosDiv>
                         <button className="addtodobutton" onClick={openToDoForm}>Add/Remove ToDos</button>
                     </NoToDosDiv>
-                        {props.project.toDosAry.map(({iD, heading, text, priority, date}, index) => {
+                        {props.project.toDosAry.map(({iD, heading, text, priority, date}) => {
                             return (
                                 <div className="projecttodo" key={props.project.iD + " " + iD}>
                                     <div className="labelstripe" style={{backgroundColor: determinePriorityColor(priority)}} />

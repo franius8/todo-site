@@ -1,4 +1,4 @@
-import {Action, configureStore, ThunkDispatch} from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 import { modalSlice } from './modalSlice'
 import {contentSlice} from "./contentSlice";
 import thunkMiddleware from 'redux-thunk'

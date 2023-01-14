@@ -15,6 +15,14 @@ export default function Home() {
 
     const toDoList = useSelector((state: {  content: {toDos: ToDoInterface[]} }) => state.content.toDos);
 
+    const modifyToDo = (iD: number, heading: string, text: string, date: string, priority: string, projectiDs: number[]) => {
+        const toDosCopy = [...toDoList].filter(x => x.iD !== iD);
+        const toDo: ToDoInterface = {iD, heading, text, date, priority, projectiDs};
+        toDosCopy.push(toDo);
+        dispatch(setToDos(toDosCopy));
+
+    }
+
     const moveToDone = (iD: number) => {
         const toDosCopy = [...toDoList];
         const toDo = toDosCopy.find((toDo: ToDoInterface) => toDo.iD === iD);
@@ -26,15 +34,6 @@ export default function Home() {
         dispatch(addDone(toDo as ToDoInterface));
 
     }
-
-    const modifyToDo = (iD: number, heading: string, text: string, date: string, priority: string, projectiDs: number[]) => {
-        const toDosCopy = [...toDoList].filter(x => x.iD !== iD);
-        const toDo: ToDoInterface = {iD, heading, text, date, priority, projectiDs};
-        toDosCopy.push(toDo);
-        dispatch(setToDos(toDosCopy));
-
-    }
-
     const deleteToDo = (iD: number) => {
         if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
             const toDosCopy = [...toDoList].filter(x => x.iD !== iD);

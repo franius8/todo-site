@@ -1,8 +1,7 @@
 import {auth, db} from "./firebase";
 import {onAuthStateChanged} from "firebase/auth";
-import {collection, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
+import {collection, doc, getDoc, updateDoc} from "firebase/firestore";
 import {ProjectInterface, ToDoInterface} from "./d";
-import {To} from "react-router-dom";
 
 const database = (() => {
     const updateDatabase = (toDosCopy: ToDoInterface[] | ProjectInterface[], type: string) => {
@@ -36,7 +35,7 @@ const database = (() => {
             }
         });
     }
-    const loadDatabase = async () => {
+    const loadDatabase = () => {
         
         let rawToDoAry: ToDoInterface[] = [];
         let rawDoneToDoAry: ToDoInterface[] = [];

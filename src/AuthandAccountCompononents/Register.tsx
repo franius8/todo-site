@@ -22,7 +22,7 @@ export default function Register() {
                 const user = userCredential.user;
                 await setDoc(doc(db, "users", user.uid), {
                     user: user.uid,
-                    email: email,
+                    email,
                     todos: "[]",
                     done: "[]",
                     projects: "[]"
@@ -58,7 +58,6 @@ export default function Register() {
 
     return (
         <GenericLoneDiv>
-            <>
                 <div id={"loginform"}>
                     <div id={"loginformheader"}>
                         Register
@@ -79,7 +78,6 @@ export default function Register() {
                         </div>
                     </form>
                 </div>
-            </>
         </GenericLoneDiv>
     )
 }

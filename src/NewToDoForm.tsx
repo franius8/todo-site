@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { openModal, toggleToDoForm } from "./Redux/modalSlice";
 import { addToDo } from "./Redux/contentSlice";
 import idGenerator from "./Modules/idGenerator";
-import { ToDoInterface } from "./Modules/d";
+import { ToDoInterface, StateInterface } from "./Modules/d";
 import todoObject from "./Modules/todoObject";
 import { auth } from "./Modules/firebase";
 
@@ -21,7 +21,7 @@ export default function NewToDoForm() {
     const [priority, setPriority] = React.useState("Normal");
 
     const todoFormVisible = useSelector((state: { modal: {toDoFormVisible: boolean} }) => state.modal.toDoFormVisible);
-    const toDos = useSelector((state: any) => state.content.toDos);
+    const toDos = useSelector((state: StateInterface) => state.content.toDos);
 
     const priorities = ["Low", "Standard", "High"];
 

@@ -5,9 +5,9 @@ import {ToDoInterface} from "./Modules/d";
 export default function DoneToDoElement(props: { toDo: ToDoInterface, deleteToDo: (toDo:ToDoInterface) => void,
 revertDone: (toDo: ToDoInterface) => void} ) {
 
-    const [heading, setHeading] = useState(props.toDo.heading)
-    const [text, setText] = useState(props.toDo.text)
-    const [date, setDate] = useState(props.toDo.date)
+    const [heading] = useState(props.toDo.heading)
+    const [text] = useState(props.toDo.text)
+    const [date] = useState(props.toDo.date)
     const [dusingEdit, setDuringEdit] = useState(false)
 
     const toggleEdit = () => {

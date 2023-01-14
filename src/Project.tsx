@@ -28,7 +28,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
 
     const toggleToDos = () => {
         setProjectToDoVisible(!projectToDoVisible);
-        const newProjectClass = projectClass == "project" ? "project expanded" : "project";
+        const newProjectClass = projectClass === "project" ? "project expanded" : "project";
         setProjectClass(newProjectClass);
     }
 

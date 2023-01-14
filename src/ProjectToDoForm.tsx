@@ -19,7 +19,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
         if (props.project) {
             const checkedStateAry = new Array(toDos.length).fill(false);
             props.project.toDosAry.forEach((projectToDo) => {
-                const index = toDos.findIndex((toDo) => toDo.iD == projectToDo.iD);
+                const index = toDos.findIndex((toDo) => toDo.iD === projectToDo.iD);
                 checkedStateAry[index] = true;
             });
             setCheckedState(checkedStateAry);
@@ -39,8 +39,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
             const toDosCopy = [...toDos];
             const newToDos: ToDoInterface[] = [];
             let projectsCopy = [...projects];
-            // @ts-ignore
-            const projectCopy = { ...projectsCopy.filter((project) => project.iD === props.project.iD)[0] };
+            const projectCopy = { ...projectsCopy.filter((project) => project.iD === props.project?.iD)[0] };
             if (projectCopy) {
                 const toDosAry: ToDoInterface[] = [];
                 checkedState.forEach((checked, index) => {
@@ -59,8 +58,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
                 });
                 projectCopy.toDosAry = toDosAry;
             }
-            // @ts-ignore
-            projectsCopy = projectsCopy.filter((project) => project.iD !== props.project.iD);
+            projectsCopy = projectsCopy.filter((project) => project.iD !== props.project?.iD);
             dispatch(setProjects([...projectsCopy, projectCopy]));
             dispatch(setToDos([...toDosCopy, ...newToDos]));
             dispatch(toggleProjectToDoForm());
@@ -74,7 +72,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
                     <div className="projectcheckboxdiv">
                         {toDos.map(({ iD, heading, date}, index) => {
                             return (
-                                <div className="projectcheckbox" key={index}>
+                                <div className="projectcheckbox" key={iD}>
                                     <input type="checkbox" name="projectcheckbox" id={iD.toString()} value={heading}
                                            checked={checkedState[index]} onChange={() => handleChange(index)}/>
                                     <label htmlFor={iD.toString()}>
