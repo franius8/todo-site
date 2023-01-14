@@ -12,6 +12,8 @@ import {loadInitialState} from "./Redux/contentSlice";
 import Projectobject from "./Modules/projectobject";
 import InfoErrorModal from "./Modals/InfoErrorModal";
 
+
+// Component containing the route switch and global modals
 export default function App() {
     const dispatch = useDispatch();
     const contentClass = useSelector((state: StateInterface) => state.modal.contentClass);

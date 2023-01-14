@@ -10,6 +10,7 @@ import idGenerator from "./Modules/idGenerator";
 import projectobject from "./Modules/projectobject";
 import {addProject} from "./Redux/contentSlice";
 
+// This component is the form for adding new projects
 export default function NewProjectForm() {
     const dispatch = useDispatch();
 
@@ -21,6 +22,7 @@ export default function NewProjectForm() {
 
     const priorities = ["Normal", "Urgent"];
 
+    // A generic function for handling the input of the form
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         switch (e.target.name) {
             case "projectname":
@@ -35,6 +37,7 @@ export default function NewProjectForm() {
         }
     }
 
+    // A function for handling the submission of the form
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const iD = idGenerator.generateID();

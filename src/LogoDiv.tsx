@@ -26,9 +26,11 @@ const LogoText = styled.div`
       line-height: 0;
     `;
 
+// Generic Logo Component
 export default function LogoDiv() {
     const navigate = useNavigate();
 
+    // Navigate to home page
     const backToHome = () => {
         navigate("/home");
     }

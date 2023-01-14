@@ -1,5 +1,6 @@
 import React from "react";
 
+// A generiv div for ToDos and project buttons
 export default function ElementButtonDiv(props: { toggleEdit: () => void, delete: () => void }) {
     return (
         <div className="buttondiv">

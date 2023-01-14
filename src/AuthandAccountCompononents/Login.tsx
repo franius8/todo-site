@@ -77,10 +77,9 @@ export default function Login() {
        return <div>Already logged in</div>
     } else {
         return (
-            <GenericLoneDiv>
+            <GenericLoneDiv heading={"Login"}>
                 <>
                     <LoginFormDiv>
-                        <h2>Login</h2>
                         <LoginForm id={"loginform"} onSubmit={login}>
                             <InputElement type={"email"} name={"email"} value={email} heading={"Email"}
                                           handleChange={handleEmailChange} required/>

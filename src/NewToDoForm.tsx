@@ -12,6 +12,8 @@ import { ToDoInterface, StateInterface } from "./Modules/d";
 import todoObject from "./Modules/todoObject";
 import { auth } from "./Modules/firebase";
 
+
+// This component is the form that is used to create a new ToDo.
 export default function NewToDoForm() {
     const dispatch = useDispatch();
 
@@ -25,6 +27,7 @@ export default function NewToDoForm() {
 
     const priorities = ["Low", "Standard", "High"];
 
+    // A generic function for handling changed during edit
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         switch (e.target.name) {
             case "todotitle":
@@ -43,6 +46,7 @@ export default function NewToDoForm() {
         }
     }
 
+    // This function is called when the user clicks the submit button.
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const toDosCopy = [...toDos];

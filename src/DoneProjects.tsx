@@ -10,6 +10,7 @@ const Header = styled.h2`
   cursor: pointer;
 `
 
+// Component for displaying the done projects
 export default function DoneProjects(props: { doneProjects: ProjectInterface[],
     openToDoForm: (project: ProjectInterface) => void,
     modifyProject: (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => void,
@@ -18,11 +19,12 @@ export default function DoneProjects(props: { doneProjects: ProjectInterface[],
 
     const [doneProjectsVisible, setDoneProjectsVisible] = useState(false);
 
-    const toggleIcon = () => setDoneProjectsVisible(!doneProjectsVisible);
+    // Function for toggling the expand icon and visibility of the done projects
+    const toggleVisibility = () => setDoneProjectsVisible(!doneProjectsVisible);
 
     return (
         <div id={"doneprojects"}>
-            <Header onClick={toggleIcon}>Done Projects
+            <Header onClick={toggleVisibility}>Done Projects
                 <span className={`material-symbols-outlined ${doneProjectsVisible ? "" : "rotate"}`}>expand_more</span>
             </Header>
             {doneProjectsVisible &&

@@ -22,24 +22,30 @@ export default function DoneProject(props: { project: ProjectInterface,
     const [projectToDoVisible, setProjectToDoVisible] = useState(false);
     const [duringEdit, setDuringEdit] = useState(false);
 
+    // Function for handling name change during edit
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.name)
 
+    // Function for toggling edit state
     const toggleEdit = () => setDuringEdit(!duringEdit)
 
+    // Function for deleting a project
     const handleDeleteProject = () => {
         props.deleteProject(props.project)
     }
 
+    // Function for reverting a project to the projects list
     const revertProject = () => {
         props.revertProject(props.project)
     }
 
+    // Function for handling submit of the edit form
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         props.modifyProject(props.project.iD, name, date, props.project.priority, props.project.toDosAry)
         setDuringEdit(false)
     }
 
+    // Function for toggling the visibility of the project's to do list
     const toggleToDos = () => setProjectToDoVisible(!projectToDoVisible)
 
 

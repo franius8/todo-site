@@ -44,9 +44,8 @@ export default function Reauthenticate() {
     }
 
     return (
-        <GenericLoneDiv>
+        <GenericLoneDiv heading={"Enter Password"}>
                 <LoginFormDiv>
-                    <h2>Enter password</h2>
                     <LoginForm id={"loginform"} onSubmit={handleSubmit}>
                         <InputElement type={"password"} name={"password"} value={password} heading={"Password"}
                                       handleChange={handlePasswordChange} required/>

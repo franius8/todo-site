@@ -48,9 +48,8 @@ export default function ChangePassword() {
     }
 
   return (
-      <GenericLoneDiv>
+      <GenericLoneDiv heading={"Enter a new password"}>
         <LoginFormDiv>
-          <h2>Enter new password</h2>
           <LoginForm id={"loginform"} onSubmit={handleSubmit}>
             <InputElement type={"password"} name={"password"} value={password} heading={"Password"}
                           handleChange={handlePasswordChange} required/>

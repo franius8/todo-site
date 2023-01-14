@@ -7,10 +7,12 @@ import { StateInterface } from "./Modules/d";
 import { addToDo, setDoneList } from "./Redux/contentSlice";
 import {useDispatch} from "react-redux";
 
+// Component for the Done page
 export default function Done() {
     const dispatch = useDispatch();
     const doneToDos = useSelector((state: StateInterface) => state.content.doneList)
 
+    // Function to delete a signle done ToDo
     const deleteToDo = ( { iD }:ToDoInterface ) => {
         
         if (confirm('Are you sure you want to delete that?\n(This is an irreversible operation)')) {
@@ -20,6 +22,7 @@ export default function Done() {
         }
     }
 
+    // Function for reverting a single ToDo to the done list
     const revertDone = (toDo: ToDoInterface) => {
         const doneToDosCopy = [...doneToDos].filter(x => x.iD !== toDo.iD);
         dispatch(setDoneList(doneToDosCopy));

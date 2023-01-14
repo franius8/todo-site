@@ -13,14 +13,17 @@ revertDone: (toDo: ToDoInterface) => void} ) {
     const [date] = useState(props.toDo.date)
     const [dusingEdit, setDuringEdit] = useState(false)
 
+    // Function for toggling between edit and display mode
     const toggleEdit = () => {
         setDuringEdit(!dusingEdit)
     }
 
+    // Function for deleting ToDo element
     const deleteToDo = () => {
         props.deleteToDo(props.toDo)
     }
 
+    // Function for reverting ToDo element to the ToDo list
     const revertDone = () => {
         props.revertDone(props.toDo)
     }
