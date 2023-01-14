@@ -27,6 +27,7 @@ const NoToDosDiv = styled.div`
   gap: 1rem;
 `
 
+// Component for displaying project ToDos
 export default function ProjectToDoContainer(props: { visible: boolean, openToDoForm: (project: ProjectInterface) => void, project: ProjectInterface }) {
     useDispatch();
     const determinePriorityColor = (priority: string) => {

@@ -5,6 +5,7 @@ import ElementButtonDiv from "./ElementButtonDiv";
 import {ToDoInterface} from "./Modules/d";
 import { priorityGetter } from "./Modules/priorityGetter";
 
+// Component for displaying ToDos waiting to be done
 export default function ToDoElement(props: { toDo: ToDoInterface,
     modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string, projectiDs: number[]) => void,
     deleteToDo: (iD: number) => void, moveToDone: (iD: number) => void }) {

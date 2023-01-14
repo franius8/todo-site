@@ -11,6 +11,7 @@ const ProjectContentForm = styled.form`
     gap: 1rem;
 `
 
+// Component for displaying a done project
 export default function DoneProject(props: { project: ProjectInterface,
     openToDoForm: (project: ProjectInterface) => void,
     modifyProject: (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => void,

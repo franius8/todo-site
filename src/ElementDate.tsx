@@ -1,6 +1,7 @@
 import React from "react";
 import dateConverter from "./Modules/DateConverter";
 
+// Coomponent for displaying the date and days left for a project or ToDo
 export default function ElementDate(props: { date: string, done: boolean }) {
     return (
         <div className="tododate">

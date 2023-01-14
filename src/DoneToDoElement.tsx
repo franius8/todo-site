@@ -4,6 +4,7 @@ import ElementDate from "./ElementDate";
 import ElementPriority from "./ElementPriority";
 import {ToDoInterface} from "./Modules/d";
 
+// Component for displaying done ToDo elements
 export default function DoneToDoElement(props: { toDo: ToDoInterface, deleteToDo: (toDo:ToDoInterface) => void,
 revertDone: (toDo: ToDoInterface) => void} ) {
 

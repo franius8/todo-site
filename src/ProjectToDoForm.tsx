@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectToDoForm } from "./Redux/modalSlice";
 import {setProjects, setToDos} from "./Redux/contentSlice";
 
+// Component displaying a form for adding new ToDos to a Project
 export default function ProjectToDoForm(props: { project: ProjectInterface | null } ) {
     const dispatch = useDispatch();
 
@@ -26,6 +27,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
         }
     }, [props.project, toDos]);
 
+    // Function to handle a click on form radio element
     const handleChange = (position: number) => {
         const updatedCheckedState = checkedState.map((item, index) =>
             index === position ? !item : item
@@ -33,6 +35,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
         setCheckedState(updatedCheckedState);
     }
 
+    // Function to handle a click on form submit button
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         if (props.project) {
             e.preventDefault();

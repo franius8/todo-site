@@ -13,6 +13,7 @@ const ProjectContentForm = styled.form`
     gap: 1rem;
 `
 
+// Component used for displaying a project waiting to be done
 export default function Project(props: { project: ProjectInterface, openToDoForm: (project: ProjectInterface) => void,
     deleteProject: (project: ProjectInterface) => void,
     modifyProject: (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => void,
@@ -29,28 +30,37 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
         setPriorityColor(priorityGetter(priority));
     }, [priority]);
 
+    // Function used for toggling the visibility of the ToDo container below the project
     const toggleToDos = () => {
         setProjectToDoVisible(!projectToDoVisible);
         const newProjectClass = projectClass === "project" ? "project expanded" : "project";
         setProjectClass(newProjectClass);
     }
 
+    // Function used for toggling the edit mode of the project
     const toggleEdit = () => setDuringEdit(!duringEdit);
 
+    // Function for submitting a project delete
     const handleDeleteProject = () => props.deleteProject(props.project);
 
+    // Function used for handling the name change during edit
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);
 
+    // Function used for handling the date change during edit
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => setDate(dateConverter.convertToInputFormat(new Date(e.target.value)));
 
+
+    // Function to handle the change of the priority during edit
     const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => setPriority(e.target.value);
 
+    // Function used for submitting the changes made to the project
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         props.modifyProject(props.project.iD, name, date, priority, props.project.toDosAry);
         setDuringEdit(false);
     }
 
+    // Function used for moving the project to the done list
     const moveToDone = () => props.moveToDone(props.project);
 
     if (!duringEdit) {

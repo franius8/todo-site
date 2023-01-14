@@ -9,6 +9,7 @@ import { toggleToDoForm } from "./Redux/modalSlice";
 import { addDone, setToDos } from "./Redux/contentSlice";
 import  {auth } from "./Modules/firebase";
 
+// Components for rendering the home page with the ToDo list
 export default function Home() {
 
     const dispatch = useDispatch();
