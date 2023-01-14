@@ -25,7 +25,7 @@ revertDone: (toDo: ToDoInterface) => void} ) {
 
     return (
         <div className="todo">
-            <div className="labelstripe" style={{backgroundColor: "gray"}}></div>
+            <div className="labelstripe" style={{backgroundColor: "gray"}} />
             <div className="middlediv">
                 <div className="checkboxdiv">
                     <div className="checkbox donecheckbox" onClick={revertDone}>↺</div>
@@ -40,7 +40,7 @@ revertDone: (toDo: ToDoInterface) => void} ) {
                         </div>
                     </div>
                     <div className="todopriority">
-                        <div className="prioritycircle" style={{backgroundColor: "gray"}}></div>
+                        <div className="prioritycircle" style={{backgroundColor: "gray"}} />
                         <div>Done</div>
                     </div>
                 </div>

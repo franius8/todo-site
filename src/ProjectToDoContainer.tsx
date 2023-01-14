@@ -65,7 +65,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
                         {props.project.toDosAry.map(({iD, heading, text, priority, date}, index) => {
                             return (
                                 <div className="projecttodo" key={props.project.iD + " " + iD}>
-                                    <div className="labelstripe" style={{backgroundColor: determinePriorityColor(priority)}}></div>
+                                    <div className="labelstripe" style={{backgroundColor: determinePriorityColor(priority)}} />
                                     <div className="todocontent">
                                         <div className="todoheading">{heading}</div>
                                         <div className="todotext">{text}</div>
@@ -74,7 +74,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
                                             <div>{date} ({dateConverter.getDayDifference(new Date(date))} days left)</div>
                                         </div>
                                         <div className="todopriority">
-                                            <div className="prioritycircle" style={{backgroundColor: determinePriorityColor(priority)}}></div>
+                                            <div className="prioritycircle" style={{backgroundColor: determinePriorityColor(priority)}} />
                                             <div>{priority} priority</div>
                                         </div>
                                     </div>
