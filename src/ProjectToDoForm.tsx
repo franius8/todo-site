@@ -45,7 +45,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
             const projectCopy = { ...projectsCopy.filter((project) => project.iD === props.project?.iD)[0] };
             if (projectCopy) {
                 const toDosAry: ToDoInterface[] = [];
-                checkedState.forEach((checked, index) => {
+                checkedState.forEach((checked) => {
                     const currentToDo = toDosCopy.shift() as ToDoInterface;
                     if (checked) {
                         toDosAry.push(currentToDo);

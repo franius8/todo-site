@@ -80,4 +80,3 @@ export const {
     loadInitialState
 } = contentSlice.actions;
 
-export default contentSlice.reducer;

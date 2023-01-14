@@ -34,13 +34,15 @@ export default function NewProjectForm() {
             case "projectpriority":
                 setPriority(e.target.value);
                 break;
+            default:
+                break;
         }
     }
 
     // A function for handling the submission of the form
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const iD = idGenerator.generateID();
+        const iD = idGenerator();
         dispatch(addProject(projectobject(iD, projectName, [], projectDate, priority)));
         dispatch(toggleProjectForm());
     }

@@ -5,14 +5,14 @@ const dateConverter = (() => {
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return day + '.' + month + '.' + year;
+        return `${year}.${month}.${day}`;
     }
     // Function for converting to form input date format
     const convertToInputFormat = (date: Date) => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return year + '-' + month.toString().padStart(2, "0") + '-' + day;
+        return `${year}-${month.toString().padStart(2, "0")}-${day}`;
     }
 
     // Function for getting difference between two dates in days

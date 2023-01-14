@@ -43,6 +43,8 @@ export default function NewToDoForm() {
             case "todopriority":
                 setPriority(e.target.value);
                 break;
+            default:
+                break;
         }
     }
 
@@ -50,7 +52,7 @@ export default function NewToDoForm() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const toDosCopy = [...toDos];
-        const iD = idGenerator.generateID();
+        const iD = idGenerator();
         const newToDo:ToDoInterface = todoObject(title, content, dueDate, priority, iD, []);
         
         toDosCopy.push(newToDo);

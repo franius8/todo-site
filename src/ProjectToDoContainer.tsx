@@ -58,7 +58,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
                     </NoToDosDiv>
                         {props.project.toDosAry.map(({iD, heading, text, priority, date}) => {
                             return (
-                                <div className="projecttodo" key={props.project.iD + " " + iD}>
+                                <div className="projecttodo" key={`${props.project.iD} ${iD}`}>
                                     <div className="labelstripe" style={{backgroundColor: priorityGetter(priority)}} />
                                     <div className="todocontent">
                                         <div className="todoheading">{heading}</div>

@@ -45,4 +45,3 @@ export const modalSlice = createSlice({
 
 export const { toggleModal, openModal, toggleToDoForm, toggleProjectForm, toggleProjectToDoForm } = modalSlice.actions;
 
-export default modalSlice.reducer;

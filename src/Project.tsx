@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import ElementPriority from "./ElementPriority";
 import ElementButtonDiv from "./ElementButtonDiv";
+import EditFormButtonDiv from "./EditFormButtonDiv";
 import dateConverter from "./Modules/DateConverter";
 import ProjectToDoContainer from "./ProjectToDoContainer";
 import styled from "styled-components";
@@ -70,7 +71,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                     <div className="labelstripe" style={{backgroundColor: priorityColor}} />
                     <div className="middlediv">
                         <div className="checkboxdiv">
-                            <div className="checkbox" onClick={moveToDone}>✓</div>
+                            <div className="checkbox" onClick={moveToDone} role="button">✓</div>
                         </div>
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
@@ -79,7 +80,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         </div>
                         <ElementButtonDiv delete={handleDeleteProject} toggleEdit={toggleEdit} />
                     </div>
-                    <div className="expandbutton" onClick={toggleToDos}>
+                    <div className="expandbutton" onClick={toggleToDos} role="button">
                         <span className={`material-symbols-outlined ${projectToDoVisible ? "rotate" : ""}`}>expand_less</span>
                     </div>
                 </div>
@@ -121,16 +122,9 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                                 </div>
                             </ProjectContentForm>
                         </div>
-                        <div className="buttondiv">
-                            <button className="cancelbutton" onClick={toggleEdit}>
-                                <span className="material-symbols-outlined">undo</span>
-                            </button>
-                            <button className="acceptbutton" type="submit" form="editform">
-                                <span className="material-symbols-outlined">check</span>
-                            </button>
-                        </div>
+                        <EditFormButtonDiv toggleEdit={toggleEdit} />
                     </div>
-                    <div className="expandbutton" onClick={toggleToDos}>
+                    <div className="expandbutton" onClick={toggleToDos} role="button">
                         <span className="material-symbols-outlined">{projectToDoVisible ? "expand_more" : "expand_less"}</span>
                     </div>
                 </div>

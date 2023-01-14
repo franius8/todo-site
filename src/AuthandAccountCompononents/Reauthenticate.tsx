@@ -42,7 +42,7 @@ export default function Reauthenticate() {
             reauthenticateWithCredential(user, credential).then(() => {
                navigate(path);
             }).catch((error) => {
-                
+                /* temporarily nothing */
             });
         }
     }
@@ -53,7 +53,7 @@ export default function Reauthenticate() {
                     <LoginForm id={"loginform"} onSubmit={handleSubmit}>
                         <InputElement type={"password"} name={"password"} value={password} heading={"Password"}
                                       handleChange={handlePasswordChange} required/>
-                        <GenericButton type={"submit"} onClick={() => {}} form={"loginform"} variantMain>
+                        <GenericButton type={"submit"} onClick={() => {/* nothing */}} form={"loginform"} variantMain>
                             Login
                         </GenericButton>
                         <GenericButton type={"button"} form={""} variantMain={false} onClick={() => navigate(-1)}>

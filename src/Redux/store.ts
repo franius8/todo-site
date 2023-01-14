@@ -13,4 +13,3 @@ export const store = configureStore({
 
 export default store
 
-export type AppDispatch = typeof store.dispatch
