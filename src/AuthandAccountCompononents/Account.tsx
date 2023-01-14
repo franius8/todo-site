@@ -5,6 +5,8 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import LogoDiv from "../LogoDiv";
 
+
+// Function for displaying the account page
 export default function Account() {
     const navigate = useNavigate();
     const [user, setUser] = React.useState(auth.currentUser);
@@ -19,6 +21,8 @@ export default function Account() {
         });
         return unsubscribe;
     }, [navigate]);
+
+    // Function for logging out
     const signOutUser = () => {
         signOut(auth).then(() => {
             navigate("/home");
@@ -27,6 +31,7 @@ export default function Account() {
         });
     }
 
+    // Function for handling the change password button
     const changePassword = () => {
         navigate("/reauthenticate", { state: { path: "/change-password" } });
     }

@@ -1,8 +1,11 @@
 import React, {useState, FormEvent, ChangeEvent, useEffect} from "react";
+import ElementDate from "./ElementDate";
+import ElementPriority from "./ElementPriority";
+import ElementButtonDiv from "./ElementButtonDiv";
 import {ToDoInterface} from "./Modules/d";
-import dateConverter from "./Modules/DateConverter";
 import { priorityGetter } from "./Modules/priorityGetter";
 
+// Component for displaying ToDos waiting to be done
 export default function ToDoElement(props: { toDo: ToDoInterface,
     modifyToDo: (iD: number, heading: string, text: string, date: string, priority: string, projectiDs: number[]) => void,
     deleteToDo: (iD: number) => void, moveToDone: (iD: number) => void }) {
@@ -63,23 +66,10 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
                     <div className="todocontent">
                         <div className="todoheading">{heading}</div>
                         <div className="todotext">{text}</div>
-                        <div className="tododate">
-                            <div><span className="material-symbols-outlined">calendar_month</span></div>
-                            <div className={new Date() > new Date(date) ? "missedtodo" : ""}>
-                                {dateConverter.convertToString(new Date(date))} ({dateConverter.getDayDifference(new Date(date))} days left)
-                            </div>
-                        </div>
-                        <div className="todopriority">
-                            <div className="prioritycircle" style={{backgroundColor: priorityColor}} />
-                            <div>{priority} priority</div>
-                        </div>
+                        <ElementDate done={false} date={date} />
+                        <ElementPriority priority={priority} priorityColor={priorityColor} done={false}/>
                     </div>
-                    <div className="buttondiv">
-                        <button className="editbutton" onClick={toggleEdit}>
-                            <span className="material-symbols-outlined">edit</span></button>
-                        <button className="deletebutton" onClick={deleteToDo}>
-                            <span className="material-symbols-outlined">delete</span></button>
-                    </div>
+                    <ElementButtonDiv toggleEdit={toggleEdit} delete={deleteToDo} />
                 </div>
             </div>
         );

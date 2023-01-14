@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectForm, toggleProjectToDoForm } from "./Redux/modalSlice";
 import {addDoneProject, addProject, setDoneList, setDoneProjects, setProjects, setToDos} from "./Redux/contentSlice";
 
+
+// Component for the Projects page
 export default function Projects() {
 
     const dispatch = useDispatch();
@@ -18,11 +20,14 @@ export default function Projects() {
 
     const [projectToDosEdited, setProjectToDosEdited] = useState<ProjectInterface | null>(null);
 
+    // Function to open the modal for adding a new project
     const openProjectToDoForm = (project: ProjectInterface) => {
         setProjectToDosEdited(project);
         dispatch(toggleProjectToDoForm());
     }
 
+
+    // Function modifying a single project's data
     const modifyProject = (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => {
         const projectsCopy = [...projects].filter(x => x.iD !== iD);
         const project: ProjectInterface = {iD, name, date, priority, toDosAry};
@@ -30,6 +35,7 @@ export default function Projects() {
         dispatch(setProjects(projectsCopy));
     }
 
+    // Function modifying a single done project's data
     const modifyDoneProject = (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => {
         const doneProjectsCopy = [...doneProjects].filter(x => x.iD !== iD);
         const project: ProjectInterface = {iD, name, date, priority, toDosAry};
@@ -37,12 +43,14 @@ export default function Projects() {
         dispatch(setDoneProjects(doneProjectsCopy));
     }
 
+    // Function reverting a done project to the projects list
     const revertProject = (project: ProjectInterface) => {
         const doneProjectsCopy = [...doneProjects].filter(x => x.iD !== project.iD);
         dispatch(setDoneProjects(doneProjectsCopy));
         dispatch(addProject(project));
     }
 
+    // Function deleting a single project
     const deleteProject = ( { iD }: ProjectInterface) => {
         if (confirm('Are you sure you want to delete that?\nThis is an irreversible operation\nProject ToDos will be deleted as well.')) {
             const projectsCopy = [...projects];
@@ -54,6 +62,7 @@ export default function Projects() {
         }
     }
 
+    // Function deleting a single done project
     const deleteDoneProject = ( { iD }: ProjectInterface) => {
         if (confirm('Are you sure you want to delete that?\nThis is an irreversible operation\nProject ToDos will be deleted as well.')) {
             const doneProjectsCopy = [...doneProjects]
@@ -65,6 +74,7 @@ export default function Projects() {
         }
     }
 
+    // Function moving a single project to the done projects list
     const moveToDone = (project: ProjectInterface) => {
         const projectsCopy = [...projects].filter(x => x.iD !== project.iD);
         dispatch(addDoneProject(project));

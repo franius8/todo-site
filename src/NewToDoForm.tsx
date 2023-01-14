@@ -8,10 +8,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { openModal, toggleToDoForm } from "./Redux/modalSlice";
 import { addToDo } from "./Redux/contentSlice";
 import idGenerator from "./Modules/idGenerator";
-import { ToDoInterface } from "./Modules/d";
+import { ToDoInterface, StateInterface } from "./Modules/d";
 import todoObject from "./Modules/todoObject";
 import { auth } from "./Modules/firebase";
 
+
+// This component is the form that is used to create a new ToDo.
 export default function NewToDoForm() {
     const dispatch = useDispatch();
 
@@ -21,10 +23,11 @@ export default function NewToDoForm() {
     const [priority, setPriority] = React.useState("Normal");
 
     const todoFormVisible = useSelector((state: { modal: {toDoFormVisible: boolean} }) => state.modal.toDoFormVisible);
-    const toDos = useSelector((state: any) => state.content.toDos);
+    const toDos = useSelector((state: StateInterface) => state.content.toDos);
 
     const priorities = ["Low", "Standard", "High"];
 
+    // A generic function for handling changed during edit
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         switch (e.target.name) {
             case "todotitle":
@@ -43,6 +46,7 @@ export default function NewToDoForm() {
         }
     }
 
+    // This function is called when the user clicks the submit button.
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const toDosCopy = [...toDos];

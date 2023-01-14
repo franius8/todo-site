@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import ProjectToDoContainer from "./ProjectToDoContainer";
+import ElementButtonDiv from "./ElementButtonDiv";
+import ElementDate from "./ElementDate";
+import ElementPriority from "./ElementPriority";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import styled from "styled-components";
 
@@ -8,6 +11,7 @@ const ProjectContentForm = styled.form`
     gap: 1rem;
 `
 
+// Component for displaying a done project
 export default function DoneProject(props: { project: ProjectInterface,
     openToDoForm: (project: ProjectInterface) => void,
     modifyProject: (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => void,
@@ -18,24 +22,30 @@ export default function DoneProject(props: { project: ProjectInterface,
     const [projectToDoVisible, setProjectToDoVisible] = useState(false);
     const [duringEdit, setDuringEdit] = useState(false);
 
+    // Function for handling name change during edit
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.name)
 
+    // Function for toggling edit state
     const toggleEdit = () => setDuringEdit(!duringEdit)
 
+    // Function for deleting a project
     const handleDeleteProject = () => {
         props.deleteProject(props.project)
     }
 
+    // Function for reverting a project to the projects list
     const revertProject = () => {
         props.revertProject(props.project)
     }
 
+    // Function for handling submit of the edit form
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         props.modifyProject(props.project.iD, name, date, props.project.priority, props.project.toDosAry)
         setDuringEdit(false)
     }
 
+    // Function for toggling the visibility of the project's to do list
     const toggleToDos = () => setProjectToDoVisible(!projectToDoVisible)
 
 
@@ -50,23 +60,10 @@ export default function DoneProject(props: { project: ProjectInterface,
                         </div>
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
-                            <div className="tododate">
-                                <div><span className="material-symbols-outlined">calendar_month</span></div>
-                                <div>{date}</div>
-                            </div>
-                            <div className="todopriority">
-                                <div className="prioritycircle" style={{backgroundColor: "gray"}} />
-                                <div>Done</div>
-                            </div>
+                            <ElementDate date={date} done={true} />
+                            <ElementPriority priority={"Done"} priorityColor={"gray"} done={true} />
                         </div>
-                        <div className="buttondiv">
-                            <button className="editbutton" onClick={toggleEdit}>
-                                <span className="material-symbols-outlined">edit</span>
-                            </button>
-                            <button className="deletebutton" onClick={handleDeleteProject}>
-                                <span className="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
+                        <ElementButtonDiv toggleEdit={toggleEdit} delete={handleDeleteProject} />
                     </div>
                     <div className="expandbutton" onClick={toggleToDos}>
                     <span

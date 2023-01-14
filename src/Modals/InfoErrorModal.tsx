@@ -3,6 +3,7 @@ import GenericModal from "./GenericModal";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleModal } from "../Redux/modalSlice";
 
+// Generic component for info/error modal
 export default function InfoErrorModal() {
     const dispatch = useDispatch()
     const modalVisible = useSelector((state: { modal: { modalVisible: boolean } }) => state.modal.modalVisible)

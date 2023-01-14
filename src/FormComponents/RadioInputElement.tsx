@@ -11,6 +11,7 @@ const InputDiv = styled.div`
 `
 // Styling for radiocontainer in separate CSS file due to complexity
 
+// Generic component for form radio input element
 export default function RadioInputElement(props: { name: string, values: string[], heading: string,
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
     const random = Math.random();

@@ -1,15 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
+import ElementPriority from "./ElementPriority";
+import ElementButtonDiv from "./ElementButtonDiv";
 import dateConverter from "./Modules/DateConverter";
 import ProjectToDoContainer from "./ProjectToDoContainer";
 import styled from "styled-components";
 import {priorityGetter} from "./Modules/priorityGetter";
+import ElementDate from "./ElementDate";
 
 const ProjectContentForm = styled.form`
     display: flex;
     gap: 1rem;
 `
 
+// Component used for displaying a project waiting to be done
 export default function Project(props: { project: ProjectInterface, openToDoForm: (project: ProjectInterface) => void,
     deleteProject: (project: ProjectInterface) => void,
     modifyProject: (iD: number, name: string, date: string, priority: string, toDosAry: ToDoInterface[]) => void,
@@ -26,28 +30,37 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
         setPriorityColor(priorityGetter(priority));
     }, [priority]);
 
+    // Function used for toggling the visibility of the ToDo container below the project
     const toggleToDos = () => {
         setProjectToDoVisible(!projectToDoVisible);
-        const newProjectClass = projectClass == "project" ? "project expanded" : "project";
+        const newProjectClass = projectClass === "project" ? "project expanded" : "project";
         setProjectClass(newProjectClass);
     }
 
+    // Function used for toggling the edit mode of the project
     const toggleEdit = () => setDuringEdit(!duringEdit);
 
+    // Function for submitting a project delete
     const handleDeleteProject = () => props.deleteProject(props.project);
 
+    // Function used for handling the name change during edit
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);
 
+    // Function used for handling the date change during edit
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => setDate(dateConverter.convertToInputFormat(new Date(e.target.value)));
 
+
+    // Function to handle the change of the priority during edit
     const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => setPriority(e.target.value);
 
+    // Function used for submitting the changes made to the project
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         props.modifyProject(props.project.iD, name, date, priority, props.project.toDosAry);
         setDuringEdit(false);
     }
 
+    // Function used for moving the project to the done list
     const moveToDone = () => props.moveToDone(props.project);
 
     if (!duringEdit) {
@@ -61,25 +74,10 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         </div>
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
-                            <div className="tododate">
-                                <div><span className="material-symbols-outlined">calendar_month</span></div>
-                                <div>{date} ({dateConverter.getDayDifference(new Date(date))} days
-                                    left)
-                                </div>
-                            </div>
-                            <div className="todopriority">
-                                <div className="prioritycircle" style={{backgroundColor: priorityColor}} />
-                                <div>{priority} priority</div>
-                            </div>
+                            <ElementDate date={date} done={false} />
+                            <ElementPriority priority={priority} priorityColor={priorityColor} done={false}/>
                         </div>
-                        <div className="buttondiv">
-                            <button className="editbutton" onClick={toggleEdit}>
-                                <span className="material-symbols-outlined">edit</span>
-                            </button>
-                            <button className="deletebutton" onClick={handleDeleteProject}>
-                                <span className="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
+                        <ElementButtonDiv delete={handleDeleteProject} toggleEdit={toggleEdit} />
                     </div>
                     <div className="expandbutton" onClick={toggleToDos}>
                         <span className={`material-symbols-outlined ${projectToDoVisible ? "rotate" : ""}`}>expand_less</span>

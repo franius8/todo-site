@@ -38,6 +38,7 @@ const SecondaryButtonElement = styled.button`
   }
 `
 
+// A generic button used in the app
 export default function GenericButton(props: {variantMain: boolean, type: "button" | "submit", form: string, children: React.ReactNode,
     onClick: () => void | null}) {
     if (props.variantMain) {
