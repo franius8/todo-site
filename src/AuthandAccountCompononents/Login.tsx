@@ -83,16 +83,16 @@ export default function Login() {
                         <h2>Login</h2>
                         <LoginForm id={"loginform"} onSubmit={login}>
                             <InputElement type={"email"} name={"email"} value={email} heading={"Email"}
-                                          handleChange={handleEmailChange} required={true}/>
+                                          handleChange={handleEmailChange} required/>
                             <InputElement type={"password"} name={"password"} value={password} heading={"Password"}
-                                          handleChange={handlePasswordChange} required={true}/>
+                                          handleChange={handlePasswordChange} required/>
                         </LoginForm>
                     </LoginFormDiv>
                     <ButtonDiv>
                         <GenericButton variantMain={false} type={"button"} form={""} onClick={toRegister}>
                             Register
                         </GenericButton>
-                        <GenericButton variantMain={true} type={"submit"} form={"loginform"} onClick={() => {}}>
+                        <GenericButton variantMain type={"submit"} form={"loginform"} onClick={() => {}}>
                             Login
                         </GenericButton>
                     </ButtonDiv>

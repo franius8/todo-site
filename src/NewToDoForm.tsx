@@ -61,9 +61,9 @@ export default function NewToDoForm() {
         return (
            <StandardForm close={() => dispatch(toggleToDoForm())} heading={"Add a new ToDo"} onSubmit={handleSubmit} submitText={"Add"} id={"formdiv"}>
                <>
-                   <TextInputElement name={"todotitle"} heading={"Title"} value={title} handleChange={handleInputChange} required={true}/>
+                   <TextInputElement name={"todotitle"} heading={"Title"} value={title} handleChange={handleInputChange} required/>
                    <TextInputElement name={"todocontent"} value={content} heading={"Content (optional)"} handleChange={handleInputChange} required={false}/>
-                   <DateInputElement name={"tododate"} value={dueDate} heading={"Due date:"} handleChange={handleInputChange} required={true}/>
+                   <DateInputElement name={"tododate"} value={dueDate} heading={"Due date:"} handleChange={handleInputChange} required/>
                    <RadioInputElement name={"todopriority"} values={priorities} heading={"Priority"} handleChange={handleInputChange} />
                </>
            </StandardForm>

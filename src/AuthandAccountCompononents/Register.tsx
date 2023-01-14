@@ -65,13 +65,13 @@ export default function Register() {
                     </div>
                     <form id={"loginformbody"} onSubmit={register}>
                         <TextInputElement name={"name"} value={name}
-                                          heading={"Name"} handleChange={handleNameChange} required={true}/>
+                                          heading={"Name"} handleChange={handleNameChange} required/>
                         <InputElement type={"email"} name={"email"} value={email}
-                                      heading={"Email"} handleChange={handleEmailChange} required={true}/>
+                                      heading={"Email"} handleChange={handleEmailChange} required/>
                         <InputElement type={"password"} name={"password"} value={password}
-                                      heading={"Password"} handleChange={handlePasswordChange} required={true}/>
+                                      heading={"Password"} handleChange={handlePasswordChange} required/>
                         <InputElement type={"password"} name={"repeatpassword"} value={repeatPassword}
-                                      heading={"Repeat password:"} handleChange={handleRepeatPasswordChange} required={true}/>
+                                      heading={"Repeat password:"} handleChange={handleRepeatPasswordChange} required/>
                         <div id={"loginformbodybutton"}>
                             <button>
                                 Register
