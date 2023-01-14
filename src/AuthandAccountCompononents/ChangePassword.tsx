@@ -53,10 +53,10 @@ export default function ChangePassword() {
           <h2>Enter new password</h2>
           <LoginForm id={"loginform"} onSubmit={handleSubmit}>
             <InputElement type={"password"} name={"password"} value={password} heading={"Password"}
-                          handleChange={handlePasswordChange} required={true}/>
+                          handleChange={handlePasswordChange} required/>
             <InputElement type={"password"} name={"confirmpassword"} value={confirmPassword} heading={"Confirm password"}
-                          handleChange={handleConfirmPasswordChange} required={true}/>
-            <GenericButton type={"submit"} onClick={() => {}} form={"loginform"} variantMain={true}>
+                          handleChange={handleConfirmPasswordChange} required/>
+            <GenericButton type={"submit"} onClick={() => {}} form={"loginform"} variantMain>
               Login
             </GenericButton>
             <GenericButton type={"button"} form={""} variantMain={false} onClick={() => navigate(-2)}>

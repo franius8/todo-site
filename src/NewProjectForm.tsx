@@ -47,8 +47,8 @@ export default function NewProjectForm() {
         return (
             <StandardForm close={() => dispatch(toggleProjectForm())} heading={"Add a new project"} onSubmit={handleSubmit} submitText={"Add"} id={"projectformdiv"}>
                 <>
-                    <TextInputElement name={"projectname"} value={projectName} heading={"Name:"} handleChange={handleInputChange} required={true}/>
-                    <DateInputElement name={"projectdate"} value={projectDate} heading={"Due date:"} handleChange={handleInputChange} required={true}/>
+                    <TextInputElement name={"projectname"} value={projectName} heading={"Name:"} handleChange={handleInputChange} required/>
+                    <DateInputElement name={"projectdate"} value={projectDate} heading={"Due date:"} handleChange={handleInputChange} required/>
                     <RadioInputElement name={"projectpriority"} values={priorities} heading={"Priority"} handleChange={handleInputChange}/>
                 </>
             </StandardForm>

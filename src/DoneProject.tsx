@@ -90,7 +90,7 @@ export default function DoneProject(props: { project: ProjectInterface,
                             <ProjectContentForm id="editform" onSubmit={handleSubmit}>
                                 <div className="inputdiv">
                                     <label htmlFor="projectnameedit">Name:</label>
-                                    <input type="text" name="projectnameedit" id="projectnameedit" required={true}
+                                    <input type="text" name="projectnameedit" id="projectnameedit" required
                                            onChange={handleNameChange} value={name}/>
                                 </div>
                             </ProjectContentForm>

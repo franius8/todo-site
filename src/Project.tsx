@@ -102,12 +102,12 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                             <ProjectContentForm id="editform" onSubmit={handleSubmit}>
                                 <div className="inputdiv">
                                     <label htmlFor="projectnameedit">Name:</label>
-                                    <input type="text" name="projectnameedit" id="projectnameedit" required={true}
+                                    <input type="text" name="projectnameedit" id="projectnameedit" required
                                            onChange={handleNameChange} value={name}/>
                                 </div>
                                 <div className="inputdiv">
                                     <label htmlFor="projectdateedit">Due date:</label>
-                                    <input type="date" name="projectdateedit" id="projectdateedit" required={true}
+                                    <input type="date" name="projectdateedit" id="projectdateedit" required
                                            onChange={handleDateChange} value={date}/>
                                 </div>
                                 <div className="inputdiv">

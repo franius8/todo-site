@@ -49,8 +49,8 @@ export default function Reauthenticate() {
                     <h2>Enter password</h2>
                     <LoginForm id={"loginform"} onSubmit={handleSubmit}>
                         <InputElement type={"password"} name={"password"} value={password} heading={"Password"}
-                                      handleChange={handlePasswordChange} required={true}/>
-                        <GenericButton type={"submit"} onClick={() => {}} form={"loginform"} variantMain={true}>
+                                      handleChange={handlePasswordChange} required/>
+                        <GenericButton type={"submit"} onClick={() => {}} form={"loginform"} variantMain>
                             Login
                         </GenericButton>
                         <GenericButton type={"button"} form={""} variantMain={false} onClick={() => navigate(-1)}>
