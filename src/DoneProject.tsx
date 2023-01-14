@@ -60,8 +60,8 @@ export default function DoneProject(props: { project: ProjectInterface,
                         </div>
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
-                            <ElementDate date={date} done={true} />
-                            <ElementPriority priority={"Done"} priorityColor={"gray"} done={true} />
+                            <ElementDate date={date} done />
+                            <ElementPriority priority={"Done"} priorityColor={"gray"} done />
                         </div>
                         <ElementButtonDiv toggleEdit={toggleEdit} delete={handleDeleteProject} />
                     </div>
