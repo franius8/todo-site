@@ -16,6 +16,7 @@ const initialState: ContentState = {
     doneProjectList: [],
 }
 
+// Helper function to display ToDos or projects sorted by date
 const sortByDate = (array: ToDoInterface[] | ProjectInterface[]) => {
        return [...array].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 }
