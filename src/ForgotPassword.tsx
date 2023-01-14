@@ -29,7 +29,7 @@ export default function ForgotPassword() {
             <>
                 <h2>Forgot Password</h2>
                 <form onSubmit={sendForgotPasswordLink}>
-                    <InputElement type={"email"} name={"email"} value={email} heading={"Email"} handleChange={handleEmailChange} required={true}/>
+                    <InputElement type={"email"} name={"email"} value={email} heading={"Email"} handleChange={handleEmailChange} required/>
                     <button>Send link</button>
                 </form>
             </>

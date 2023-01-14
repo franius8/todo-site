@@ -94,13 +94,13 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
                     <div className="duringedit">
                         <form className="todocontent" id="editform" onSubmit={handleSubmit}>
                             <div className="inputdiv"><label htmlFor="todotitleedit">Title:</label>
-                                <input type="text" name="todotitleedit" id="todotitleedit" required={true} value={heading} onChange={handleInputChange}/>
+                                <input type="text" name="todotitleedit" id="todotitleedit" required value={heading} onChange={handleInputChange}/>
                             </div>
                             <div className="inputdiv"><label htmlFor="todocontentedit">Content (optional):</label>
                                 <input type="text" name="todocontentedit" id="todocontentedit" value={text} onChange={handleInputChange}/>
                             </div>
                             <div className="inputdiv"><label htmlFor="tododateedit">Due date:</label>
-                                <input type="date" name="tododateedit" id="tododateedit" required={true} value={date} onChange={handleInputChange}/>
+                                <input type="date" name="tododateedit" id="tododateedit" required value={date} onChange={handleInputChange}/>
                             </div>
                             <div className="inputdiv"><label htmlFor="radiocontainer">Priority:</label>
                                 <div className="radiocontainer">
