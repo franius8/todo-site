@@ -1,13 +1,16 @@
 import React from "react";
+import {FaEdit, FaTrash} from "react-icons/all";
 
 // A generiv div for ToDos and project buttons
 export default function ElementButtonDiv(props: { toggleEdit: () => void, delete: () => void }) {
     return (
         <div className="buttondiv">
-            <button className="editbutton" onClick={props.toggleEdit}>
-                <span className="material-symbols-outlined">edit</span></button>
-            <button className="deletebutton" onClick={props.delete}>
-                <span className="material-symbols-outlined">delete</span></button>
+            <button className="p-2 flex justify-center bg-gray-300 rounded-lg hover:bg-gray-400 hover:shadow-xl"
+                    onClick={props.toggleEdit}>
+               <FaEdit/></button>
+            <button className="p-2 flex justify-center bg-red-600 rounded-lg text-white hover:bg-red-700 hover:shadow-xl"
+                    onClick={props.delete}>
+                <FaTrash /></button>
         </div>
     )
 }

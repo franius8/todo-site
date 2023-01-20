@@ -16,7 +16,12 @@ import InfoErrorModal from "./Modals/InfoErrorModal";
 // Component containing the route switch and global modals
 export default function App() {
     const dispatch = useDispatch();
-    const contentClass = useSelector((state: StateInterface) => state.modal.contentClass);
+    const toDoFormOVisible = useSelector((state: StateInterface) => state.modal.toDoFormVisible);
+    const projectFormVisible = useSelector((state: StateInterface) => state.modal.projectFormVisible);
+    const projectToDoFormVisible = useSelector((state: StateInterface) => state.modal.projectToDoFormVisible);
+    const modalVisible= useSelector((state: StateInterface) => state.modal.modalVisible);
+
+    const contentClass = (toDoFormOVisible || projectFormVisible || projectToDoFormVisible || modalVisible) ? "blurred" : "";
 
     useEffect(() => {
         
@@ -61,9 +66,9 @@ export default function App() {
             } else {
                 
                 rawToDoAry = JSON.parse(localStorage.getItem("todoary") || "[]");
-                rawDoneToDoAry = JSON.parse(localStorage.getItem("doneary") || "[]");
+                rawDoneToDoAry = JSON.parse(localStorage.getItem("donetodoary") || "[]");
                 rawProjectAry = JSON.parse(localStorage.getItem("projectary") || "[]");
-                dispatch(loadInitialState({ toDos: convertRawToDos(rawToDoAry), doneToDos: convertRawToDos(rawToDoAry),
+                dispatch(loadInitialState({ toDos: convertRawToDos(rawToDoAry), doneToDos: convertRawToDos(rawDoneToDoAry),
                     projects: convertRawProjects(rawProjectAry), doneProjects: convertRawProjects(rawProjectAry)}))
             }
         });

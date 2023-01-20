@@ -5,6 +5,8 @@ import ElementButtonDiv from "./ElementButtonDiv";
 import EditFormButtonDiv from "./EditFormButtonDiv";
 import {ToDoInterface} from "./Modules/d";
 import { priorityGetter } from "./Modules/priorityGetter";
+import { FaCheck} from "react-icons/fa";
+import Checkbox from "./Checkbox";
 
 // Component for displaying ToDos waiting to be done
 export default function ToDoElement(props: { toDo: ToDoInterface,
@@ -68,12 +70,10 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
 
     if (!duringEdit) {
         return (
-            <div className="todo">
+            <div className="todo shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
                 <div className="labelstripe" style={{backgroundColor: priorityColor}} />
                 <div className="middlediv">
-                    <div className="checkboxdiv">
-                        <div className="checkbox" onClick={moveToDone} role="button">✓</div>
-                    </div>
+                    <Checkbox onClick={moveToDone}/>
                     <div className="todocontent">
                         <div className="todoheading">{heading}</div>
                         <div className="todotext">{text}</div>

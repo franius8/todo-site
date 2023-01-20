@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import StandardForm from "./FormComponents/StandardForm";
-import "./stylesheets/ProjectToDoForm.css"
+import "./Stylesheets/ProjectToDoForm.css";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectToDoForm } from "./Redux/modalSlice";
 import {setProjects, setToDos} from "./Redux/contentSlice";

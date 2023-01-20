@@ -4,6 +4,7 @@ import {auth} from "../Modules/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import LogoDiv from "../LogoDiv";
+import GenericLoneDiv from "../GenericLoneDiv";
 
 
 // Function for displaying the account page
@@ -37,13 +38,10 @@ export default function Account() {
     }
 
     return (
-        <div id={"accountdiv"}>
-            <LogoDiv />
+        <GenericLoneDiv heading={"Account info"}>
+            <>
             <div className={"accountcontentdiv"}>
                 <div className={"accountitemdiv"}>
-                    <div className={"accountitemtitlediv"}>
-                        <h2>Account info</h2>
-                    </div>
                     <div className={"accountitemcontentdiv"}>
                         <div className={"accountitemcontentitemdiv"}>
                             <div className={"accountitemcontentitemtitlediv"}>
@@ -64,7 +62,7 @@ export default function Account() {
                     </div>
                 </div>
                 <div className={"accountitemdiv"}>
-                    <div className={"accountitemtitlediv"}>
+                    <div className={"font-bold text-lg"}>
                         <h2>Actions</h2>
                     </div>
                     <div  className={"accountbuttondiv"}>
@@ -75,6 +73,7 @@ export default function Account() {
                     </div>
                 </div>
             </div>
-        </div>
+            </>
+        </GenericLoneDiv>
     );
 }

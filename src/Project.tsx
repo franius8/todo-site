@@ -8,6 +8,7 @@ import ProjectToDoContainer from "./ProjectToDoContainer";
 import styled from "styled-components";
 import {priorityGetter} from "./Modules/priorityGetter";
 import ElementDate from "./ElementDate";
+import Checkbox from "./Checkbox";
 
 const ProjectContentForm = styled.form`
     display: flex;
@@ -66,13 +67,11 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
 
     if (!duringEdit) {
         return (
-            <div className="projectcontainer">
+            <div className="projectcontainer shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
                 <div className={projectClass}>
                     <div className="labelstripe" style={{backgroundColor: priorityColor}} />
                     <div className="middlediv">
-                        <div className="checkboxdiv">
-                            <div className="checkbox" onClick={moveToDone} role="button">✓</div>
-                        </div>
+                        <Checkbox onClick={moveToDone} />
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
                             <ElementDate date={date} done={false} />

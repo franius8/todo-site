@@ -9,9 +9,6 @@ const MainDiv = styled.div`
       align-items: center;
       justify-content: center;
       gap: 1rem;
-      border: 3px solid var(--light-gray);
-      padding: 1rem 2rem;
-      border-radius: 1rem;
       h2 {
         margin: 0;
       }
@@ -21,7 +18,7 @@ const MainDiv = styled.div`
 // A generic component for use in single-div pages with a logo and a title
 export default function GenericLoneDiv(props: { children: JSX.Element, heading: string }) {
     return (
-        <MainDiv>
+        <MainDiv className={"border-2 border-gray-200 rounded-xl shadow-xl p-12"}>
             <LogoDiv />
             <h2>{props.heading}</h2>
             {props.children}

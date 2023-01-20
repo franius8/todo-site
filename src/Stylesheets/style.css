@@ -93,9 +93,6 @@ span {
 .todo, .project, .donetodo, .projecttodo {
     display: grid;
     gap: 0.5rem;
-    border: 1px solid var(--light-gray);
-    border-radius: 1rem;
-    box-shadow: 3px 3px 3px rgb(150, 150, 150);
 }
 
 .projecttodo .todocontent {
@@ -125,12 +122,6 @@ span {
     grid-template: 1fr / 3fr 50fr 6fr;
     padding: 0.75rem 0;
 }
-
-.todo:hover, .project:hover {
-    background-color: var(--lighter-gray);
-    border-collapse: collapse;
-}
-
 .labelstripe {
     border-radius: 1rem 0 0 1rem;
 }
@@ -197,12 +188,6 @@ span {
     gap: 0.5rem;
 }
 
-.prioritycircle {
-    border-radius: 50%;
-    height: 0.6rem;
-    width: 0.6rem;
-}
-
 .buttondiv {
     display: flex;
     flex-direction: column;
@@ -249,38 +234,6 @@ span {
     color: red;
     font-weight: bold;
 }
-
-.checkbox {
-    border: 3px solid var(--main-color);
-    color: var(--main-color);
-    border-radius: 50%;
-    width: 2rem;
-    height: 2rem;
-    line-height: 2rem;
-    font-size: 1.5rem;
-    text-align: center;
-    font-family: 'Sansita Swashed', cursive;
-}
-
-.donecheckbox {
-    border: 3px solid red;
-    color: red;
-    line-height: 1.5rem;
-    font-size: 2rem;
-}
-
-.checkbox:hover {
-    background-color: var(--main-color);
-    color: var(--light-gray);
-    cursor: pointer;
-}
-
-.donecheckbox:hover {
-    background-color: red;
-    color: var(--light-gray);
-    cursor: pointer;
-}
-
 #projectformdiv {
     width: 30rem;
 }

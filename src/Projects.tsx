@@ -85,8 +85,9 @@ export default function Projects() {
         return (
             <>
                 <Header active={"projects"}/>
-                <div id="newprojectbuttondiv">
-                    <button id="newprojectbutton" onClick={() => dispatch(toggleProjectForm())}>Add a new project</button>
+                <div className={"flex justify-center mt-4"}>
+                    <button className={"bg-green-600 border-green-600 text-white rounded-xl p-4 font-bold border-4 hover:bg-white " +
+                        " hover:text-green-600 hover:shadow-xl transition-all"} onClick={() => dispatch(toggleProjectForm())}>Add a new project</button>
                 </div>
                 <div id={"projectdiv"}>
                     {projects.map((project) => <Project key={project.iD} project={project} openToDoForm={openProjectToDoForm}

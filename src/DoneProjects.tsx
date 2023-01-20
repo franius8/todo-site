@@ -1,14 +1,6 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import DoneProject from "./DoneProject";
-
-const Header = styled.h2`
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  cursor: pointer;
-`
 
 // Component for displaying the done projects
 export default function DoneProjects(props: { doneProjects: ProjectInterface[],
@@ -24,16 +16,16 @@ export default function DoneProjects(props: { doneProjects: ProjectInterface[],
 
     return (
         <div id={"doneprojects"}>
-            <Header onClick={toggleVisibility}>Done Projects
+            <div className={"cursor-pointer flex items-center justify-center font-bold"} onClick={toggleVisibility}>Done Projects
                 <span className={`material-symbols-outlined ${doneProjectsVisible ? "" : "rotate"}`}>expand_more</span>
-            </Header>
+            </div>
             {doneProjectsVisible &&
                 (props.doneProjects.length > 0 ?
-                <div id={"doneprojectscontainer"}>
+                <div id={"doneprojectscontainer"} className={"p-4"}>
                 {props.doneProjects.map((project) => <DoneProject key={project.iD} project={project} openToDoForm={props.openToDoForm}
                                                                   deleteProject={props.deleteProject} modifyProject={props.modifyProject} revertProject = {props.revertProject}/>)}
                 </div> :
-                <div id={"noprojects"}>No projects marked as done yet</div>)
+                <div id={"noprojects"} className={"p-4"}>No projects marked as done yet</div>)
             }
         </div>
     )
