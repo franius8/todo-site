@@ -4,6 +4,7 @@ import ElementDate from "./ElementDate";
 import ElementPriority from "./ElementPriority";
 import {ToDoInterface} from "./Modules/d";
 import DoneCheckbox from "./DoneCheckbox";
+import Labelstripe from "./Labelstripe";
 
 // Component for displaying done ToDo elements
 export default function DoneToDoElement(props: { toDo: ToDoInterface, deleteToDo: (toDo:ToDoInterface) => void,
@@ -32,7 +33,7 @@ revertDone: (toDo: ToDoInterface) => void} ) {
 
     return (
         <div className="todo shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
-            <div className="labelstripe" style={{backgroundColor: "gray"}} />
+            <Labelstripe priority={"done"} />
             <div className="middlediv">
                 <DoneCheckbox onClick={revertDone} />
                 <div className="todocontent">

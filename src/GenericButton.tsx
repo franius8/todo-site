@@ -1,25 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-const GenericButtonElement = styled.button`
-  border-radius: 1rem;
-  border: 5px solid var(--main-color);
-  background-color: var(--main-color);
-  padding: 0.5rem 1rem;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: bold;
-  color: white;
-  align-self: center;
-  justify-self: center;
-&:hover {
-    cursor: pointer;
-    background-color: white;
-    color: var(--main-color);
-    border: 5px solid var(--main-color);
-}
-`
-
 const SecondaryButtonElement = styled.button`
   border-radius: 1rem;
   border: 5px solid var(--main-color);
@@ -43,15 +24,20 @@ export default function GenericButton(props: {variantMain: boolean, type: "butto
     onClick: () => void | null}) {
     if (props.variantMain) {
         return (
-            <GenericButtonElement type={props.type} form={props.form} onClick={props.onClick}>
+            <button className={"py-1 px-6 font-bold self-center justify-self-center border-green-600 border-4 cursor-pointer " +
+                "text-white text-lg rounded-xl bg-green-600 transition-all hover:shadow-xl" +
+                " hover:bg-white hover:text-green-600"}
+                                  type={props.type} form={props.form} onClick={props.onClick}>
                 {props.children}
-            </GenericButtonElement>
+            </button>
         )
     } else {
         return (
-            <SecondaryButtonElement type={props.type} form={props.form} onClick={props.onClick}>
+            <button className={"py-1 px-6 font-bold self-center justify-self-center border-green-600 border-4 cursor-pointer " +
+                "text-green-600 text-lg rounded-xl bg-white transition-all hover:shadow-xl hover:bg-green-600 hover:text-white"}
+                    type={props.type} form={props.form} onClick={props.onClick}>
                 {props.children}
-            </SecondaryButtonElement>
+            </button>
         )
     }
 }

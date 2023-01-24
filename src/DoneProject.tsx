@@ -6,6 +6,7 @@ import ElementPriority from "./ElementPriority";
 import EditFormButtonDiv from "./EditFormButtonDiv";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import styled from "styled-components";
+import DoneCheckbox from "./DoneCheckbox";
 
 const ProjectContentForm = styled.form`
     display: flex;
@@ -52,13 +53,11 @@ export default function DoneProject(props: { project: ProjectInterface,
 
     if (!duringEdit) {
         return (
-            <div className="projectcontainer">
+            <div className="projectcontainer shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
                 <div className={"project"}>
-                    <div className="labelstripe" style={{backgroundColor: "grey"}} />
+                    <div className="labelstripe bg-gray-500 rounded-l-xl"/>
                     <div className="middlediv">
-                        <div className="checkboxdiv">
-                            <div className="checkbox donecheckbox" onClick={revertProject}>↺</div>
-                        </div>
+                        <DoneCheckbox onClick={revertProject}/>
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
                             <ElementDate date={date} done />

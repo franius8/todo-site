@@ -1,5 +1,6 @@
 import React from "react";
 import GenericModal from "../Modals/GenericModal";
+import GenericButton from "../GenericButton";
 
 // Generic component for form elements
 export default function StandardForm(props: { close: () => void, heading: string, children: JSX.Element,
@@ -9,9 +10,9 @@ export default function StandardForm(props: { close: () => void, heading: string
         <GenericModal id={props.id} close={props.close}>
             <>
                 <h2>{props.heading}</h2>
-                <form onSubmit={props.onSubmit}>
+                <form id={"newtodoform"} onSubmit={props.onSubmit}>
                     {props.children}
-                    <button type="submit">{props.submitText}</button>
+                    <GenericButton type="submit" form={"newtodoform"} onClick={() => {}} variantMain={true}>{props.submitText}</GenericButton>
                 </form>
             </>
         </GenericModal>

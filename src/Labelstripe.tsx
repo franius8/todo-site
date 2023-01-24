@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-// Component for displaying a box with the priority of a project or to-do
-export default function ElementPriority(props: { priority: string, priorityColor: string, done: boolean }) {
+export default function Labelstripe(props: { priority: string }) {
     const [color, setColor] = useState("")
 
     useEffect(() => {
@@ -27,9 +26,6 @@ export default function ElementPriority(props: { priority: string, priorityColor
     }, [props.priority])
 
     return (
-        <div className="todopriority">
-            <div className={`prioritycircle rounded-full w-3 h-3 ${color}`} />
-            <div>{props.priority} {props.done ? "" : "priority"}</div>
-        </div>
+        <div className={`rounded-l-xl ${color}`}/>
     )
 }

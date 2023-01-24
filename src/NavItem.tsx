@@ -6,7 +6,7 @@ export default function NavItem(props: { text: string, icon: string, active: str
     const capitalizedLinkName = props.text.charAt(0).toUpperCase() + props.text.slice(1);
     const id = `${props.text}link`;
     const className = props.text === props.active ? "navitem bg-gray-200 transition-all first-of-type:rounded-l-xl " +
-        "last-of-type:rounded-r-xl p-4 flex items-center justify-center gap-2" :
+        "last-of-type:rounded-r-xl px-8 py-4 flex items-center justify-center gap-2" :
         "navitem bg-white transition-all first-of-type:rounded-l-xl last-of-type:rounded-r-xl p-4 " +
         "flex items-center justify-center gap-2 hover:bg-gray-200";
     const navigate = useNavigate();

@@ -9,6 +9,7 @@ import styled from "styled-components";
 import {priorityGetter} from "./Modules/priorityGetter";
 import ElementDate from "./ElementDate";
 import Checkbox from "./Checkbox";
+import Labelstripe from "./Labelstripe";
 
 const ProjectContentForm = styled.form`
     display: flex;
@@ -35,7 +36,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
     // Function used for toggling the visibility of the ToDo container below the project
     const toggleToDos = () => {
         setProjectToDoVisible(!projectToDoVisible);
-        const newProjectClass = projectClass === "project" ? "project expanded" : "project";
+        const newProjectClass = projectClass === "project" ? "project expanded [&>div]:rounded-tl-xl rounded-bl-none" : "project";
         setProjectClass(newProjectClass);
     }
 
@@ -69,7 +70,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
         return (
             <div className="projectcontainer shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
                 <div className={projectClass}>
-                    <div className="labelstripe" style={{backgroundColor: priorityColor}} />
+                    <Labelstripe priority={priority} />
                     <div className="middlediv">
                         <Checkbox onClick={moveToDone} />
                         <div className="projectcontent">

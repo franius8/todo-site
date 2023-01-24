@@ -7,6 +7,7 @@ import {ToDoInterface} from "./Modules/d";
 import { priorityGetter } from "./Modules/priorityGetter";
 import { FaCheck} from "react-icons/fa";
 import Checkbox from "./Checkbox";
+import Labelstripe from "./Labelstripe";
 
 // Component for displaying ToDos waiting to be done
 export default function ToDoElement(props: { toDo: ToDoInterface,
@@ -71,7 +72,7 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
     if (!duringEdit) {
         return (
             <div className="todo shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
-                <div className="labelstripe" style={{backgroundColor: priorityColor}} />
+                <Labelstripe priority={props.toDo.priority} />
                 <div className="middlediv">
                     <Checkbox onClick={moveToDone}/>
                     <div className="todocontent">
@@ -87,7 +88,7 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
     } else {
         return (
             <div className="todo">
-                <div className="labelstripe" style={{backgroundColor: priorityColor}} />
+                <Labelstripe priority={props.toDo.priority} />
                 <div className="middlediv">
                     <div className="checkboxdiv">
                         <div className="checkbox">✓</div>
