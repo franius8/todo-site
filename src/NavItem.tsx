@@ -2,7 +2,7 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 
 // Component for a single part of the top menu navigation bar
-export default function NavItem(props: { text: string, icon: string, active: string }) {
+export default function NavItem(props: { text: string, icon: JSX.Element, active: string }) {
     const capitalizedLinkName = props.text.charAt(0).toUpperCase() + props.text.slice(1);
     const id = `${props.text}link`;
     const className = props.text === props.active ? "navitem bg-gray-200 transition-all first-of-type:rounded-l-xl " +

@@ -1,27 +1,13 @@
 import React from "react";
-import styled from "styled-components";
 import LogoDiv from "./LogoDiv";
-
-const MainDiv = styled.div`
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      h2 {
-        margin: 0;
-      }
-    `;
-
 
 // A generic component for use in single-div pages with a logo and a title
 export default function GenericLoneDiv(props: { children: JSX.Element, heading: string }) {
     return (
-        <MainDiv className={"border-2 border-gray-200 rounded-xl shadow-xl p-12"}>
+        <div className={"gap-4 border-2 border-gray-200 rounded-xl shadow-xl p-10 m-auto flex flex-col justify-center items-center"}>
             <LogoDiv />
-            <h2>{props.heading}</h2>
+            <h2 className={"font-bold"}>{props.heading}</h2>
             {props.children}
-        </MainDiv>
+        </div>
     )
 }

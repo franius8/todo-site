@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import GenericLoneDiv from "../GenericLoneDiv";
 import TextInputElement from "../FormComponents/TextInputElement";
 import InputElement from "../FormComponents/InputElement";
+import GenericButton from "../GenericButton";
 
 // Component for registering a new user
 export default function Register() {
@@ -77,9 +78,9 @@ export default function Register() {
                 <InputElement type={"password"} name={"repeatpassword"} value={repeatPassword}
                               heading={"Repeat password"} handleChange={handleRepeatPasswordChange} required/>
                 <div id={"loginformbodybutton"}>
-                    <button>
+                    <GenericButton form={""} type={"submit"} variantMain={true} onClick={() => {}}>
                         Register
-                    </button>
+                    </GenericButton>
                 </div>
             </form>
         </GenericLoneDiv>

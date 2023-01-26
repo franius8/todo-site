@@ -6,13 +6,16 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Modules/firebase";
 import { useDispatch } from "react-redux";
 import { toggleToDoForm } from "./Redux/modalSlice";
-import {FaPlus, MdAccountCircle} from "react-icons/all";
+import {FaHome, FaPlus, FaProjectDiagram, MdAccountCircle} from "react-icons/all";
+import {FaCheck} from "react-icons/fa";
 
 // Component for the header of the app
 export default function Header(props: { active: string }) {
     const dispatch = useDispatch();
 
-    const navitems = [["home", "house"], ["done", "done"], ["projects", "assignment"]];
+    type iconTuple = [string, JSX.Element];
+
+    const navitems: iconTuple[] = [["home", <FaHome/>], ["done", <FaCheck/>], ["projects", <FaProjectDiagram/>]];
     const navigate = useNavigate();
 
     // Function navigating to the login or account page

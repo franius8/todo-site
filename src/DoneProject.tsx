@@ -7,6 +7,7 @@ import EditFormButtonDiv from "./EditFormButtonDiv";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import styled from "styled-components";
 import DoneCheckbox from "./DoneCheckbox";
+import {MdOutlineExpandLess} from "react-icons/all";
 
 const ProjectContentForm = styled.form`
     display: flex;
@@ -65,9 +66,8 @@ export default function DoneProject(props: { project: ProjectInterface,
                         </div>
                         <ElementButtonDiv toggleEdit={toggleEdit} delete={handleDeleteProject} />
                     </div>
-                    <div className="expandbutton" role="button" onClick={toggleToDos}>
-                    <span
-                        className={`material-symbols-outlined ${projectToDoVisible ? "rotate" : ""}`}>expand_less</span>
+                    <div className="expandbutton" onClick={toggleToDos} role="button">
+                        <MdOutlineExpandLess className={`text-xl transition-all ${projectToDoVisible ? "rotate" : ""}`}/>
                     </div>
                 </div>
                 <ProjectToDoContainer visible={projectToDoVisible} project={props.project}
@@ -95,7 +95,7 @@ export default function DoneProject(props: { project: ProjectInterface,
                         <EditFormButtonDiv toggleEdit={toggleEdit} />
                     </div>
                     <div className="expandbutton" onClick={toggleToDos} role="button">
-                        <span className="material-symbols-outlined">{projectToDoVisible ? "expand_more" : "expand_less"}</span>
+                        <MdOutlineExpandLess className={`text-xl transition-all ${projectToDoVisible ? "rotate" : ""}`}/>
                     </div>
                 </div>
                 <ProjectToDoContainer visible={projectToDoVisible} project={props.project}

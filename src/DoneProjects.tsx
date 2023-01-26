@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {ProjectInterface, ToDoInterface} from "./Modules/d";
 import DoneProject from "./DoneProject";
+import {MdOutlineExpandLess} from "react-icons/all";
 
 // Component for displaying the done projects
 export default function DoneProjects(props: { doneProjects: ProjectInterface[],
@@ -17,11 +18,13 @@ export default function DoneProjects(props: { doneProjects: ProjectInterface[],
     return (
         <div id={"doneprojects"}>
             <div className={"cursor-pointer flex items-center justify-center font-bold"} onClick={toggleVisibility}>Done Projects
-                <span className={`material-symbols-outlined ${doneProjectsVisible ? "" : "rotate"}`}>expand_more</span>
+                <div className="expandbutton" onClick={() => {}} role="button">
+                    <MdOutlineExpandLess className={`text-xl transition-all ${doneProjectsVisible ? "rotate" : ""}`}/>
+                </div>
             </div>
             {doneProjectsVisible &&
                 (props.doneProjects.length > 0 ?
-                <div id={"doneprojectscontainer"} className={"p-4"}>
+                <div id={"doneprojectscontainer"} className={"p-4 gap-4 flex-col flex"}>
                 {props.doneProjects.map((project) => <DoneProject key={project.iD} project={project} openToDoForm={props.openToDoForm}
                                                                   deleteProject={props.deleteProject} modifyProject={props.modifyProject} revertProject = {props.revertProject}/>)}
                 </div> :

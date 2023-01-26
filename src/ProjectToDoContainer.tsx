@@ -4,6 +4,7 @@ import dateConverter from "./Modules/DateConverter";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import {priorityGetter} from "./Modules/priorityGetter";
+import ElementDate from "./ElementDate";
 
 const ProjectToDoContainerDiv = styled.div`
   display: flex;
@@ -58,7 +59,7 @@ export default function ProjectToDoContainer(props: { visible: boolean, openToDo
                                         <div className="todoheading">{heading}</div>
                                         <div className="todotext">{text}</div>
                                         <div className="tododate">
-                                            <div><span className="material-symbols-outlined">calendar_month</span></div>
+                                            <ElementDate done={false} date={date} />
                                             <div>{date} ({dateConverter.getDayDifference(new Date(date))} days left)</div>
                                         </div>
                                         <div className="todopriority">

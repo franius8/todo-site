@@ -10,6 +10,7 @@ import {priorityGetter} from "./Modules/priorityGetter";
 import ElementDate from "./ElementDate";
 import Checkbox from "./Checkbox";
 import Labelstripe from "./Labelstripe";
+import {MdOutlineExpandLess} from "react-icons/all";
 
 const ProjectContentForm = styled.form`
     display: flex;
@@ -36,7 +37,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
     // Function used for toggling the visibility of the ToDo container below the project
     const toggleToDos = () => {
         setProjectToDoVisible(!projectToDoVisible);
-        const newProjectClass = projectClass === "project" ? "project expanded [&>div]:rounded-tl-xl rounded-bl-none" : "project";
+        const newProjectClass = projectClass === "project" ? "project expanded [&>div]:rounded-tl-xl [&>div]:rounded-bl-none" : "project";
         setProjectClass(newProjectClass);
     }
 
@@ -81,7 +82,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         <ElementButtonDiv delete={handleDeleteProject} toggleEdit={toggleEdit} />
                     </div>
                     <div className="expandbutton" onClick={toggleToDos} role="button">
-                        <span className={`material-symbols-outlined ${projectToDoVisible ? "rotate" : ""}`}>expand_less</span>
+                        <MdOutlineExpandLess className={`text-xl transition-all ${projectToDoVisible ? "rotate" : ""}`}/>
                     </div>
                 </div>
                 <ProjectToDoContainer visible={projectToDoVisible} project={props.project}
@@ -125,7 +126,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         <EditFormButtonDiv toggleEdit={toggleEdit} />
                     </div>
                     <div className="expandbutton" onClick={toggleToDos} role="button">
-                        <span className="material-symbols-outlined">{projectToDoVisible ? "expand_more" : "expand_less"}</span>
+                        <MdOutlineExpandLess className={`text-xl transition-all ${projectToDoVisible ? "rotate" : ""}`}/>
                     </div>
                 </div>
                 <ProjectToDoContainer visible={projectToDoVisible} project={props.project}

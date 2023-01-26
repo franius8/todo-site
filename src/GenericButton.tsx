@@ -21,13 +21,31 @@ const SecondaryButtonElement = styled.button`
 
 // A generic button used in the app
 export default function GenericButton(props: {variantMain: boolean, type: "button" | "submit", form: string, children: React.ReactNode,
-    onClick: () => void | null}) {
+    onClick: (() => void) | undefined}) {
+
+    interface ButtonProps {
+        className: string,
+        type: "button" | "submit",
+        form: string,
+        onClick?: (() => void)
+    }
+
+    const buttonProps: ButtonProps = {
+        className: "py-1 px-6 font-bold self-center justify-self-center border-green-600 border-4 cursor-pointer " +
+                    "text-white text-lg rounded-xl bg-green-600 transition-all hover:shadow-xl" +
+                " hover:bg-white hover:text-green-600",
+        type: props.type,
+        form: props.form
+    }
+
+    if (props.onClick) {
+        console.log("test0");
+        buttonProps.onClick = props.onClick
+    }
+
     if (props.variantMain) {
         return (
-            <button className={"py-1 px-6 font-bold self-center justify-self-center border-green-600 border-4 cursor-pointer " +
-                "text-white text-lg rounded-xl bg-green-600 transition-all hover:shadow-xl" +
-                " hover:bg-white hover:text-green-600"}
-                                  type={props.type} form={props.form} onClick={props.onClick}>
+            <button {...buttonProps}>
                 {props.children}
             </button>
         )
@@ -35,7 +53,7 @@ export default function GenericButton(props: {variantMain: boolean, type: "butto
         return (
             <button className={"py-1 px-6 font-bold self-center justify-self-center border-green-600 border-4 cursor-pointer " +
                 "text-green-600 text-lg rounded-xl bg-white transition-all hover:shadow-xl hover:bg-green-600 hover:text-white"}
-                    type={props.type} form={props.form} onClick={props.onClick}>
+                    type={props.type} form={props.form} onClick={onclick !== undefined ? props.onClick : undefined}>
                 {props.children}
             </button>
         )

@@ -46,7 +46,8 @@ export default function Login() {
     // Function for handling the login form submission
     const login = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
+        console.log(email.valueOf() + password.valueOf())
+        signInWithEmailAndPassword(auth, email.valueOf(), password.valueOf())
             .then((userCredential) => {
                 // Signed in
 
@@ -55,8 +56,8 @@ export default function Login() {
             })
             .catch((error) => {
 
-
-                
+            console.log("login error")
+            console.log(error)
             });
     }
 
@@ -86,7 +87,7 @@ export default function Login() {
         return (
             <GenericLoneDiv heading={"Login"}>
                 <>
-                    <LoginFormDiv>
+                    <LoginFormDiv className={"py-2"}>
                         <LoginForm id={"loginform"} onSubmit={login}>
                             <InputElement type={"email"} name={"email"} value={email} heading={"Email"}
                                           handleChange={handleEmailChange} required/>
@@ -94,11 +95,11 @@ export default function Login() {
                                           handleChange={handlePasswordChange} required/>
                         </LoginForm>
                     </LoginFormDiv>
-                    <ButtonDiv>
-                        <GenericButton variantMain={false} type={"button"} form={""} onClick={toRegister}>
+                    <ButtonDiv className={"py-2"}>
+                        <GenericButton variantMain={false} type={"button"} form={""} onClick={undefined}>
                             Register
                         </GenericButton>
-                        <GenericButton variantMain type={"submit"} form={"loginform"} onClick={() => {/* nothing */}}>
+                        <GenericButton variantMain type={"submit"} form={"loginform"} onClick={undefined}>
                             Login
                         </GenericButton>
                     </ButtonDiv>

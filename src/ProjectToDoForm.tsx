@@ -5,6 +5,7 @@ import "./Stylesheets/ProjectToDoForm.css";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleProjectToDoForm } from "./Redux/modalSlice";
 import {setProjects, setToDos} from "./Redux/contentSlice";
+import {IoCalendarOutline} from "react-icons/all";
 
 // Component displaying a form for adding new ToDos to a Project
 export default function ProjectToDoForm(props: { project: ProjectInterface | null } ) {
@@ -81,7 +82,7 @@ export default function ProjectToDoForm(props: { project: ProjectInterface | nul
                                     <label htmlFor={iD.toString()}>
                                         <div>{heading}</div>
                                         <div className="formtododate">
-                                            <span className="material-symbols-outlined">calendar_month</span>
+                                            <div className={"text-xl"}><IoCalendarOutline/></div>
                                             {date}
                                         </div>
                                     </label>

@@ -1,13 +1,12 @@
 import React, {useState, FormEvent, ChangeEvent, useEffect} from "react";
 import ElementDate from "./ElementDate";
 import ElementPriority from "./ElementPriority";
-import ElementButtonDiv from "./ElementButtonDiv";
 import EditFormButtonDiv from "./EditFormButtonDiv";
 import {ToDoInterface} from "./Modules/d";
 import { priorityGetter } from "./Modules/priorityGetter";
-import { FaCheck} from "react-icons/fa";
 import Checkbox from "./Checkbox";
 import Labelstripe from "./Labelstripe";
+import GenericItemContainer from "./GenericItemContainer";
 
 // Component for displaying ToDos waiting to be done
 export default function ToDoElement(props: { toDo: ToDoInterface,
@@ -71,28 +70,21 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
 
     if (!duringEdit) {
         return (
+            <GenericItemContainer priority={props.toDo.priority} move={moveToDone} toggleEdit={toggleEdit} delete={deleteToDo} done={false}>
+                <div className="todocontent">
+                    <div className="todoheading">{heading}</div>
+                    <div className="todotext">{text}</div>
+                    <ElementDate done={false} date={date} />
+                    <ElementPriority priority={priority} priorityColor={priorityColor} done={false}/>
+                </div>
+            </GenericItemContainer>
+        );
+    } else {
+        return (
             <div className="todo shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
                 <Labelstripe priority={props.toDo.priority} />
                 <div className="middlediv">
                     <Checkbox onClick={moveToDone}/>
-                    <div className="todocontent">
-                        <div className="todoheading">{heading}</div>
-                        <div className="todotext">{text}</div>
-                        <ElementDate done={false} date={date} />
-                        <ElementPriority priority={priority} priorityColor={priorityColor} done={false}/>
-                    </div>
-                    <ElementButtonDiv toggleEdit={toggleEdit} delete={deleteToDo} />
-                </div>
-            </div>
-        );
-    } else {
-        return (
-            <div className="todo">
-                <Labelstripe priority={props.toDo.priority} />
-                <div className="middlediv">
-                    <div className="checkboxdiv">
-                        <div className="checkbox">✓</div>
-                    </div>
                     <div className="duringedit">
                         <form className="todocontent" id="editform" onSubmit={handleSubmit}>
                             <div className="inputdiv"><label htmlFor="todotitleedit">Title:</label>
