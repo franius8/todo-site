@@ -9,6 +9,7 @@ export default function Labelstripe(props: { priority: string }) {
                 setColor("bg-red-500")
                 break;
             case "Medium":
+            case "Standard":
                 setColor("bg-yellow-500")
                 break;
             case "Low":

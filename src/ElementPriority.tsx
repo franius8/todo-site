@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 
 // Component for displaying a box with the priority of a project or to-do
-export default function ElementPriority(props: { priority: string, priorityColor: string, done: boolean }) {
+export default function ElementPriority(props: { priority: string, done: boolean }) {
     const [color, setColor] = useState("")
 
     useEffect(() => {
@@ -10,6 +10,7 @@ export default function ElementPriority(props: { priority: string, priorityColor
                 setColor("bg-red-500")
                 break;
             case "Medium":
+            case "Standard":
                 setColor("bg-yellow-500")
                 break;
             case "Low":

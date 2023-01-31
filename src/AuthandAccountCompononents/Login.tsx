@@ -46,7 +46,6 @@ export default function Login() {
     // Function for handling the login form submission
     const login = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(email.valueOf() + password.valueOf())
         signInWithEmailAndPassword(auth, email.valueOf(), password.valueOf())
             .then((userCredential) => {
                 // Signed in

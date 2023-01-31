@@ -1,9 +1,8 @@
-import React, {useState, FormEvent, ChangeEvent, useEffect} from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import ElementDate from "./ElementDate";
 import ElementPriority from "./ElementPriority";
 import EditFormButtonDiv from "./EditFormButtonDiv";
 import {ToDoInterface} from "./Modules/d";
-import { priorityGetter } from "./Modules/priorityGetter";
 import Checkbox from "./Checkbox";
 import Labelstripe from "./Labelstripe";
 import GenericItemContainer from "./GenericItemContainer";
@@ -18,12 +17,6 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
     const [text, setText] = useState(props.toDo.text);
     const [date, setDate] = useState(props.toDo.date);
     const [priority, setPriority] = useState(props.toDo.priority);
-    const [priorityColor, setPriorityColor] = useState(priorityGetter(props.toDo.priority));
-
-    useEffect(() => {
-        setPriorityColor(priorityGetter(priority));
-    }, [priority]);
-
 
         // Generic function for handling heading input change
         const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +68,7 @@ export default function ToDoElement(props: { toDo: ToDoInterface,
                     <div className="todoheading">{heading}</div>
                     <div className="todotext">{text}</div>
                     <ElementDate done={false} date={date} />
-                    <ElementPriority priority={priority} priorityColor={priorityColor} done={false}/>
+                    <ElementPriority priority={priority} done={false}/>
                 </div>
             </GenericItemContainer>
         );

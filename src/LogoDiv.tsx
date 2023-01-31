@@ -3,11 +3,7 @@ import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import { FaCheck } from "react-icons/fa";
 
-const LogoText = styled.div`
-      font-family: 'Sansita Swashed', cursive;
-      padding: 1rem;
-      line-height: 0;
-    `;
+
 
 // Generic Logo Component
 export default function LogoDiv() {

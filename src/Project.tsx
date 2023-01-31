@@ -77,7 +77,7 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
                         <div className="projectcontent">
                             <div className="projectname">{name}</div>
                             <ElementDate date={date} done={false} />
-                            <ElementPriority priority={priority} priorityColor={priorityColor} done={false}/>
+                            <ElementPriority priority={priority} done={false}/>
                         </div>
                         <ElementButtonDiv delete={handleDeleteProject} toggleEdit={toggleEdit} />
                     </div>

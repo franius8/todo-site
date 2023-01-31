@@ -11,8 +11,6 @@ export default function NavItem(props: { text: string, icon: JSX.Element, active
         "flex items-center justify-center gap-2 hover:bg-gray-200";
     const navigate = useNavigate();
 
-    console.log(props.active)
-
     // Function to navigate to the correct page when the link is clicked
     const route = () => {
         navigate(`/${props.text}`);

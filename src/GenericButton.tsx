@@ -1,26 +1,8 @@
 import React from "react";
-import styled from "styled-components";
-
-const SecondaryButtonElement = styled.button`
-  border-radius: 1rem;
-  border: 5px solid var(--main-color);
-  background-color: white;
-  padding: 0.5rem 1rem;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: bold;
-  color: var(--main-color);
-  align-self: center;
-  justify-self: center;
-  &:hover {
-    background-color: var(--main-color);
-    color: white;
-    cursor: pointer;
-  }
-`
 
 // A generic button used in the app
-export default function GenericButton(props: {variantMain: boolean, type: "button" | "submit", form: string, children: React.ReactNode,
+export default function GenericButton(props:
+{variantMain: boolean, type: "button" | "submit", form: string, children: React.ReactNode,
     onClick: (() => void) | undefined}) {
 
     interface ButtonProps {
@@ -39,7 +21,6 @@ export default function GenericButton(props: {variantMain: boolean, type: "butto
     }
 
     if (props.onClick) {
-        console.log("test0");
         buttonProps.onClick = props.onClick
     }
 

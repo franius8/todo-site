@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
-import "../Stylesheets/Account.css";
-import {auth} from "../Modules/firebase";
+import React, { useEffect } from "react";
+import { auth } from "../Modules/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import LogoDiv from "../LogoDiv";
 import GenericLoneDiv from "../GenericLoneDiv";
-
+import GenericButton from "../GenericButton";
+import DeleteButton from "../DeleteButton";
+import {FaEdit} from "react-icons/all";
 
 // Function for displaying the account page
 export default function Account() {
@@ -40,36 +40,36 @@ export default function Account() {
     return (
         <GenericLoneDiv heading={"Account info"}>
             <>
-            <div className={"accountcontentdiv"}>
-                <div className={"accountitemdiv"}>
-                    <div className={"accountitemcontentdiv"}>
-                        <div className={"accountitemcontentitemdiv"}>
-                            <div className={"accountitemcontentitemtitlediv"}>
-                                <h3>Name</h3>
-                            </div>
-                            <div className={"accountitemcontentitemcontentdiv"}>
-                                <p>{user?.displayName === null ? "No username in database" : user?.displayName}</p>
-                            </div>
+            <div className={"accountcontentdiv flex flex-col gap-6 mt-2"}>
+                <div className={"grid gap-6 grid-cols-2"}>
+                    <div className={"flex flex-col gap-4"}>
+                        <div className={"flex gap-2 items-center"}>
+                            <h3 className={"font-bold"}>Name</h3>
+                            <FaEdit className={"cursor-pointer"}/>
                         </div>
-                        <div className={"accountitemcontentitemdiv"}>
-                            <div className={"accountitemcontentitemtitlediv"}>
-                                <h3>Email</h3>
-                            </div>
-                            <div className={"accountitemcontentitemcontentdiv"}>
-                                <p>{user?.email}</p>
-                            </div>
+                        <p>{user?.displayName === null ? "No username in database" : user?.displayName}</p>
+                    </div>
+                    <div className={"flex flex-col gap-4"}>
+                        <div className={"flex gap-2 items-center"}>
+                            <h3 className={"font-bold"} >Email</h3>
+                            <FaEdit className={"cursor-pointer"}/>
                         </div>
+                        <p>{user?.email}</p>
                     </div>
                 </div>
                 <div className={"accountitemdiv"}>
                     <div className={"font-bold text-lg"}>
-                        <h2>Actions</h2>
+                        <h2 className={"text-center mb-2"}>Actions</h2>
                     </div>
-                    <div  className={"accountbuttondiv"}>
-                        <button className={"accountButton"} onClick={changePassword}>Change password</button>
-                        <button className={"accountButton"} id={"delete-account"}>Delete account</button>
-                        <button className={"accountButton"} onClick={() => navigate(-1)}>Back</button>
-                        <button className={"accountButton"} id={"logout"} onClick={signOutUser}>Log Out</button>
+                    <div  className={"grid grid-rows-2 grid-cols-2 gap-2"}>
+                        <GenericButton form={""} variantMain={true} type={"button"} onClick={changePassword}>
+                            Change password
+                        </GenericButton>
+                        <DeleteButton onClick={() => {}}>Delete account</DeleteButton>
+                        <GenericButton form={""} type={"button"} variantMain={true} onClick={() => navigate(-1)}>
+                            Back
+                        </GenericButton>
+                        <DeleteButton onClick={signOutUser}>Log Out</DeleteButton>
                     </div>
                 </div>
             </div>
