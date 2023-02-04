@@ -27,6 +27,6 @@ export default function Labelstripe(props: { priority: string }) {
     }, [props.priority])
 
     return (
-        <div className={`rounded-l-xl ${color}`}/>
+        <div className={`rounded-l-xl w-4 -m-0.5 z-10 ${color}`}/>
     )
 }

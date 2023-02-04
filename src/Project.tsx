@@ -69,8 +69,8 @@ export default function Project(props: { project: ProjectInterface, openToDoForm
 
     if (!duringEdit) {
         return (
-            <div className="projectcontainer shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
-                <div className={projectClass}>
+            <div className="shadow-lg border-2 border-gray-200 rounded-xl transition-all hover:bg-gray-100">
+                <div className={projectClass + " flex gap-2"}>
                     <Labelstripe priority={priority} />
                     <div className="middlediv">
                         <Checkbox onClick={moveToDone} />
